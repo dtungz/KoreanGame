@@ -306,7 +306,7 @@ Mockup: https://dtungz.github.io/PrototypeGame/cut-card/ui-v3.html (mã `E:\Data
   - giữa: bảng level dạng tấm gỗ có tab `Level N`, bên dưới là biểu tượng thẻ + số thẻ còn lại (`×3`);
   - trái: nút Cài đặt (Home và Chơi lại nằm trong menu cài đặt) và nút Gỡ quảng cáo;
   - phải: linh vật trứng ốp la ngồi trên kệ, tay cầm một lá thẻ.
-- **Giữa:** thớt to, hộp cơm sắt có khoá cài hai bên, cơm viền trắng dày có hạt.
+- **Giữa:** thớt to, hộp cơm sắt **không có khoá cài / tay cầm** (bạn chốt 2026-11-08: không dùng art tay cầm), cơm viền trắng dày có hạt.
 - **Dưới thớt:** nút Hoàn tác (nhỏ) + tay bài.
 - **Không có hàng booster** (Q-08). Chỗ trống dồn cho thớt: ô lưới 44px, thớt căn giữa; nút hoàn tác và khung tay bài thẳng mép với thớt.
 - **Không có banner quảng cáo** trên màn chơi; thớt và tay bài dồn xuống (khung 390×844: thớt y 172–636, tay bài 666–782, chừa đáy cho thanh home). ✅ (bạn chốt 2026-11-08)

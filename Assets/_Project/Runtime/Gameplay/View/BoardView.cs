@@ -396,11 +396,6 @@ namespace KoreanGame.Gameplay
             mb.Lines(0, edge, 2 * rim, Palette.TinRimShadow);
             mb.Tris(0, tris, Palette.TinRim, new Vector2(0, -.06f));
             mb.Lines(0, edge, 2 * rim - .08f, Palette.TinRim, new Vector2(0, -.06f));
-            // tay cầm ở giữa nắp
-            var b = Geometry.BBox(tris);
-            var c = new Vector2((b.minx + b.maxx + 1) / 2f, (b.miny + b.maxy + 1) / 2f - .06f);
-            mb.Line(0, c + new Vector2(-.35f, .04f), c + new Vector2(.35f, .04f), .2f, Palette.TinOutline);
-            mb.Line(0, c + new Vector2(-.35f, 0), c + new Vector2(.35f, 0), .14f, Palette.TinWall);
             mb.Apply(lid);
         }
     }

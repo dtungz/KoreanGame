@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace KoreanGame.Gameplay
 {
-    /// <summary>Khay hộp sắt: vành bo tròn quanh hình khay, ngăn lõm theo ô, món cố định, vách ngăn, quai hai bên.</summary>
+    /// <summary>Khay hộp sắt: vành bo tròn quanh hình khay, ngăn lõm theo ô, món cố định, vách ngăn. Không có quai / tay cầm.</summary>
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public class TrayView : MonoBehaviour
     {
@@ -12,8 +12,6 @@ namespace KoreanGame.Gameplay
         [SerializeField] MeshFilter meshFilter;
         [SerializeField] MeshRenderer meshRenderer;
         [SerializeField] SpriteRenderer foodTemplate;
-        [SerializeField] SpriteRenderer latchLeft;
-        [SerializeField] SpriteRenderer latchRight;
         [SerializeField] Sprite egg, sausage, meat;
 
         Mesh mesh;
@@ -90,7 +88,6 @@ namespace KoreanGame.Gameplay
                 mb.Line(0, new Vector2(w.x1, w.y1), new Vector2(w.x2, w.y2), .14f, Palette.TinOutline);
 
             mb.Apply(mesh);
-            PlaceLatches(byCell.Keys);
         }
 
         static void Well(MeshBuilder mb, float x, float y, float w, float h)
@@ -115,29 +112,10 @@ namespace KoreanGame.Gameplay
             sr.transform.localPosition = new Vector3(center.x, -center.y, 0);
         }
 
-        void PlaceLatches(IEnumerable<Vector2Int> cells)
-        {
-            int minx = int.MaxValue, maxx = int.MinValue;
-            var ys = new Dictionary<int, (int lo, int hi)>();
-            foreach (var c in cells)
-            {
-                minx = Mathf.Min(minx, c.x); maxx = Mathf.Max(maxx, c.x);
-                ys[c.x] = ys.TryGetValue(c.x, out var r) ? (Mathf.Min(r.lo, c.y), Mathf.Max(r.hi, c.y)) : (c.y, c.y);
-            }
-            if (minx == int.MaxValue) return;
-            float Mid(int col) => (ys[col].lo + ys[col].hi + 1) / 2f;
-            const float lh = .85f;
-            float lw = lh * 61f / 202f;
-            FitSprite(latchLeft, new Vector2(minx - Rim - .01f - lw / 2, Mid(minx)), new Vector2(lw, lh));
-            FitSprite(latchRight, new Vector2(maxx + 1 + Rim + .01f + lw / 2, Mid(maxx)), new Vector2(lw, lh));
-            latchRight.flipX = true;
-        }
-
         public void SetOrder(int baseOrder)
         {
             meshRenderer.sortingOrder = baseOrder;
             foreach (var f in foods) f.sortingOrder = baseOrder + 1;
-            latchLeft.sortingOrder = latchRight.sortingOrder = baseOrder + 1;
         }
     }
 }

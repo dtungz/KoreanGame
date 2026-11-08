@@ -48,6 +48,7 @@ namespace KoreanGame.EditorTools
             var camGo = Child(ctl, "Main Camera");
             camGo.tag = "MainCamera";
             var cam = camGo.AddComponent<Camera>();
+            camGo.AddComponent<AudioListener>();   // cần 1 AudioListener trong scene để nghe được âm
             cam.orthographic = true;
             cam.orthographicSize = RefH / Cell / 2;
             cam.clearFlags = CameraClearFlags.SolidColor;
@@ -76,12 +77,7 @@ namespace KoreanGame.EditorTools
             var trayGo = MeshChild(content, "Tray", colorMat, 0);
             var tray = trayGo.AddComponent<TrayView>();
             var food = Child(trayGo, "FoodTemplate").AddComponent<SpriteRenderer>();
-            var latchL = Child(trayGo, "LatchL").AddComponent<SpriteRenderer>();
-            var latchR = Child(trayGo, "LatchR").AddComponent<SpriteRenderer>();
-            latchL.sprite = latchR.sprite = S("InGame/Gameplay/tin_latch");
             Set(tray, "foodTemplate", food);
-            Set(tray, "latchLeft", latchL);
-            Set(tray, "latchRight", latchR);
             Set(tray, "egg", S("InGame/Gameplay/food_egg"));
             Set(tray, "sausage", S("InGame/Gameplay/food_sausage"));
             Set(tray, "meat", S("InGame/Gameplay/food_pork_belly"));

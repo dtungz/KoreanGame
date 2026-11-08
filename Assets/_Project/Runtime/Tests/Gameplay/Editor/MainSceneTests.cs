@@ -38,5 +38,20 @@ namespace KoreanGame.Tests
             finally { if (opened) EditorSceneManager.CloseScene(scene, true); }
             Assert.IsEmpty(missing, "Chưa gán tham chiếu, chạy Tools/KoreanGame/Build Main Scene:\n" + string.Join("\n", missing));
         }
+
+        [Test]
+        public void SceneHasExactlyOneAudioListener()
+        {
+            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByPath(SceneBuilder.ScenePath);
+            bool opened = !scene.isLoaded;
+            if (opened) scene = EditorSceneManager.OpenScene(SceneBuilder.ScenePath, OpenSceneMode.Additive);
+            int count = 0;
+            try
+            {
+                foreach (var root in scene.GetRootGameObjects()) count += root.GetComponentsInChildren<AudioListener>(true).Length;
+            }
+            finally { if (opened) EditorSceneManager.CloseScene(scene, true); }
+            Assert.AreEqual(1, count, "Scene Main cần đúng 1 AudioListener (trên Main Camera)");
+        }
     }
 }
