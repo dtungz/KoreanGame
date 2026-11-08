@@ -1,0 +1,6 @@
+Level 19: seed 15, độ khó 31, 2 lời giải, 5 ứng viên · Line_V1, Fn_Rotate
+Level 23: seed 3, độ khó 38, 1 lời giải, 5 ứng viên · Fn_Flip, Fn_Rotate
+Level 24: seed 22, độ khó 38, 1 lời giải, 5 ứng viên · Line_V1, Line_V1
+Level 32: seed 27, độ khó 34, 3 lời giải, 5 ứng viên · Cut_L, Line_H1
+Level 33: làm tay · hợp lệ · độ khó 50, 1 lời giải
+Level 36: seed 3, độ khó 38, 1 lời giải, 5 ứng viên · Fn_Rotate, Fn_Flip

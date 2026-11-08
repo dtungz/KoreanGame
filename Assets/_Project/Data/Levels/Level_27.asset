@@ -1,0 +1,322 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42196c6920412c4393ff5da1c46ea86, type: 3}
+  m_Name: Level_27
+  m_EditorClassIdentifier: 
+  hint: "Kh\u1ED1i c\u01A1m to h\u01A1n, chia kh\xE9o nh\xE9."
+  rice:
+  - tris:
+    - x: 0
+      y: 0
+      t: 0
+    - x: 0
+      y: 0
+      t: 1
+    - x: 0
+      y: 0
+      t: 2
+    - x: 0
+      y: 0
+      t: 3
+    - x: 1
+      y: 0
+      t: 0
+    - x: 1
+      y: 0
+      t: 1
+    - x: 1
+      y: 0
+      t: 2
+    - x: 1
+      y: 0
+      t: 3
+    - x: 2
+      y: 0
+      t: 0
+    - x: 2
+      y: 0
+      t: 1
+    - x: 2
+      y: 0
+      t: 2
+    - x: 2
+      y: 0
+      t: 3
+    - x: 3
+      y: 0
+      t: 0
+    - x: 3
+      y: 0
+      t: 1
+    - x: 3
+      y: 0
+      t: 2
+    - x: 3
+      y: 0
+      t: 3
+    - x: 0
+      y: 1
+      t: 0
+    - x: 0
+      y: 1
+      t: 1
+    - x: 0
+      y: 1
+      t: 2
+    - x: 0
+      y: 1
+      t: 3
+    - x: 1
+      y: 1
+      t: 0
+    - x: 1
+      y: 1
+      t: 1
+    - x: 1
+      y: 1
+      t: 2
+    - x: 1
+      y: 1
+      t: 3
+    - x: 2
+      y: 1
+      t: 0
+    - x: 2
+      y: 1
+      t: 1
+    - x: 2
+      y: 1
+      t: 2
+    - x: 2
+      y: 1
+      t: 3
+    - x: 3
+      y: 1
+      t: 0
+    - x: 3
+      y: 1
+      t: 1
+    - x: 3
+      y: 1
+      t: 2
+    - x: 3
+      y: 1
+      t: 3
+    - x: 0
+      y: 2
+      t: 0
+    - x: 0
+      y: 2
+      t: 1
+    - x: 0
+      y: 2
+      t: 2
+    - x: 0
+      y: 2
+      t: 3
+    - x: 1
+      y: 2
+      t: 0
+    - x: 1
+      y: 2
+      t: 1
+    - x: 1
+      y: 2
+      t: 2
+    - x: 1
+      y: 2
+      t: 3
+    - x: 2
+      y: 2
+      t: 0
+    - x: 2
+      y: 2
+      t: 1
+    - x: 2
+      y: 2
+      t: 2
+    - x: 2
+      y: 2
+      t: 3
+    - x: 3
+      y: 2
+      t: 0
+    - x: 3
+      y: 2
+      t: 1
+    - x: 3
+      y: 2
+      t: 2
+    - x: 3
+      y: 2
+      t: 3
+    at: {x: 1, y: 6}
+  tray:
+    tris:
+    - x: 1
+      y: 0
+      t: 0
+    - x: 1
+      y: 0
+      t: 3
+    - x: 1
+      y: 0
+      t: 2
+    - x: 1
+      y: 0
+      t: 1
+    - x: 2
+      y: 0
+      t: 3
+    - x: 2
+      y: 0
+      t: 2
+    - x: 2
+      y: 0
+      t: 1
+    - x: 2
+      y: 0
+      t: 0
+    - x: 3
+      y: 0
+      t: 2
+    - x: 3
+      y: 0
+      t: 1
+    - x: 3
+      y: 0
+      t: 0
+    - x: 3
+      y: 0
+      t: 3
+    - x: 0
+      y: 0
+      t: 3
+    - x: 0
+      y: 0
+      t: 2
+    - x: 0
+      y: 0
+      t: 1
+    - x: 0
+      y: 0
+      t: 0
+    - x: 0
+      y: 1
+      t: 0
+    - x: 0
+      y: 1
+      t: 3
+    - x: 0
+      y: 1
+      t: 2
+    - x: 0
+      y: 2
+      t: 0
+    - x: 0
+      y: 2
+      t: 3
+    - x: 0
+      y: 2
+      t: 2
+    - x: 0
+      y: 3
+      t: 0
+    - x: 0
+      y: 3
+      t: 3
+    - x: 0
+      y: 3
+      t: 2
+    - x: 0
+      y: 3
+      t: 1
+    - x: 1
+      y: 3
+      t: 3
+    - x: 1
+      y: 3
+      t: 2
+    - x: 1
+      y: 3
+      t: 1
+    - x: 1
+      y: 3
+      t: 0
+    - x: 1
+      y: 2
+      t: 2
+    - x: 1
+      y: 2
+      t: 1
+    - x: 2
+      y: 2
+      t: 3
+    - x: 2
+      y: 2
+      t: 2
+    - x: 2
+      y: 2
+      t: 1
+    - x: 2
+      y: 2
+      t: 0
+    - x: 2
+      y: 1
+      t: 2
+    - x: 2
+      y: 1
+      t: 1
+    - x: 2
+      y: 1
+      t: 0
+    - x: 2
+      y: 1
+      t: 3
+    - x: 1
+      y: 1
+      t: 1
+    - x: 1
+      y: 1
+      t: 0
+    - x: 1
+      y: 1
+      t: 3
+    - x: 1
+      y: 1
+      t: 2
+    - x: 1
+      y: 2
+      t: 0
+    - x: 1
+      y: 2
+      t: 3
+    - x: 0
+      y: 2
+      t: 1
+    - x: 0
+      y: 1
+      t: 1
+    at: {x: 1, y: 1}
+    walls: []
+    fixedFoods: []
+  cards:
+  - {fileID: 11400000, guid: 0729ccc7eced63f48b2cc6c7988c4529, type: 2}
+  - {fileID: 11400000, guid: 1c2de2d6d591aeb4a96a71281f0ca3f1, type: 2}
+  - {fileID: 11400000, guid: 6de886efc20ef5343a79a93276e397fd, type: 2}
+  isTutorial: 0
+  unlocksSilhouette: 0
+  difficulty: 47
+  solutions: 3
+  solution: "Ch\u1EEF L xoay 0\xB0 t\u1EA1i (-1,0) l\xEAn mi\u1EBFng 1 \u2192 Th\u1EB3ng
+    2 xoay 90\xB0 t\u1EA1i (1,1) l\xEAn mi\u1EBFng 2 \u2192 Th\u1EB3ng 1 xoay 90\xB0
+    t\u1EA1i (0,1) l\xEAn mi\u1EBFng 3"

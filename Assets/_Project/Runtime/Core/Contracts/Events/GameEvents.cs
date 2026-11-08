@@ -1,0 +1,46 @@
+namespace KoreanGame.Core
+{
+    /// <summary>Đã nạp một level (index tính từ 0).</summary>
+    public struct LevelLoadedEvent
+    {
+        public int index;
+        public int total;
+    }
+
+    /// <summary>Người chơi vừa thắng level.</summary>
+    public struct LevelWonEvent
+    {
+        public int index;
+        public bool isLast;
+    }
+
+    /// <summary>Trạng thái thớt / tay bài đổi (cắt, kéo, hoàn tác...).</summary>
+    public struct BoardChangedEvent { }
+
+    public enum CardEffect { Cut, Glue, Transform, Copy }
+
+    /// <summary>Một thẻ vừa được dùng thành công.</summary>
+    public struct CardUsedEvent
+    {
+        public CardEffect effect;
+    }
+
+    /// <summary>Chạm thẻ để xoay thẻ.</summary>
+    public struct CardRotatedEvent { }
+
+    /// <summary>Thả miếng cơm / khay thành công. intoTray = miếng vừa vào nằm gọn trong khay.</summary>
+    public struct PiecePlacedEvent
+    {
+        public bool intoTray;
+        public bool movedTray;
+    }
+
+    /// <summary>Thao tác bị từ chối (thả thẻ hỏng, thả miếng sai chỗ).</summary>
+    public struct MoveRejectedEvent { }
+
+    /// <summary>Hoàn tác một bước.</summary>
+    public struct UndoEvent { }
+
+    /// <summary>Nắp hộp vừa đóng trong hiệu ứng thắng.</summary>
+    public struct LidClosedEvent { }
+}

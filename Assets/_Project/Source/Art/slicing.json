@@ -1,0 +1,81 @@
+{
+  "note": "Sprite Border (L, B, R, T) tính theo pixel ảnh. Script import trong Unity sẽ áp vào TextureImporter.spriteBorder.",
+  "borders": {
+    "UI/Common/btn_pill_green.png": [
+      74,
+      0,
+      74,
+      0
+    ],
+    "UI/Common/label_pill.png": [
+      68,
+      0,
+      68,
+      0
+    ],
+    "UI/Common/popup.png": [
+      56,
+      60,
+      56,
+      56
+    ],
+    "UI/Gameplay/shelf.png": [
+      40,
+      0,
+      40,
+      0
+    ],
+    "UI/Gameplay/card_line.png": [
+      44,
+      48,
+      44,
+      44
+    ],
+    "UI/Gameplay/card_mold.png": [
+      44,
+      48,
+      44,
+      44
+    ],
+    "UI/Gameplay/card_diag.png": [
+      44,
+      48,
+      44,
+      44
+    ],
+    "UI/Gameplay/card_fn.png": [
+      44,
+      48,
+      44,
+      44
+    ],
+    "InGame/Gameplay/board.png": [
+      60,
+      64,
+      60,
+      60
+    ],
+    "InGame/Gameplay/tin_well.png": [
+      32,
+      32,
+      32,
+      40
+    ]
+  },
+  "tray": {
+    "note": "Vành khay vẽ bằng code bao quanh các ô tin_cell, bo góc; quai tin_latch gắn chồng lên vành hai bên.",
+    "colors": {
+      "well": "#B3A396",
+      "well_shadow": "#8C7F74",
+      "wall": "#DACEC3",
+      "rim": "#E5D8CD",
+      "rim_shadow": "#C4B8AC",
+      "outline": "#968C84"
+    },
+    "rim_px_at_cell_256": 26,
+    "corner_px_at_cell_256": 46
+  },
+  "rice": {
+    "gap_px_at_cell_256": 6
+  }
+}

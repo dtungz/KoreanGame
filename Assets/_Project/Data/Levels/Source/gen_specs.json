@@ -1,0 +1,296 @@
+{
+  "note": "Spec sinh level 15–40 (KoreanGame/Levels/Generate Levels 15-40). cards = tên asset thẻ (Card_<tên>), áp theo thứ tự khi sinh ngược. Mỗi màn 2–3 loại thẻ; khay hình bóng (silhouette) ở mốc 20, 30, 40. manual=true: level làm tay (không sinh), xem LevelBatchGenerator.",
+  "specs": [
+    {
+      "riceW": 3,
+      "riceH": 2,
+      "cards": [
+        "Line_H2",
+        "Line_V1"
+      ],
+      "hint": "Hai nhát cắt, ráp lại cho vừa hộp."
+    },
+    {
+      "riceW": 4,
+      "riceH": 2,
+      "cards": [
+        "Cut_L",
+        "Line_V1"
+      ],
+      "hint": "Chữ L cắt góc, thẳng 1 tách phần còn lại."
+    },
+    {
+      "riceW": 3,
+      "riceH": 3,
+      "cards": [
+        "Cut_L",
+        "Line_H2"
+      ],
+      "walls": 1,
+      "hint": "Để ý vách ngăn trong hộp."
+    },
+    {
+      "hint": "Chữ L cắt góc, lấp cơm quanh trứng.",
+      "riceW": 4,
+      "riceH": 2,
+      "cards": [
+        "Cut_L",
+        "Line_V1"
+      ],
+      "fixedKind": "egg"
+    },
+    {
+      "hint": "Một miếng nằm sai chiều: dùng thẻ Xoay.",
+      "riceW": 4,
+      "riceH": 1,
+      "cards": [
+        "Line_V1",
+        "Fn_Rotate"
+      ]
+    },
+    {
+      "riceW": 4,
+      "riceH": 2,
+      "cards": [
+        "Diag_D2",
+        "Diag_A2"
+      ],
+      "silhouette": true,
+      "hint": "Khay hình bóng mới! Cắt chéo hai hướng."
+    },
+    {
+      "riceW": 4,
+      "riceH": 2,
+      "cards": [
+        "Mold_2x2",
+        "Line_V1"
+      ],
+      "fixedKind": "sausage",
+      "hint": "Khuôn lấy khối vuông, xếp quanh xúc xích."
+    },
+    {
+      "riceW": 3,
+      "riceH": 3,
+      "cards": [
+        "Cut_L",
+        "Cut_T"
+      ],
+      "hint": "Chữ L và chữ T: thứ tự cắt quan trọng."
+    },
+    {
+      "hint": "Lật rồi xoay mới vừa hộp.",
+      "riceCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 1
+        }
+      ],
+      "cards": [
+        "Fn_Flip",
+        "Fn_Rotate"
+      ]
+    },
+    {
+      "hint": "Hai nhát thẳng, nhớ vách ngăn.",
+      "riceW": 5,
+      "riceH": 1,
+      "cards": [
+        "Line_V1",
+        "Line_V1"
+      ],
+      "walls": 1
+    },
+    {
+      "hint": "Chéo 1 cắt nửa ô theo hai hướng.",
+      "riceW": 2,
+      "riceH": 2,
+      "cards": [
+        "Diag_D1",
+        "Diag_A1"
+      ]
+    },
+    {
+      "riceW": 4,
+      "riceH": 2,
+      "cards": [
+        "Cut_T",
+        "Fn_Rotate"
+      ],
+      "fixedKind": "meat",
+      "hint": "Chữ T rồi xoay, chừa chỗ cho thịt."
+    },
+    {
+      "riceW": 4,
+      "riceH": 3,
+      "cards": [
+        "Cut_L",
+        "Line_H2",
+        "Line_V1"
+      ],
+      "hint": "Khối cơm to hơn, chia khéo nhé."
+    },
+    {
+      "hint": "Khuôn, cắt, rồi xoay.",
+      "riceW": 4,
+      "riceH": 2,
+      "cards": [
+        "Mold_2x2",
+        "Fn_Rotate"
+      ]
+    },
+    {
+      "riceW": 3,
+      "riceH": 3,
+      "cards": [
+        "Diag_D2",
+        "Line_H2",
+        "Line_V1"
+      ],
+      "hint": "Chéo và thẳng cùng một hộp."
+    },
+    {
+      "riceW": 4,
+      "riceH": 2,
+      "cards": [
+        "Diag_A2",
+        "Diag_D2",
+        "Line_V2"
+      ],
+      "silhouette": true,
+      "hint": "Khay hình bóng thứ hai!"
+    },
+    {
+      "riceW": 4,
+      "riceH": 3,
+      "cards": [
+        "Cut_T",
+        "Cut_L"
+      ],
+      "walls": 1,
+      "hint": "Chữ T, chữ L và một vách ngăn."
+    },
+    {
+      "hint": "Chữ L và một nhát nhỏ, lấp quanh trứng.",
+      "riceW": 4,
+      "riceH": 2,
+      "cards": [
+        "Cut_L",
+        "Line_H1"
+      ],
+      "fixedKind": "egg"
+    },
+    {
+      "hint": "Đặt hai miếng nối đuôi, dán lại rồi xoay cả khối.",
+      "riceW": 2,
+      "riceH": 1,
+      "cards": [
+        "Fn_Glue",
+        "Fn_Rotate"
+      ],
+      "manual": true
+    },
+    {
+      "riceW": 3,
+      "riceH": 3,
+      "cards": [
+        "Cut_L",
+        "Diag_A1",
+        "Line_V1"
+      ],
+      "hint": "Thêm một nhát chéo nhỏ."
+    },
+    {
+      "hint": "Khuôn 2×2 giữa khối cơm to.",
+      "riceW": 4,
+      "riceH": 3,
+      "cards": [
+        "Mold_2x2",
+        "Cut_L"
+      ]
+    },
+    {
+      "hint": "Xoay và lật: thử thứ tự nào trước?",
+      "riceCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ],
+      "cards": [
+        "Fn_Rotate",
+        "Fn_Flip"
+      ]
+    },
+    {
+      "riceW": 4,
+      "riceH": 1,
+      "cards": [
+        "Line_V1",
+        "Fn_Copy",
+        "Line_H1"
+      ],
+      "hint": "Nhân bản một miếng nhỏ cho đủ cơm."
+    },
+    {
+      "riceW": 4,
+      "riceH": 3,
+      "cards": [
+        "Diag_D2",
+        "Cut_L",
+        "Line_V1"
+      ],
+      "walls": 1,
+      "hint": "Chéo, chữ L và vách ngăn."
+    },
+    {
+      "riceW": 4,
+      "riceH": 3,
+      "cards": [
+        "Cut_T",
+        "Cut_L",
+        "Fn_Rotate"
+      ],
+      "hint": "Gần đích rồi: cắt hai lần, xoay một lần."
+    },
+    {
+      "riceW": 4,
+      "riceH": 2,
+      "cards": [
+        "Diag_A2",
+        "Diag_D2",
+        "Diag_A1",
+        "Line_V1"
+      ],
+      "silhouette": true,
+      "hint": "Khay hình bóng cuối cùng của mùa này!"
+    }
+  ]
+}
