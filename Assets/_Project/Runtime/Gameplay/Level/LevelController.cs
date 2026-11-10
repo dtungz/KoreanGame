@@ -36,6 +36,7 @@ namespace KoreanGame.Gameplay
             if (!keepHistory) history.Clear();
             Won = false;
             board.ResetFx();
+            board.SetDish(Level.unlocksDish != null ? Level.unlocksDish.art : null);
             hand.HideGhost();
             Refresh();
             // Refresh phải chạy trước event: BoardInput.CancelDrag dựa vào thớt / tay bài đã vẽ lại

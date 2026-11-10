@@ -16,6 +16,7 @@ namespace KoreanGame.Gameplay
         [SerializeField] MeshRenderer shadowRenderer;
 
         Mesh mesh, shadow;
+        Material colorMaterial, riceMaterial;
         public Piece Piece { get; private set; }
 
         /// <summary>Tâm miếng theo toạ độ local (x, -y).</summary>
@@ -29,6 +30,8 @@ namespace KoreanGame.Gameplay
 
         public void Init(Material colorMat, Material riceMat)
         {
+            colorMaterial = colorMat;
+            riceMaterial = riceMat;
             mesh = new Mesh { name = "Piece" };
             meshFilter.sharedMesh = mesh;
             meshRenderer.sharedMaterials = new[] { colorMat, riceMat, colorMat };
@@ -38,10 +41,27 @@ namespace KoreanGame.Gameplay
             shadowRenderer.enabled = false;
         }
 
-        public void Build(Piece p)
+        public void Build(Piece p) => Build(p, null, default);
+
+        /// <summary>
+        /// dish != null: miếng nằm gọn trong hộp của màn có món đặc trưng. Mặt cơm hiện đúng phần ảnh món ở chỗ đó
+        /// (UV theo khung chữ nhật của khay), nên hộp "thành món" dần theo từng miếng đặt vào.
+        /// </summary>
+        public void Build(Piece p, Material dish, BBox trayBox)
         {
             Piece = p;
             Build(p.tris);
+            if (dish == null)
+            {
+                meshRenderer.sharedMaterials = new[] { colorMaterial, riceMaterial, colorMaterial };
+                return;
+            }
+            var uv = mesh.uv;
+            float w = trayBox.W, h = trayBox.H;
+            for (int i = 0; i < uv.Length; i++)   // UV gốc = (x, -y) toạ độ thớt → (0..1) trong khung khay, gốc ảnh ở dưới-trái
+                uv[i] = new Vector2((uv[i].x - trayBox.minx) / w, (uv[i].y + trayBox.maxy + 1) / h);
+            mesh.uv = uv;
+            meshRenderer.sharedMaterials = new[] { colorMaterial, dish, colorMaterial };
         }
 
         public void Build(List<Tri> tris)

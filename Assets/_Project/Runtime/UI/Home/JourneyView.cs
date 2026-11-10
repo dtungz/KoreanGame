@@ -27,6 +27,8 @@ namespace KoreanGame.Home
         [SerializeField] Text dishCount;
         [SerializeField] Text sideCount;
         [SerializeField] Text detailText;
+        [Tooltip("Món chưa mở: hiện ổ khoá thay cho icon (giữ bí mật món)")]
+        [SerializeField] Sprite lockedIcon;
 
         [Header("Tab con: Bộ sưu tập / Sổ hành trình")]
         [SerializeField] Button collectionTab;
@@ -68,9 +70,11 @@ namespace KoreanGame.Home
                 var d = catalog.dishes[i];
                 bool has = DishOpen(d, out int lvl);
                 if (has) open++;
-                dishIcons[i].sprite = d.icon;
+                // chưa mở: chỉ ổ khoá mờ ở giữa ô, không lộ hình món
+                dishIcons[i].sprite = has ? d.icon : lockedIcon;
                 dishIcons[i].color = has ? Color.white : Locked;
-                dishLocks[i].SetActive(!has);
+                dishIcons[i].rectTransform.localScale = has ? Vector3.one : Vector3.one * .5f;
+                dishLocks[i].SetActive(false);
                 dishLabels[i].text = has ? d.displayName : lvl >= 0 ? $"Màn {lvl + 1}" : "???";
             }
             for (int i = 0; i < sideCells.Length && i < catalog.sideDishes.Count; i++)

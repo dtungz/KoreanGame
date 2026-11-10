@@ -24,6 +24,8 @@ namespace KoreanGame.Home
         [SerializeField] Button nextButton;
         [SerializeField] Sprite clearedSprite;
         [SerializeField] Sprite currentSprite;
+        [Tooltip("Màn có món chưa mở: huy hiệu ổ khoá (không lộ món)")]
+        [SerializeField] Sprite lockedBadge;
 
         Action<int> play;
         int page;
@@ -81,11 +83,12 @@ namespace KoreanGame.Home
                 nodeLabels[i].text = (level + 1).ToString();
                 nodeLabels[i].color = open ? Palette.UiText : new Color(Palette.UiText.r, Palette.UiText.g, Palette.UiText.b, .45f);
                 var dish = database.levels[level].unlocksDish;
-                dishBadges[i].gameObject.SetActive(dish != null && dish.icon != null);
+                dishBadges[i].gameObject.SetActive(dish != null);
                 if (dish != null)
                 {
-                    dishBadges[i].sprite = dish.icon;
-                    dishBadges[i].color = ProgressSave.IsCleared(level) || CollectionSave.HasDish(dish.id) ? Color.white : new Color(1, 1, 1, .5f);
+                    bool got = ProgressSave.IsCleared(level) || CollectionSave.HasDish(dish.id);
+                    dishBadges[i].sprite = got ? dish.icon : lockedBadge;   // chưa mở: chỉ biết "có món ở đây"
+                    dishBadges[i].color = Color.white;
                 }
                 if (current)
                 {

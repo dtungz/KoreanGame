@@ -36,7 +36,8 @@ namespace KoreanGame.Gameplay
         readonly Dictionary<Piece, PieceView> views = new Dictionary<Piece, PieceView>();
         Mesh preview, slash, flash, lid;
         MaterialPropertyBlock block;
-        SpriteRenderer dishReveal;   // ảnh món đặc trưng phủ lên khay khi thắng (tạo lúc chạy, không cần dựng lại scene)
+        SpriteRenderer dishReveal;
+        Material dishMaterial;       // ảnh món của màn hiện tại: miếng cơm trong hộp hiện phần ảnh tương ứng   // ảnh món đặc trưng phủ lên khay khi thắng (tạo lúc chạy, không cần dựng lại scene)
 
         public Camera Camera => cam;
 
@@ -88,6 +89,14 @@ namespace KoreanGame.Gameplay
 
         // ======================= Vẽ trạng thái =======================
 
+        /// <summary>Màn có món đặc trưng: miếng cơm nằm gọn trong hộp hiện phần ảnh món. null = màn thường (cơm trắng).</summary>
+        public void SetDish(Sprite art)
+        {
+            if (art == null) { dishMaterial = null; return; }
+            if (dishMaterial == null) dishMaterial = new Material(Shader.Find("Sprites/Default")) { name = "DishFill" };
+            dishMaterial.mainTexture = art.texture;
+        }
+
         public void Render(BoardState s)
         {
             trayView.KillTweens(true);
@@ -96,11 +105,14 @@ namespace KoreanGame.Gameplay
             trayView.SetOrder(OrderTray);
 
             views.Clear();
+            var trayBox = Geometry.BBox(s.tray.tris);
+            var inTray = dishMaterial != null ? new HashSet<Tri>(s.tray.tris) : null;
             for (int i = 0; i < s.pieces.Count; i++)
             {
                 var v = Get(i);
                 v.KillTweens(true);
-                v.Build(s.pieces[i]);
+                bool dish = inTray != null && s.pieces[i].tris.TrueForAll(inTray.Contains);
+                v.Build(s.pieces[i], dish ? dishMaterial : null, trayBox);
                 v.PlaceAt(Vector3.zero);
                 v.SetOrder(OrderPiece);
                 views[s.pieces[i]] = v;

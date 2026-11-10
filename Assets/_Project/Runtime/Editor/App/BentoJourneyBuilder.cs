@@ -43,6 +43,11 @@ namespace KoreanGame.EditorTools
 
         static void Build(bool confirm)
         {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                Debug.LogWarning("[BentoJourneyBuilder] Đang Play: dừng Play rồi dựng lại.");
+                return;
+            }
             bool exists = File.Exists(ScenePath) || File.Exists(HudPrefabPath) || File.Exists(PopupPrefabPath) || File.Exists(MenuPrefabPath);
             if (confirm && exists && !EditorUtility.DisplayDialog("Bento Journey",
                     "Scene / prefab Bento Journey đã có. Dựng lại sẽ ghi đè chúng (chỉnh tay trong các prefab sẽ mất).\nScene Main không bị đụng tới.",
@@ -536,7 +541,7 @@ namespace KoreanGame.EditorTools
             var dishIcons = new Image[nd];
             var dishLabels = new Text[nd];
             var dishLocks = new GameObject[nd];
-            const float dw = 104, dh = 124, dgap = 8;
+            const float dw = 150, dh = 160, dgap = 14, dx0 = (358 - 2 * dw - dgap) / 2;   // 2×2 mỗi vùng, căn giữa
             float y = 32;
             for (int r = 0; r < 2; r++)
             {
@@ -547,20 +552,20 @@ namespace KoreanGame.EditorTools
                 for (int k = 0; k < count; k++)
                 {
                     int i = start + k;
-                    dishCells[i] = Cell($"Dish{i}", 19 + k % 3 * (dw + dgap), y + k / 3 * (dh + dgap), dw, dh, out dishIcons[i], 84);
-                    var lockImg = NewImage(dishCells[i].transform, "Lock", dw - 32, 6, 26, 26);
+                    dishCells[i] = Cell($"Dish{i}", dx0 + k % 2 * (dw + dgap), y + k / 2 * (dh + dgap), dw, dh, out dishIcons[i], 112);
+                    var lockImg = NewImage(dishCells[i].transform, "Lock", dw - 34, 8, 26, 26);
                     lockImg.sprite = Ui("ic_lock");
                     lockImg.preserveAspect = true;
                     dishLocks[i] = lockImg.gameObject;
-                    var label = NewText(dishCells[i].transform, "Label", "", 15, Palette.UiText, body);
-                    TopLeft(label.rectTransform, 4, 92, dw - 8, 26);
+                    var label = NewText(dishCells[i].transform, "Label", "", 17, Palette.UiText, body);
+                    TopLeft(label.rectTransform, 6, 122, dw - 12, 32);
                     label.resizeTextForBestFit = true;
-                    label.resizeTextMinSize = 11;
-                    label.resizeTextMaxSize = 15;
+                    label.resizeTextMinSize = 12;
+                    label.resizeTextMaxSize = 17;
                     label.horizontalOverflow = HorizontalWrapMode.Wrap;
                     dishLabels[i] = label;
                 }
-                y += ((count + 2) / 3) * (dh + dgap) + 6;
+                y += ((count + 1) / 2) * (dh + dgap) + 6;
             }
 
             // ---- món phụ: lưới 4 cột ----
@@ -603,6 +608,7 @@ namespace KoreanGame.EditorTools
             SceneBuilder.Set(view, "dishCount", dishCount);
             SceneBuilder.Set(view, "sideCount", sideCount);
             SceneBuilder.Set(view, "detailText", detail);
+            SceneBuilder.Set(view, "lockedIcon", Ui("ic_lock"));
 
             // ---- tab con + sổ hành trình ----
             Button SubTab(string name, string text, float x)
@@ -664,7 +670,7 @@ namespace KoreanGame.EditorTools
                 images[i] = img;
                 labels[i] = NewText(img.transform, "Label", (i + 1).ToString(), 18, Palette.UiText, heading);
                 Stretch(labels[i].rectTransform, 0, 5, 0, 0);
-                badges[i] = NewImage(img.transform, "Dish", 32, -14, 30, 30);
+                badges[i] = NewImage(img.transform, "Dish", node - 17, -13, 30, 30);
                 badges[i].preserveAspect = true;
                 badges[i].gameObject.SetActive(false);
             }
@@ -685,6 +691,7 @@ namespace KoreanGame.EditorTools
             SceneBuilder.Set(view, "nextButton", next);
             SceneBuilder.Set(view, "clearedSprite", Ui("ui_btn_secondary"));
             SceneBuilder.Set(view, "currentSprite", Ui("ui_btn_primary"));
+            SceneBuilder.Set(view, "lockedBadge", Ui("ic_lock"));
             return panel;
         }
 
