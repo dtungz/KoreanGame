@@ -128,6 +128,37 @@ namespace KoreanGame.Tests
         }
 
         [Test]
+        public void WallCrossingPieceFindsPieceAcrossWall()
+        {
+            var L = Level(Geometry.FullRect(2, 1), new Vector2Int(2, 1), Geometry.FullRect(2, 1), new Vector2Int(2, 1));
+            var s = BoardState.FromLevel(L);
+            Assert.IsNull(Moves.WallCrossingPiece(s), "chưa có vách");
+            s.tray.walls.Add(new Wall(3, 1, 3, 2));   // vách giữa 2 ô của khay (toạ độ thớt)
+            Assert.AreSame(s.pieces[0], Moves.WallCrossingPiece(s));
+        }
+
+        [Test]
+        public void GlueCannotJoinAcrossTrayEdge()
+        {
+            var s = BoardState.FromLevel(BarToSquare());   // khay 2×2 tại (2,1): hàng 1–2
+            var glue = new HandCard { def = Card(CardKind.Glue, CardFamily.Glue, new Vector2Int(0, 0), new Vector2Int(1, 0)) };
+            s.pieces = new List<Piece>
+            {
+                new Piece { id = 1, tris = Geometry.Shift(Geometry.FullRect(1, 1), 2, 2) },   // trong khay (hàng dưới)
+                new Piece { id = 2, tris = Geometry.Shift(Geometry.FullRect(1, 1), 2, 3) },   // ngay dưới mép khay
+            };
+            Assert.IsFalse(Moves.EvaluateGlue(s, glue, 2, 3).valid, "một trong, một ngoài");
+
+            s.pieces[0].tris = Geometry.Shift(Geometry.FullRect(1, 1), 2, 5);
+            s.pieces[1].tris = Geometry.Shift(Geometry.FullRect(1, 1), 2, 6);
+            Assert.IsTrue(Moves.EvaluateGlue(s, glue, 2, 6).valid, "cả hai ngoài khay");
+
+            s.pieces[0].tris = Geometry.Shift(Geometry.FullRect(1, 1), 2, 1);
+            s.pieces[1].tris = Geometry.Shift(Geometry.FullRect(1, 1), 2, 2);
+            Assert.IsTrue(Moves.EvaluateGlue(s, glue, 2, 2).valid, "cả hai trong khay");
+        }
+
+        [Test]
         public void RotateCardTurnsPiece()
         {
             var L = Level(Geometry.FullRect(3, 1), new Vector2Int(2, 7), Geometry.FullRect(1, 3), new Vector2Int(3, 1), Card(CardKind.Rot, CardFamily.Fn));

@@ -77,6 +77,18 @@ namespace KoreanGame.Gameplay
                         if (!res.touched.Contains(fb)) res.touched.Add(fb);
                     }
             res.valid = res.joins.Count > 0;
+            // Luật 2026-11-08: miếng phải nằm gọn trong khay hoặc hẳn bên ngoài.
+            // Mỗi miếng riêng lẻ đã tuân thủ, nên chỉ cần chặn cặp "một trong, một ngoài" (ghép xong sẽ vắt mép khay).
+            foreach (var (a, b) in res.joins)
+            {
+                var both = new List<Tri>(a.tris);
+                both.AddRange(b.tris);
+                if (!Straddles(s.tray, both)) continue;
+                res.valid = false;
+                res.joins.Clear();
+                res.touched.Clear();
+                break;
+            }
             return res;
         }
 
@@ -224,9 +236,14 @@ namespace KoreanGame.Gameplay
         {
             var occ = s.Occupied();
             foreach (var q in s.tray.Need()) if (!occ.Contains(q)) return WinState.None;
+            return WallCrossingPiece(s) != null ? WinState.WallBlocked : WinState.Won;
+        }
+
+        /// <summary>Miếng cơm nằm vắt qua vách ngăn (null nếu không có).</summary>
+        public static Piece WallCrossingPiece(BoardState s)
+        {
             var wk = s.WallKeys();
-            foreach (var p in s.pieces) if (Geometry.CrossesWall(p.tris, wk)) return WinState.WallBlocked;
-            return WinState.Won;
+            return s.pieces.Find(p => Geometry.CrossesWall(p.tris, wk));
         }
     }
 }

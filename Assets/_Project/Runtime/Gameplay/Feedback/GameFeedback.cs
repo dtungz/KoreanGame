@@ -15,6 +15,7 @@ namespace KoreanGame.Gameplay
             EventBus<CardRotatedEvent>.Subscribe(OnRotated);
             EventBus<PiecePlacedEvent>.Subscribe(OnPlaced);
             EventBus<MoveRejectedEvent>.Subscribe(OnRejected);
+            EventBus<WallBlockedEvent>.Subscribe(OnWallBlocked);
             EventBus<UndoEvent>.Subscribe(OnUndo);
             EventBus<LevelWonEvent>.Subscribe(OnWon);
             EventBus<LidClosedEvent>.Subscribe(OnLid);
@@ -26,6 +27,7 @@ namespace KoreanGame.Gameplay
             EventBus<CardRotatedEvent>.Unsubscribe(OnRotated);
             EventBus<PiecePlacedEvent>.Unsubscribe(OnPlaced);
             EventBus<MoveRejectedEvent>.Unsubscribe(OnRejected);
+            EventBus<WallBlockedEvent>.Unsubscribe(OnWallBlocked);
             EventBus<UndoEvent>.Unsubscribe(OnUndo);
             EventBus<LevelWonEvent>.Unsubscribe(OnWon);
             EventBus<LidClosedEvent>.Unsubscribe(OnLid);
@@ -48,6 +50,8 @@ namespace KoreanGame.Gameplay
         }
 
         void OnRejected(MoveRejectedEvent e) { Play(Sfx.Bad, .03f, .9f); Haptics.Medium(); }
+
+        void OnWallBlocked(WallBlockedEvent e) { Play(Sfx.Bad, .03f, .9f); Haptics.Medium(); }
 
         void OnUndo(UndoEvent e) => Play(Sfx.Drop, .02f, .6f);
 

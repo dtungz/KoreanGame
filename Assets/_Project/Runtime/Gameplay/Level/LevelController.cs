@@ -25,20 +25,31 @@ namespace KoreanGame.Gameplay
             hand = handView;
         }
 
-        public void Load(int i)
+        /// <summary>Nạp level i. keepHistory = true chỉ dùng cho Chơi lại (giữ lịch sử để hoàn tác được).</summary>
+        public void Load(int i, bool keepHistory = false)
         {
             Index = db.Wrap(i);
             ProgressSave.CurrentLevel = Index;
             State = BoardState.FromLevel(Level);
-            history.Clear();
+            if (!keepHistory) history.Clear();
             Won = false;
             board.ResetFx();
             hand.HideGhost();
             Refresh();
+            // Refresh phải chạy trước event: BoardInput.CancelDrag dựa vào thớt / tay bài đã vẽ lại
             EventBus<LevelLoadedEvent>.Raise(new LevelLoadedEvent { index = Index, total = db.Count });
         }
 
-        public void Restart() => Load(Index);
+        /// <summary>
+        /// Chơi lại màn hiện tại. Hoàn tác được (GDD trụ cột 2): bàn cờ trước khi chơi lại vào lịch sử.
+        /// Đã thắng hoặc chưa làm gì thì xoá lịch sử như nạp màn mới.
+        /// </summary>
+        public void Restart()
+        {
+            bool keep = !Won && history.Count > 0;
+            if (keep) history.Push(State);
+            Load(Index, keep);
+        }
         public void Next() => Load(Index + 1);
         public void Prev() => Load(Index - 1);
 
@@ -55,6 +66,7 @@ namespace KoreanGame.Gameplay
             State = history.Pop();
             board.ResetFx();
             Refresh();
+            // Refresh phải chạy trước event: BoardInput.CancelDrag dựa vào thớt / tay bài đã vẽ lại
             EventBus<UndoEvent>.Raise(default);
         }
 
@@ -94,7 +106,8 @@ namespace KoreanGame.Gameplay
 
         public bool TryMovePiece(Piece p, int dx, int dy)
         {
-            if (Won || (dx == 0 && dy == 0) || !Moves.CanPlacePiece(State, p, Geometry.Shift(p.tris, dx, dy))) return false;
+            if (Won || (dx == 0 && dy == 0) || !State.pieces.Contains(p)) return false;   // p phải thuộc State hiện tại
+            if (!Moves.CanPlacePiece(State, p, Geometry.Shift(p.tris, dx, dy))) return false;
             history.Push(State);
             // history giữ bản sao; p vẫn là object của State hiện tại
             Moves.MovePiece(State, p, dx, dy);
@@ -119,7 +132,14 @@ namespace KoreanGame.Gameplay
 
         void CheckWin()
         {
-            if (Moves.CheckWin(State) == WinState.Won) Win();
+            var w = Moves.CheckWin(State);
+            if (w == WinState.Won) Win();
+            else if (w == WinState.WallBlocked)
+            {
+                // khay đã kín nhưng có miếng vắt qua vách: báo bằng hình + âm, không chữ (GDD 4.4, 9.2)
+                board.FlashWallCross(Moves.WallCrossingPiece(State).tris, State.tray);
+                EventBus<WallBlockedEvent>.Raise(default);
+            }
         }
 
         void Win()

@@ -39,6 +39,33 @@ namespace KoreanGame.Gameplay
             board = b;
             hand = h;
             Input.simulateMouseWithTouches = false;
+            // Hoàn tác / nạp màn thay cả State: thao tác đang kéo trỏ vào object cũ nên phải huỷ
+            EventBus<UndoEvent>.Subscribe(OnUndo);
+            EventBus<LevelLoadedEvent>.Subscribe(OnLoaded);
+        }
+
+        void OnDestroy()
+        {
+            EventBus<UndoEvent>.Unsubscribe(OnUndo);
+            EventBus<LevelLoadedEvent>.Unsubscribe(OnLoaded);
+        }
+
+        void OnUndo(UndoEvent e) => CancelDrag();
+        void OnLoaded(LevelLoadedEvent e) => CancelDrag();
+
+        /// <summary>
+        /// Bỏ thao tác đang kéo (không áp dụng gì). Dựa vào thứ tự trong LevelController.Undo / Load:
+        /// Refresh() (vẽ lại thớt + tay bài) chạy TRƯỚC khi raise UndoEvent / LevelLoadedEvent.
+        /// </summary>
+        void CancelDrag()
+        {
+            if (type == DragType.None) return;
+            if (type == DragType.Card) { hand.SetDragging(cardIndex, false); hand.HideGhost(); }
+            type = DragType.None;
+            res = null;
+            piece = null;
+            carried = null;
+            board.ClearPreview();
         }
 
         void Update()
@@ -59,10 +86,13 @@ namespace KoreanGame.Gameplay
                 return;
             }
             if (Input.GetMouseButtonDown(0) && type == DragType.None) Down(Input.mousePosition, false, -1);
-            else if (type != DragType.None && !touch)
+            // không dùng else: nhấn và nhả trong cùng 1 frame vẫn phải xử lý nhả
+            if (type != DragType.None && !touch)
             {
                 if (Input.GetMouseButton(0)) Move(Input.mousePosition);
                 if (Input.GetMouseButtonUp(0)) Up(Input.mousePosition, false);
+                // mất sự kiện nhả (vd cửa sổ mất focus khi đang kéo): huỷ, không áp dụng gì
+                else if (!Input.GetMouseButton(0)) Up(Input.mousePosition, true);
             }
         }
 

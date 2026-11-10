@@ -38,6 +38,9 @@ namespace KoreanGame.Core
     /// <summary>Thao tác bị từ chối (thả thẻ hỏng, thả miếng sai chỗ).</summary>
     public struct MoveRejectedEvent { }
 
+    /// <summary>Khay đã kín nhưng có miếng cơm vắt qua vách ngăn (chưa thắng).</summary>
+    public struct WallBlockedEvent { }
+
     /// <summary>Hoàn tác một bước.</summary>
     public struct UndoEvent { }
 

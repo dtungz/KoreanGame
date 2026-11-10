@@ -321,7 +321,19 @@ namespace KoreanGame.Gameplay
         }
 
         /// <summary>Viền khay chớp đỏ: miếng cơm thả vắt qua mép khay.</summary>
-        public void FlashTrayEdge(TrayState tray) => Flash(tray.tris, new Color(.84f, .2f, .16f, .9f), true, .45f, 2);
+        public void FlashTrayEdge(TrayState tray) => Flash(tray.tris, WarnRed, true, .45f, 2);
+
+        static readonly Color WarnRed = new Color(.84f, .2f, .16f, .9f);
+
+        /// <summary>Khay đã kín nhưng miếng vắt qua vách: viền miếng + vách chớp đỏ 2 lần.</summary>
+        public void FlashWallCross(List<Tri> pieceTris, TrayState tray)
+        {
+            var mb = new MeshBuilder(1);
+            mb.Lines(0, Geometry.Boundary(pieceTris), .16f, WarnRed);
+            foreach (var w in tray.walls) mb.Line(0, new Vector2(w.x1, w.y1), new Vector2(w.x2, w.y2), .2f, WarnRed);
+            mb.Apply(flash);
+            PulseAlpha(flashRenderer, .45f, 2);
+        }
 
         /// <summary>Thả thẻ hỏng: đường cắt xám rung tại chỗ rồi mờ.</summary>
         public void PlayRejectCard(MoveResult r)
