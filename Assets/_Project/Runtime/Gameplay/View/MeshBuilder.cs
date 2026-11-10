@@ -111,25 +111,38 @@ namespace KoreanGame.Gameplay
         public static Color Hex(string h) { ColorUtility.TryParseHtmlString(h, out var c); return c; }
 
         public static readonly Color Grid = Hex("#DEC8A8");
-        public static readonly Color RiceLip = Hex("#CDB797");
-        public static readonly Color RiceEdge = Hex("#D9CAB2");
+        public static readonly Color RiceLip = Hex("#C9A27E");
+        public static readonly Color RiceEdge = Hex("#81533B");   // viền nâu cho khối thức ăn (style guide)
         public static readonly Color TinWell = Hex("#B3A396");
         public static readonly Color TinWellShadow = Hex("#8C7F74");
         public static readonly Color TinWall = Hex("#DACEC3");
         public static readonly Color TinRim = Hex("#E5D8CD");
         public static readonly Color TinRimShadow = Hex("#C4B8AC");
         public static readonly Color TinOutline = Hex("#968C84");
-        public static readonly Color CutValid = Hex("#E2563F");
-        public static readonly Color CutInvalid = Hex("#8C7B6E");
+        // Xem trước cắt (style guide Bento Journey): đường cắt nét đứt màu mực có chấm hai đầu; thả hỏng = san hô
+        public static readonly Color CutValid = Hex("#3E2416");
+        public static readonly Color CutInvalid = Hex("#E97855");
         public static readonly Color Green = Hex("#3E9A4C");
         public static readonly Color Red = Hex("#D6332A");
 
+        // Style guide Bento Journey (Cute Casual 2D): tên cũ giữ nguyên để code hiện có không đổi
+        public static readonly Color UiCream = Hex("#FFF8EC");       // kem sáng: panel, thẻ, nút phụ
+        public static readonly Color UiCreamDark = Hex("#FFF1D9");   // kem: nền màn hình
+        public static readonly Color UiPeach = Hex("#FFD9AD");       // đào: khay thẻ, bong bóng
+        public static readonly Color UiOrange = Hex("#F58B42");      // cam: nút chính, thân xe
+        public static readonly Color UiCoral = Hex("#E97855");       // san hô: logo, badge, đường cắt
+        public static readonly Color UiSage = Hex("#A8B96B");        // xanh lá: cây, nhãn hoàn thành
+        public static readonly Color UiSky = Hex("#94C8E8");         // xanh trời: đang chọn, xem trước cắt
+        public static readonly Color UiBrown = Hex("#81533B");       // nâu: viền, bóng, chữ phụ
+        public static readonly Color UiText = Hex("#3E2416");        // mực: chữ chính (cả trên nút cam / san hô)
+
+        // Các phần sắp tách: phần đầu xanh trời (như style guide), phần sau khác màu để vẫn đếm được số miếng (GDD 8)
         public static readonly Color[] Tint =
         {
-            new Color(240 / 255f, 110 / 255f, 60 / 255f, .42f),
-            new Color(80 / 255f, 140 / 255f, 230 / 255f, .38f),
-            new Color(90 / 255f, 180 / 255f, 100 / 255f, .38f),
-            new Color(210 / 255f, 170 / 255f, 40 / 255f, .42f),
+            new Color(148 / 255f, 200 / 255f, 232 / 255f, .55f),
+            new Color(245 / 255f, 139 / 255f, 66 / 255f, .42f),
+            new Color(168 / 255f, 185 / 255f, 107 / 255f, .5f),
+            new Color(233 / 255f, 120 / 255f, 85 / 255f, .42f),
         };
 
         public static Color FamilyColor(CardFamily f)

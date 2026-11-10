@@ -1,6 +1,18 @@
 {
   "note": "Sprite Border (L, B, R, T) tính theo pixel ảnh. Script import trong Unity sẽ áp vào TextureImporter.spriteBorder.",
   "borders": {
+    "UI/Common/ui_btn_primary.png": [70, 80, 70, 82],
+    "UI/Common/ui_btn_primary_pressed.png": [70, 80, 70, 82],
+    "UI/Common/ui_btn_secondary.png": [70, 80, 70, 82],
+    "UI/Common/ui_btn_secondary_pressed.png": [70, 80, 70, 82],
+    "UI/Common/ui_card.png": [64, 80, 64, 64],
+    "UI/Common/ui_panel.png": [82, 92, 82, 82],
+    "UI/Common/ui_panel_peach.png": [82, 92, 82, 82],
+    "UI/Common/ui_card_ring.png": [80, 80, 80, 80],
+    "UI/Common/ui_card_empty.png": [64, 64, 64, 64],
+    "UI/Common/ui_chip_green.png": [45, 39, 45, 39],
+    "UI/Common/ui_chip_peach.png": [45, 39, 45, 39],
+    "InGame/Gameplay/board_frame.png": [50, 60, 50, 50],
     "UI/Common/btn_pill_green.png": [
       74,
       0,

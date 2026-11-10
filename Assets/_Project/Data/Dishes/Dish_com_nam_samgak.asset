@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c11cb5595f4214987d88e5211b1f6e, type: 3}
+  m_Name: Dish_com_nam_samgak
+  m_EditorClassIdentifier: 
+  id: com_nam_samgak
+  displayName: "C\u01A1m n\u1EAFm tam gi\xE1c"
+  region: 2
+  art: {fileID: 21300000, guid: ab4be07830a594e4da57a8b47ae59c25, type: 3}
+  icon: {fileID: 21300000, guid: 77ac5a8ee604acc4fa9f54c37bd7fde0, type: 3}
+  intro: "Samgak kimbap: c\u01A1m n\u1EAFm h\xECnh tam gi\xE1c b\u1ECDc rong bi\u1EC3n,
+    m\xF3n \u0103n nhanh c\u1EE7a d\xE2n v\u0103n ph\xF2ng Seoul."

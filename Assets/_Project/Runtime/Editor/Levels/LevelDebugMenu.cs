@@ -46,8 +46,9 @@ namespace KoreanGame.EditorTools
         public static void ResetProgress()
         {
             ProgressSave.Reset();
+            CollectionSave.Reset();
             Controller?.Load(0);
-            Debug.Log("[Debug] Đã xoá tiến độ, về Level 1.");
+            Debug.Log("[Debug] Đã xoá tiến độ và bộ sưu tập, về Level 1.");
         }
 
         [MenuItem(Root + "Next Level %&RIGHT", true)]

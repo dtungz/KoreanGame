@@ -210,14 +210,45 @@ MonoBehaviour:
     - x: 0
       y: 1
       t: 1
+    - x: 3
+      y: 0
+      t: 0
+    - x: 3
+      y: 0
+      t: 1
+    - x: 3
+      y: 0
+      t: 2
+    - x: 3
+      y: 0
+      t: 3
+    - x: 3
+      y: 1
+      t: 0
+    - x: 3
+      y: 1
+      t: 1
+    - x: 3
+      y: 1
+      t: 2
+    - x: 3
+      y: 1
+      t: 3
     at: {x: 2, y: 1}
     walls: []
-    fixedFoods: []
+    fixedFoods:
+    - kind: nem
+      cells:
+      - {x: 3, y: 0}
+      - {x: 3, y: 1}
   cards:
   - {fileID: 11400000, guid: 0729ccc7eced63f48b2cc6c7988c4529, type: 2}
   - {fileID: 11400000, guid: 6de886efc20ef5343a79a93276e397fd, type: 2}
   isTutorial: 0
   unlocksSilhouette: 0
+  region: 1
+  unlocksDish: {fileID: 0}
+  customerLine: 
   difficulty: 34
   solutions: 3
   solution: "Ch\u1EEF L xoay 0\xB0 t\u1EA1i (-1,0) l\xEAn mi\u1EBFng 1 \u2192 Th\u1EB3ng

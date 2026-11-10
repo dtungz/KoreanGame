@@ -13,6 +13,8 @@ namespace KoreanGame.Gameplay
         [SerializeField] MeshRenderer meshRenderer;
         [SerializeField] SpriteRenderer foodTemplate;
         [SerializeField] Sprite egg, sausage, meat;
+        [Tooltip("Tra ảnh món phụ theo id; để trống hoặc id chưa có thì dùng 3 ảnh cũ ở trên")]
+        [SerializeField] FoodCatalog catalog;
 
         Mesh mesh;
         readonly List<SpriteRenderer> foods = new List<SpriteRenderer>();
@@ -31,7 +33,11 @@ namespace KoreanGame.Gameplay
             foodTemplate.gameObject.SetActive(false);
         }
 
-        Sprite FoodSprite(string kind) => kind == "sausage" ? sausage : kind == "meat" ? meat : egg;
+        Sprite FoodSprite(string kind)
+        {
+            var s = catalog != null ? catalog.SideSprite(kind) : null;
+            return s != null ? s : kind == "sausage" ? sausage : kind == "meat" ? meat : egg;
+        }
 
         public void Build(TrayState tray)
         {

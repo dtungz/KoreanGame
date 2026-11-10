@@ -114,13 +114,31 @@ MonoBehaviour:
     - x: 1
       y: 2
       t: 3
+    - x: 2
+      y: 0
+      t: 0
+    - x: 2
+      y: 0
+      t: 1
+    - x: 2
+      y: 0
+      t: 2
+    - x: 2
+      y: 0
+      t: 3
     at: {x: 2, y: 1}
     walls: []
-    fixedFoods: []
+    fixedFoods:
+    - kind: dua_gop
+      cells:
+      - {x: 2, y: 0}
   cards:
   - {fileID: 11400000, guid: bed3745240405eb4f85106ad57edaa61, type: 2}
   isTutorial: 1
   unlocksSilhouette: 0
+  region: 1
+  unlocksDish: {fileID: 0}
+  customerLine: 
   difficulty: 17
   solutions: 2
   solution: "Ch\u1EEF T xoay 0\xB0 t\u1EA1i (0,1) l\xEAn mi\u1EBFng 1"

@@ -201,9 +201,10 @@ namespace KoreanGame.Gameplay
                         foreach (var g in r.segs)
                         {
                             Vector2 a = new Vector2(g.x1, g.y1), b = new Vector2(g.x2, g.y2);
-                            if (r.valid) mb.Line(0, a, b, .13f, Palette.CutValid);
+                            if (r.valid) mb.DashedLine(0, a, b, .11f, Palette.CutValid, .2f, .12f);
                             else mb.DashedLine(0, a, b, .13f, Palette.CutInvalid, .18f, .12f);
                         }
+                        if (r.valid) CutEndDots(mb, r.segs);
                         break;
                     case CardKind.Glue:
                         foreach (var p in r.touched) mb.Tris(0, p.tris, new Color(90 / 255f, 180 / 255f, 100 / 255f, .38f));
@@ -219,6 +220,21 @@ namespace KoreanGame.Gameplay
                 }
             }
             mb.Apply(preview);
+        }
+
+        /// <summary>Chấm tròn xanh trời viền mực ở các đầu hở của đường cắt (đường khép kín như khuôn thì không có).</summary>
+        static void CutEndDots(MeshBuilder mb, List<Seg> segs)
+        {
+            var count = new Dictionary<Vector2Int, int>();
+            foreach (var g in segs)
+                foreach (var p in new[] { new Vector2Int(g.x1, g.y1), new Vector2Int(g.x2, g.y2) })
+                    count[p] = count.TryGetValue(p, out var n) ? n + 1 : 1;
+            foreach (var kv in count)
+            {
+                if (kv.Value != 1) continue;
+                mb.Disc(0, kv.Key, .17f, Palette.CutValid, 16);
+                mb.Disc(0, kv.Key, .11f, Palette.UiSky, 16);
+            }
         }
 
         // ======================= Hiệu ứng cắt =======================

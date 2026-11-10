@@ -234,18 +234,36 @@ MonoBehaviour:
     - x: 1
       y: 0
       t: 1
+    - x: 3
+      y: 0
+      t: 0
+    - x: 3
+      y: 0
+      t: 1
+    - x: 3
+      y: 0
+      t: 2
+    - x: 3
+      y: 0
+      t: 3
     at: {x: 2, y: 1}
     walls:
     - x1: 1
       y1: 2
       x2: 1
       y2: 3
-    fixedFoods: []
+    fixedFoods:
+    - kind: dua_gop
+      cells:
+      - {x: 3, y: 0}
   cards:
   - {fileID: 11400000, guid: 0729ccc7eced63f48b2cc6c7988c4529, type: 2}
   - {fileID: 11400000, guid: 1c2de2d6d591aeb4a96a71281f0ca3f1, type: 2}
   isTutorial: 0
   unlocksSilhouette: 0
+  region: 1
+  unlocksDish: {fileID: 0}
+  customerLine: 
   difficulty: 53
   solutions: 1
   solution: "Ch\u1EEF L xoay 180\xB0 t\u1EA1i (1,2) l\xEAn mi\u1EBFng 1 \u2192 Th\u1EB3ng

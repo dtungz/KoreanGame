@@ -14,7 +14,7 @@ namespace KoreanGame.Gameplay
     [Serializable]
     public class FixedFood
     {
-        public string kind;   // egg | sausage | meat
+        public string kind;   // id món phụ trong FoodCatalog (egg | sausage | meat | …)
         public List<Vector2Int> cells = new List<Vector2Int>();
 
         public FixedFood Clone() => new FixedFood { kind = kind, cells = new List<Vector2Int>(cells) };
@@ -41,6 +41,15 @@ namespace KoreanGame.Gameplay
         [Header("Meta")]
         public bool isTutorial;
         public bool unlocksSilhouette;
+
+        [Header("Món ăn")]
+        public FoodRegion region;
+        [Tooltip("Món đặc trưng mở khoá khi thắng màn này lần đầu (để trống = màn thường)")]
+        public DishData unlocksDish;
+
+        [Header("Khách hàng")]
+        [Tooltip("Câu riêng của khách khi vào màn (để trống = chọn ngẫu nhiên trong CustomerLines)")]
+        [TextArea(1, 3)] public string customerLine;
 
         [Header("Solver (do tool ghi)")]
         public int difficulty;

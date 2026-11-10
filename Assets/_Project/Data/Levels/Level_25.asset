@@ -122,6 +122,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6d3b806cf80541e40a4d34feb4f18879, type: 2}
   isTutorial: 0
   unlocksSilhouette: 0
+  region: 2
+  unlocksDish: {fileID: 11400000, guid: 57761fc27d433c14986c88d80e312aa0, type: 2}
+  customerLine: 
   difficulty: 42
   solutions: 2
   solution: "Ch\xE9o 1 xoay 0\xB0 t\u1EA1i (0,1) l\xEAn mi\u1EBFng 1 \u2192 Ch\xE9o

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c11cb5595f4214987d88e5211b1f6e, type: 3}
+  m_Name: Dish_banh_mi
+  m_EditorClassIdentifier: 
+  id: banh_mi
+  displayName: "B\xE1nh m\xEC"
+  region: 1
+  art: {fileID: 21300000, guid: 0b36920229d67b346b90b08d254c0306, type: 3}
+  icon: {fileID: 21300000, guid: 363d1539e3707004cb372d42e5319ce8, type: 3}
+  intro: "\u1ED4 b\xE1nh gi\xF2n r\u1EE5m k\u1EB9p pate, ch\u1EA3, rau th\u01A1m.
+    M\xF3n \u0103n \u0111\u01B0\u1EDDng ph\u1ED1 n\u1ED5i ti\u1EBFng kh\u1EAFp th\u1EBF
+    gi\u1EDBi."

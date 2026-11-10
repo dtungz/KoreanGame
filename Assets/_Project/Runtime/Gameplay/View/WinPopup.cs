@@ -38,7 +38,7 @@ namespace KoreanGame.Gameplay
 
         void OnWon(LevelWonEvent e)
         {
-            infoText.text = $"Level {e.index + 1} xong.";
+            infoText.text = $"Màn {e.index + 1} xong.";
             nextLabel.text = e.isLast ? "Chơi lại từ đầu" : "Tiếp tục";
             root.SetActive(true);
             group.alpha = 0;

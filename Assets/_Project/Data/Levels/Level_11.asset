@@ -164,13 +164,31 @@ MonoBehaviour:
     - x: 1
       y: 2
       t: 3
+    - x: 2
+      y: 0
+      t: 0
+    - x: 2
+      y: 0
+      t: 1
+    - x: 2
+      y: 0
+      t: 2
+    - x: 2
+      y: 0
+      t: 3
     at: {x: 2, y: 1}
     walls: []
-    fixedFoods: []
+    fixedFoods:
+    - kind: rau_muong
+      cells:
+      - {x: 2, y: 0}
   cards:
   - {fileID: 11400000, guid: 9033b579b925e384597196cfbf929d0d, type: 2}
   isTutorial: 1
   unlocksSilhouette: 0
+  region: 1
+  unlocksDish: {fileID: 0}
+  customerLine: 
   difficulty: 20
   solutions: 1
   solution: "Xoay \u21BB mi\u1EBFng 1"

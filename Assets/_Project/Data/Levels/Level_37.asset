@@ -138,15 +138,48 @@ MonoBehaviour:
     - x: 2
       y: 1
       t: 1
+    - x: 5
+      y: 0
+      t: 0
+    - x: 5
+      y: 0
+      t: 1
+    - x: 5
+      y: 0
+      t: 2
+    - x: 5
+      y: 0
+      t: 3
+    - x: 3
+      y: 1
+      t: 0
+    - x: 3
+      y: 1
+      t: 1
+    - x: 3
+      y: 1
+      t: 2
+    - x: 3
+      y: 1
+      t: 3
     at: {x: 1, y: 1}
     walls: []
-    fixedFoods: []
+    fixedFoods:
+    - kind: kimchi
+      cells:
+      - {x: 5, y: 0}
+    - kind: gia_tron
+      cells:
+      - {x: 3, y: 1}
   cards:
   - {fileID: 11400000, guid: 6de886efc20ef5343a79a93276e397fd, type: 2}
   - {fileID: 11400000, guid: 653a730a0e0bffd4dba091a8a9467228, type: 2}
   - {fileID: 11400000, guid: 28e5476b380007545a2906ace8a66e73, type: 2}
   isTutorial: 0
   unlocksSilhouette: 0
+  region: 2
+  unlocksDish: {fileID: 0}
+  customerLine: 
   difficulty: 49
   solutions: 1
   solution: "Th\u1EB3ng 1 xoay 0\xB0 t\u1EA1i (1,0) l\xEAn mi\u1EBFng 1 \u2192 Th\u1EB3ng

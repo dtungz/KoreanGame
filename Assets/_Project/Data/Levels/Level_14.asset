@@ -140,9 +140,24 @@ MonoBehaviour:
     - x: 1
       y: 2
       t: 3
+    - x: 2
+      y: 0
+      t: 0
+    - x: 2
+      y: 0
+      t: 1
+    - x: 2
+      y: 0
+      t: 2
+    - x: 2
+      y: 0
+      t: 3
     at: {x: 2, y: 1}
     walls: []
-    fixedFoods: []
+    fixedFoods:
+    - kind: cha
+      cells:
+      - {x: 2, y: 0}
   cards:
   - {fileID: 11400000, guid: 2113f94c2f04ece4383ba5c4723e6817, type: 2}
   - {fileID: 11400000, guid: 795c5dd5b5d29c04db66092c2341cb6d, type: 2}
@@ -150,6 +165,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 653a730a0e0bffd4dba091a8a9467228, type: 2}
   isTutorial: 1
   unlocksSilhouette: 0
+  region: 1
+  unlocksDish: {fileID: 0}
+  customerLine: 
   difficulty: 41
   solutions: 6
   solution: "Th\u1EB3ng 3 xoay 90\xB0 t\u1EA1i (1,-2) l\xEAn mi\u1EBFng 1 \u2192

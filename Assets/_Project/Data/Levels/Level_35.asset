@@ -314,6 +314,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0729ccc7eced63f48b2cc6c7988c4529, type: 2}
   isTutorial: 0
   unlocksSilhouette: 0
+  region: 2
+  unlocksDish: {fileID: 11400000, guid: 845504e39e7276840821a42b68e6fa3c, type: 2}
+  customerLine: 
   difficulty: 53
   solutions: 10
   solution: "Khu\xF4n 2\xD72 xoay 0\xB0 t\u1EA1i (-1,-1) l\xEAn mi\u1EBFng 1 \u2192

@@ -13,12 +13,31 @@ namespace KoreanGame.Tests
     /// </summary>
     public class MainSceneTests
     {
-        [Test]
-        public void AllProjectReferencesAreAssigned()
+        // Main (SceneBuilder) và Bento Journey (BentoJourneyBuilder); scene chưa dựng thì bỏ qua
+        static readonly string[] Scenes = { SceneBuilder.ScenePath, BentoJourneyBuilder.ScenePath };
+
+        // tham chiếu tuỳ chọn, cố ý để trống ở scene Main (Main vào thẳng màn chơi, không có menu)
+        static readonly HashSet<string> OptionalInMain = new HashSet<string>
         {
-            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByPath(SceneBuilder.ScenePath);
+            "GameBootstrap.mainMenu", "GameBootstrap.settingsPopup", "GameBootstrap.settingsButton",
+            "GameBootstrap.customerChat", "CardView.selectRing", "TrayView.catalog", "GameBootstrap.dishPopup",
+        };
+
+        // tham chiếu tuỳ chọn ở mọi scene (hiện chưa dùng ở đâu)
+        static readonly HashSet<string> OptionalAnywhere = new HashSet<string> { "GameBootstrap.targetPreview" };
+
+        static void RequireScene(string path)
+        {
+            if (!System.IO.File.Exists(path)) Assert.Ignore($"Chưa dựng {path}");
+        }
+
+        [TestCaseSource(nameof(Scenes))]
+        public void AllProjectReferencesAreAssigned(string path)
+        {
+            RequireScene(path);
+            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByPath(path);
             bool opened = !scene.isLoaded;
-            if (opened) scene = EditorSceneManager.OpenScene(SceneBuilder.ScenePath, OpenSceneMode.Additive);
+            if (opened) scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
             var missing = new List<string>();
             try
             {
@@ -31,27 +50,30 @@ namespace KoreanGame.Tests
                         var p = new SerializedObject(mb).GetIterator();
                         while (p.NextVisible(true))
                             if (p.propertyType == SerializedPropertyType.ObjectReference && p.objectReferenceValue == null
-                                && p.name != "m_Script" && p.name != "m_Material")
+                                && p.name != "m_Script" && p.name != "m_Material"
+                                && !OptionalAnywhere.Contains($"{mb.GetType().Name}.{p.propertyPath}")
+                                && !(path == SceneBuilder.ScenePath && OptionalInMain.Contains($"{mb.GetType().Name}.{p.propertyPath}")))
                                 missing.Add($"{mb.GetType().Name} ({mb.name}).{p.propertyPath}");
                     }
             }
             finally { if (opened) EditorSceneManager.CloseScene(scene, true); }
-            Assert.IsEmpty(missing, "Chưa gán tham chiếu, chạy Tools/KoreanGame/Build Main Scene:\n" + string.Join("\n", missing));
+            Assert.IsEmpty(missing, $"{path}: chưa gán tham chiếu, dựng lại scene (Tools/KoreanGame):\n" + string.Join("\n", missing));
         }
 
-        [Test]
-        public void SceneHasExactlyOneAudioListener()
+        [TestCaseSource(nameof(Scenes))]
+        public void SceneHasExactlyOneAudioListener(string path)
         {
-            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByPath(SceneBuilder.ScenePath);
+            RequireScene(path);
+            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByPath(path);
             bool opened = !scene.isLoaded;
-            if (opened) scene = EditorSceneManager.OpenScene(SceneBuilder.ScenePath, OpenSceneMode.Additive);
+            if (opened) scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
             int count = 0;
             try
             {
                 foreach (var root in scene.GetRootGameObjects()) count += root.GetComponentsInChildren<AudioListener>(true).Length;
             }
             finally { if (opened) EditorSceneManager.CloseScene(scene, true); }
-            Assert.AreEqual(1, count, "Scene Main cần đúng 1 AudioListener (trên Main Camera)");
+            Assert.AreEqual(1, count, $"{path} cần đúng 1 AudioListener (trên Main Camera)");
         }
     }
 }

@@ -114,14 +114,32 @@ MonoBehaviour:
     - x: 0
       y: 0
       t: 2
+    - x: 1
+      y: 0
+      t: 0
+    - x: 1
+      y: 0
+      t: 1
+    - x: 1
+      y: 0
+      t: 2
+    - x: 1
+      y: 0
+      t: 3
     at: {x: 2, y: 1}
     walls: []
-    fixedFoods: []
+    fixedFoods:
+    - kind: gia_tron
+      cells:
+      - {x: 1, y: 0}
   cards:
   - {fileID: 11400000, guid: 9fbffcfdaa5bd904eadd7bbd20765a0a, type: 2}
   - {fileID: 11400000, guid: 9033b579b925e384597196cfbf929d0d, type: 2}
   isTutorial: 0
   unlocksSilhouette: 0
+  region: 2
+  unlocksDish: {fileID: 0}
+  customerLine: 
   difficulty: 38
   solutions: 1
   solution: "L\u1EADt ngang mi\u1EBFng 1 \u2192 Xoay \u21BB mi\u1EBFng 1"

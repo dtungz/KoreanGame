@@ -57,7 +57,7 @@ namespace KoreanGame.Gameplay
             }
         }
 
-        static void Tri(VertexHelper vh, Vector2 a, Vector2 b, Vector2 c, Color col)
+        internal static void Tri(VertexHelper vh, Vector2 a, Vector2 b, Vector2 c, Color col)
         {
             int i = vh.currentVertCount;
             vh.AddVert(a, col, Vector2.zero);
@@ -66,7 +66,7 @@ namespace KoreanGame.Gameplay
             vh.AddTriangle(i, i + 1, i + 2);
         }
 
-        static void Line(VertexHelper vh, Vector2 a, Vector2 b, float w, Color col)
+        internal static void Line(VertexHelper vh, Vector2 a, Vector2 b, float w, Color col)
         {
             var d = b - a;
             if (d.sqrMagnitude < 1e-6f) return;

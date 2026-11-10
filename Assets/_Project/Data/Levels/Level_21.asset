@@ -234,6 +234,18 @@ MonoBehaviour:
     - x: 1
       y: 3
       t: 3
+    - x: 3
+      y: 0
+      t: 0
+    - x: 3
+      y: 0
+      t: 1
+    - x: 3
+      y: 0
+      t: 2
+    - x: 3
+      y: 0
+      t: 3
     at: {x: 2, y: 1}
     walls: []
     fixedFoods:
@@ -241,11 +253,17 @@ MonoBehaviour:
       cells:
       - {x: 0, y: 3}
       - {x: 1, y: 3}
+    - kind: kimchi
+      cells:
+      - {x: 3, y: 0}
   cards:
   - {fileID: 11400000, guid: c1f2ab002fde12e428d1613ffbeb1aa5, type: 2}
   - {fileID: 11400000, guid: 6de886efc20ef5343a79a93276e397fd, type: 2}
   isTutorial: 0
   unlocksSilhouette: 0
+  region: 2
+  unlocksDish: {fileID: 0}
+  customerLine: 
   difficulty: 35
   solutions: 7
   solution: "Khu\xF4n 2\xD72 xoay 0\xB0 t\u1EA1i (-1,-1) l\xEAn mi\u1EBFng 1 \u2192

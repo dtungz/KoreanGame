@@ -37,6 +37,8 @@ void OnDisable() => body.KillTweens(true);
 ## 3. UI màn chơi
 
 - Không có chữ hướng dẫn trên màn chơi (gợi ý, thông báo lỗi, "hết thẻ"…). Phản hồi bằng hình: rung, khung đỏ/xanh, trả về chỗ cũ.
+  - **Ngoại lệ (bạn chốt 2026-11-10):** lời thoại của khách trong bong bóng "Mẫu" (tám chuyện / nói về món, câu ngắn ~2 dòng). Lời thoại không được dùng để hướng dẫn cách chơi. Câu nằm trong `Data/Config/CustomerLines` và `LevelData.customerLine`.
+  - Nhãn ngắn trên nút / ô (Hoàn tác, Làm lại, THẺ CẮT, Mẫu, Màn N) được phép.
 - Không có banner quảng cáo trên màn chơi.
 - Lớp tối của popup phủ **kín màn hình**, không chỉ khung 390×844. Popup căn giữa màn hình.
 - Debug chỉ nằm trong menu **Tools → KoreanGame** và cửa sổ Level Browser, không đặt trên màn hình game.

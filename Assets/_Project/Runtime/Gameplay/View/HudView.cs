@@ -31,7 +31,7 @@ namespace KoreanGame.Gameplay
 
         void OnLoaded(LevelLoadedEvent e)
         {
-            levelText.text = $"Level {e.index + 1}";
+            levelText.text = $"Màn {e.index + 1}";
             OnChanged(default);
         }
 

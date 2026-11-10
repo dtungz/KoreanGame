@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c11cb5595f4214987d88e5211b1f6e, type: 3}
+  m_Name: Dish_nem_ran
+  m_EditorClassIdentifier: 
+  id: nem_ran
+  displayName: "Nem r\xE1n"
+  region: 1
+  art: {fileID: 21300000, guid: 02a02622c5acc9346b6dffa1ffa1b6d7, type: 3}
+  icon: {fileID: 21300000, guid: fa877965a444aaf449190e732d128b58, type: 3}
+  intro: "Cu\u1ED1n nh\xE2n th\u1ECBt, mi\u1EBFn, m\u1ED9c nh\u0129 r\u1ED3i r\xE1n
+    v\xE0ng gi\xF2n. M\xE2m c\u01A1m ng\xE0y T\u1EBFt kh\xF4ng th\u1EC3 thi\u1EBFu."

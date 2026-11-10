@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5faf274512bb754498557ca5b6eca88f, type: 3}
+  m_Name: CustomerLines
+  m_EditorClassIdentifier: 
+  chitChat:
+  - "H\xF4m nay tr\u1EDDi H\xE0 N\u1ED9i \u0111\u1EB9p gh\xEA!"
+  - "Xe c\u1EE7a b\u1EA1n d\u1EC5 th\u01B0\u01A1ng qu\xE1 \u0111i!"
+  - "M\xECnh \u0111i l\xE0m s\u1EDBm n\xEAn \u0111\xF3i l\u1EAFm r\u1ED3i\u2026"
+  - "Nghe n\xF3i xe s\u1EAFp \u0111i Seoul h\u1EA3?"
+  - "Ph\u1ED1 \u0111\xF4ng qu\xE1, may m\xE0 c\xF2n xe c\u1EE7a b\u1EA1n."
+  - "L\u1EA7n \u0111\u1EA7u m\xECnh gh\xE9 \u0111\xF3, l\xE0m kh\xE9o nha!"
+  foodTalk:
+  - "Cho m\xECnh m\u1ED9t h\u1ED9p nh\u01B0 n\xE0y nh\xE9!"
+  - "C\u01A1m ph\u1EA3i \u0111\u1EA7y h\u1ED9p m\u1EDBi ngon!"
+  - "X\u1EBFp kh\xE9o gi\xFAp m\xECnh, \u0111\u1EEBng h\u1EDF ch\u1ED7 n\xE0o nha."
+  - "H\u1ED9p n\xE0y mang l\xEAn v\u0103n ph\xF2ng \u0103n tr\u01B0a \u0111\xF3."
+  - "Nh\xECn h\xECnh m\u1EABu l\xE0 th\u1EA5y \u0111\xF3i b\u1EE5ng r\u1ED3i!"
+  win:
+  - "Ngon qu\xE1! C\u1EA3m \u01A1n nha!"
+  - "\u0110\u1EB9p y nh\u01B0 h\xECnh lu\xF4n!"
+  - "V\u1EEBa kh\xEDt lu\xF4n, gi\u1ECFi gh\xEA!"
+  - "Mai m\xECnh l\u1EA1i gh\xE9 nh\xE9!"

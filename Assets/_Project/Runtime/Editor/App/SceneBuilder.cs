@@ -24,15 +24,32 @@ namespace KoreanGame.EditorTools
         static Sprite S(string rel) => AssetDatabase.LoadAssetAtPath<Sprite>(Art + rel + ".png");
         static Color C(string hex) => Palette.Hex(hex);
 
+        /// <summary>Các object chính BuildContent tạo ra, để tool khác (BentoJourneyBuilder) dựng tiếp.</summary>
+        public class Built
+        {
+            public Camera cam;
+            public Canvas hud, popup;
+            public GameObject ui;          // nhóm "---- GIAO DIỆN ----"
+            public GameBootstrap boot;
+        }
+
         [MenuItem("Tools/KoreanGame/Build Main Scene")]
         public static void Build()
         {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            BuildContent();
+            EditorSceneManager.SaveScene(scene, ScenePath);
+            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
+            Debug.Log("[SceneBuilder] Đã dựng " + ScenePath);
+        }
+
+        /// <summary>Dựng toàn bộ object của màn chơi vào scene đang mở. Không lưu scene, không đổi Build Settings.</summary>
+        public static Built BuildContent()
+        {
             font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             var colorMat = Material("Mat_Color", null);
             var riceMat = Material("Mat_Rice", AssetDatabase.LoadAssetAtPath<Texture2D>(Art + "InGame/Gameplay/rice_texture.png"));
-
-            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
             // ---------- [Managers] ----------
             var managers = new GameObject("[Managers]");
@@ -218,9 +235,7 @@ namespace KoreanGame.EditorTools
             Set(boot, "audioManager", audioMgr);
             Set(boot, "gameFeedback", feedback);
 
-            EditorSceneManager.SaveScene(scene, ScenePath);
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
-            Debug.Log("[SceneBuilder] Đã dựng " + ScenePath);
+            return new Built { cam = cam, hud = hudCanvas, popup = popCanvas, ui = ui, boot = boot };
         }
 
         // ================= Thẻ =================
@@ -362,7 +377,7 @@ namespace KoreanGame.EditorTools
             return m;
         }
 
-        static Canvas MakeCanvas(GameObject parent, string name, int order)
+        internal static Canvas MakeCanvas(GameObject parent, string name, int order)
         {
             var go = Child(parent, name);
             var c = go.AddComponent<Canvas>();
@@ -400,7 +415,7 @@ namespace KoreanGame.EditorTools
             rt.sizeDelta = new Vector2(w, h);
         }
 
-        static void Stretch(RectTransform rt)
+        internal static void Stretch(RectTransform rt)
         {
             rt.anchorMin = Vector2.zero;
             rt.anchorMax = Vector2.one;
@@ -418,7 +433,7 @@ namespace KoreanGame.EditorTools
             return go;
         }
 
-        static Image Img(Transform parent, string name, Sprite s, float x, float y, float w, float h, bool raycast)
+        internal static Image Img(Transform parent, string name, Sprite s, float x, float y, float w, float h, bool raycast)
         {
             var go = Panel(parent, name, x, y, w, h, Color.white, raycast);
             var img = go.GetComponent<Image>();
@@ -426,7 +441,7 @@ namespace KoreanGame.EditorTools
             return img;
         }
 
-        static Button Btn(Transform parent, string name, Sprite s, float x, float y, float w, float h)
+        internal static Button Btn(Transform parent, string name, Sprite s, float x, float y, float w, float h)
         {
             var img = Img(parent, name, s, x, y, w, h, true);
             img.preserveAspect = true;
@@ -437,7 +452,7 @@ namespace KoreanGame.EditorTools
 
 
         /// <summary>Chữ căn giữa tại (cx, cy) theo toạ độ của cha.</summary>
-        static Text Label(Transform parent, string name, string text, float cx, float cy, float w, float h, int size, Color col, FontStyle style, Color? outline)
+        internal static Text Label(Transform parent, string name, string text, float cx, float cy, float w, float h, int size, Color col, FontStyle style, Color? outline)
         {
             var go = new GameObject(name, typeof(RectTransform));
             go.transform.SetParent(FrameOf(parent), false);
@@ -462,7 +477,7 @@ namespace KoreanGame.EditorTools
         }
 
 
-        static void Set(Object target, string field, object value)
+        internal static void Set(Object target, string field, object value)
         {
             var so = new SerializedObject(target);
             var p = so.FindProperty(field);

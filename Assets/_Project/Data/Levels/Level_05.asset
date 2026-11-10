@@ -175,6 +175,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6de886efc20ef5343a79a93276e397fd, type: 2}
   isTutorial: 1
   unlocksSilhouette: 0
+  region: 1
+  unlocksDish: {fileID: 11400000, guid: deb4417b64247a146bf494ae37277ffa, type: 2}
+  customerLine: 
   difficulty: 28
   solutions: 1
   solution: "Th\u1EB3ng 2 xoay 0\xB0 t\u1EA1i (0,1) l\xEAn mi\u1EBFng 1 \u2192 Th\u1EB3ng

@@ -29,7 +29,9 @@ namespace KoreanGame.Gameplay
         public void Load(int i, bool keepHistory = false)
         {
             Index = db.Wrap(i);
-            ProgressSave.CurrentLevel = Index;
+            ProgressSave.Migrate();
+            // chơi lại màn đã qua (sổ hành trình) không kéo "Chơi tiếp" lùi về màn cũ
+            if (!ProgressSave.IsCleared(Index)) ProgressSave.CurrentLevel = Index;
             State = BoardState.FromLevel(Level);
             if (!keepHistory) history.Clear();
             Won = false;
@@ -146,11 +148,16 @@ namespace KoreanGame.Gameplay
         {
             Won = true;
             bool last = Index == db.Count - 1;
-            ProgressSave.CurrentLevel = db.Wrap(Index + 1);
+            ProgressSave.MarkCleared(Index);
+            // "Chơi tiếp" = màn xa nhất đã mở (thắng lại màn cũ không làm lùi); qua hết thì về Màn 1
+            ProgressSave.CurrentLevel = db.Wrap(Mathf.Max(Index + 1, ProgressSave.UnlockedLevel));
+            // bộ sưu tập: món phụ trong hộp tính là đã gặp; món đặc trưng chỉ "mới" ở lần thắng đầu tiên
+            foreach (var f in Level.tray.fixedFoods) CollectionSave.AddSide(f.kind);
+            bool newDish = Level.unlocksDish != null && CollectionSave.AddDish(Level.unlocksDish.id);
             hand.HideGhost();
             board.PlayWin(State.tray);
             EventBus<BoardChangedEvent>.Raise(default);
-            EventBus<LevelWonEvent>.Raise(new LevelWonEvent { index = Index, isLast = last });
+            EventBus<LevelWonEvent>.Raise(new LevelWonEvent { index = Index, isLast = last, newDish = newDish });
         }
 
         /// <summary>Debug: lấp kín khay bằng một miếng cơm rồi thắng ngay.</summary>

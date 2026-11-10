@@ -16,6 +16,10 @@ namespace KoreanGame.Gameplay
         [SerializeField] Text nameText;
         [SerializeField] GameObject rotBadge;
         [SerializeField] Sprite lineFrame, moldFrame, diagFrame, fnFrame;
+        [Tooltip("Tuỳ chọn (scene BentoJourney): viền xanh trời khi đang kéo thẻ. Để trống = kiểu cũ (thẻ mờ đi)")]
+        [SerializeField] GameObject selectRing;
+
+        const float LiftY = 10;   // thẻ đang kéo nhấc lên (style guide: 8–12)
 
         public int HandIndex { get; private set; } = -1;
         public RectTransform Rect => (RectTransform)transform;
@@ -47,6 +51,7 @@ namespace KoreanGame.Gameplay
 
             body.KillTweens(true);
             body.anchoredPosition = Vector2.zero;
+            if (selectRing != null) selectRing.SetActive(false);
             body.localScale = Vector3.one;
             group.alpha = 1;
             if (entering)
@@ -72,7 +77,14 @@ namespace KoreanGame.Gameplay
             t.pivot = center;
         }
 
-        public void SetDragging(bool on) => group.alpha = on ? .25f : 1f;
+        public void SetDragging(bool on)
+        {
+            if (selectRing == null) { group.alpha = on ? .25f : 1f; return; }
+            body.KillTweens(true);
+            group.alpha = 1f;
+            selectRing.SetActive(on);
+            body.anchoredPosition = on ? new Vector2(0, LiftY) : Vector2.zero;
+        }
 
         public CanvasGroup Group => group;
 

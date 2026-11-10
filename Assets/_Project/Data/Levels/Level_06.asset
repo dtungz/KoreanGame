@@ -246,6 +246,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c1f2ab002fde12e428d1613ffbeb1aa5, type: 2}
   isTutorial: 1
   unlocksSilhouette: 0
+  region: 1
+  unlocksDish: {fileID: 0}
+  customerLine: 
   difficulty: 34
   solutions: 2
   solution: "Khu\xF4n 2\xD72 xoay 0\xB0 t\u1EA1i (1,0) l\xEAn mi\u1EBFng 1"

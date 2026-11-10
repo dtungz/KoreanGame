@@ -170,6 +170,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6de886efc20ef5343a79a93276e397fd, type: 2}
   isTutorial: 0
   unlocksSilhouette: 0
+  region: 1
+  unlocksDish: {fileID: 11400000, guid: e8bff25775b615e4eab8450f4181e7f3, type: 2}
+  customerLine: 
   difficulty: 28
   solutions: 1
   solution: "Th\u1EB3ng 2 xoay 90\xB0 t\u1EA1i (1,0) l\xEAn mi\u1EBFng 1 \u2192 Th\u1EB3ng

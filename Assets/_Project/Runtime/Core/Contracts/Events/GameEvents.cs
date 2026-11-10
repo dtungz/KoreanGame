@@ -12,6 +12,8 @@ namespace KoreanGame.Core
     {
         public int index;
         public bool isLast;
+        /// <summary>Thắng lần đầu màn có món đặc trưng: vừa mở khoá món mới (hiện popup giới thiệu).</summary>
+        public bool newDish;
     }
 
     /// <summary>Trạng thái thớt / tay bài đổi (cắt, kéo, hoàn tác...).</summary>
@@ -40,6 +42,9 @@ namespace KoreanGame.Core
 
     /// <summary>Khay đã kín nhưng có miếng cơm vắt qua vách ngăn (chưa thắng).</summary>
     public struct WallBlockedEvent { }
+
+    /// <summary>Main Menu vừa đóng, người chơi nhìn thấy màn chơi.</summary>
+    public struct MenuClosedEvent { }
 
     /// <summary>Hoàn tác một bước.</summary>
     public struct UndoEvent { }

@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c10ae97762c30de4abd31df39d189d5a, type: 3}
+  m_Name: FoodCatalog
+  m_EditorClassIdentifier: 
+  sideDishes:
+  - id: egg
+    displayName: "Tr\u1EE9ng \u1ED1p la"
+    region: 0
+    sprite: {fileID: 21300000, guid: 9deee5e540a8e8544a5d468941846f42, type: 3}
+  - id: sausage
+    displayName: "X\xFAc x\xEDch"
+    region: 0
+    sprite: {fileID: 21300000, guid: 438e6c31684659a429e8bc59f7904d55, type: 3}
+  - id: meat
+    displayName: "Th\u1ECBt ba ch\u1EC9"
+    region: 0
+    sprite: {fileID: 21300000, guid: ed1ec0b9daf02fb4091a3b8ab423d052, type: 3}
+  - id: dua_gop
+    displayName: "D\u01B0a g\xF3p"
+    region: 1
+    sprite: {fileID: 21300000, guid: de93b1657d8565e449ebb8b6068c3247, type: 3}
+  - id: rau_muong
+    displayName: "Rau mu\u1ED1ng x\xE0o"
+    region: 1
+    sprite: {fileID: 21300000, guid: 87fd334b8556e444896a8933aab3382b, type: 3}
+  - id: dau_sot_ca
+    displayName: "\u0110\u1EADu s\u1ED1t c\xE0 chua"
+    region: 1
+    sprite: {fileID: 21300000, guid: ae45eaf34e7d6ac40992ded13fdf670d, type: 3}
+  - id: gio_lua
+    displayName: "Gi\xF2 l\u1EE5a"
+    region: 1
+    sprite: {fileID: 21300000, guid: 74683b6e3d6cf06468b2cabf7c8b77ed, type: 3}
+  - id: cha
+    displayName: "Ch\u1EA3 n\u01B0\u1EDBng"
+    region: 1
+    sprite: {fileID: 21300000, guid: 20f8dc4ae0983f548b84dbc919f40675, type: 3}
+  - id: nem
+    displayName: "Nem r\xE1n"
+    region: 1
+    sprite: {fileID: 21300000, guid: a4f46a2860411be429bc897a74a44210, type: 3}
+  - id: kimchi
+    displayName: Kimchi
+    region: 2
+    sprite: {fileID: 21300000, guid: f9a1e604421909443a1b2e3aafcc9ebd, type: 3}
+  - id: gia_tron
+    displayName: "Gi\xE1 tr\u1ED9n"
+    region: 2
+    sprite: {fileID: 21300000, guid: 46e69561514bbee4999a07c8aa284ae0, type: 3}
+  - id: trung_cuon
+    displayName: "Tr\u1EE9ng cu\u1ED9n"
+    region: 2
+    sprite: {fileID: 21300000, guid: d4a5c7d96b8074e4f824370421412147, type: 3}
+  - id: rong_bien
+    displayName: "Rong bi\u1EC3n"
+    region: 2
+    sprite: {fileID: 21300000, guid: 54e23178f6ac1634cb50e7263bc66066, type: 3}
+  - id: com_nam
+    displayName: "C\u01A1m n\u1EAFm"
+    region: 2
+    sprite: {fileID: 21300000, guid: 93895c818beb07d409efaf16616f0c02, type: 3}
+  - id: lat_kimbap
+    displayName: "L\xE1t kimbap"
+    region: 2
+    sprite: {fileID: 21300000, guid: 41d1b6b273cd60345908be217e940521, type: 3}
+  dishes:
+  - {fileID: 11400000, guid: deb4417b64247a146bf494ae37277ffa, type: 2}
+  - {fileID: 11400000, guid: 60a242498b7e0544089837b64fe0dd3d, type: 2}
+  - {fileID: 11400000, guid: e8bff25775b615e4eab8450f4181e7f3, type: 2}
+  - {fileID: 11400000, guid: 5bb05b560a0066545ab714c52c1f5816, type: 2}
+  - {fileID: 11400000, guid: 57761fc27d433c14986c88d80e312aa0, type: 2}
+  - {fileID: 11400000, guid: 715923ea0d38a0b42ba97de41cb660dd, type: 2}
+  - {fileID: 11400000, guid: 845504e39e7276840821a42b68e6fa3c, type: 2}
+  - {fileID: 11400000, guid: 1a2ed80242ebe044c8f7beb78d101b62, type: 2}
