@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42196c6920412c4393ff5da1c46ea86, type: 3}
   m_Name: Level_20
   m_EditorClassIdentifier: 
-  hint: "Khay h\xECnh b\xF3ng m\u1EDBi! C\u1EAFt ch\xE9o hai h\u01B0\u1EDBng."
+  hint: "H\u1ED9p b\xE1nh m\xEC cu\u1ED1i ch\u1EB7ng H\xE0 N\u1ED9i! C\u1EAFt ch\xE9o
+    hai h\u01B0\u1EDBng."
   rice:
   - tris:
     - x: 0

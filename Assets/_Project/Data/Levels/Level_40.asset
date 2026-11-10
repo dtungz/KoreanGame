@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42196c6920412c4393ff5da1c46ea86, type: 3}
   m_Name: Level_40
   m_EditorClassIdentifier: 
-  hint: "Khay h\xECnh b\xF3ng cu\u1ED1i c\xF9ng c\u1EE7a m\xF9a n\xE0y!"
+  hint: "Tteokbokki: h\u1ED9p cu\u1ED1i c\xF9ng c\u1EE7a ch\u1EB7ng Seoul!"
   rice:
   - tris:
     - x: 0

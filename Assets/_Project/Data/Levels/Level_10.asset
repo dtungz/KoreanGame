@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42196c6920412c4393ff5da1c46ea86, type: 3}
   m_Name: Level_10
   m_EditorClassIdentifier: 
-  hint: "H\u1ED9p h\xECnh vi\xEAn k\u1EB9o \u25C7. Th\u1EBB ch\xE9o hai h\u01B0\u1EDBng
+  hint: "H\u1ED9p ph\u1EDF h\xECnh thoi \u25C7. Th\u1EBB ch\xE9o hai h\u01B0\u1EDBng
     l\xE0 ch\xECa kho\xE1."
   rice:
   - tris:
