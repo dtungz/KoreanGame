@@ -67,6 +67,7 @@ namespace KoreanGame.EditorTools
             var menu = BuildMainMenu(built.ui, out var menuFrame);
 
             SceneBuilder.Set(built.boot, "mainMenu", menu);
+            SceneBuilder.Set(built.boot, "cosmetics", menu.GetComponent<CosmeticsApplier>());
             SceneBuilder.Set(built.boot, "settingsPopup", settings);
             SceneBuilder.Set(built.boot, "settingsButton", hudSettings);
             SceneBuilder.Set(built.boot, "customerChat", chat);
@@ -256,6 +257,11 @@ namespace KoreanGame.EditorTools
             SceneBuilder.Set(chat, "avatarButton", avatarBtn);
             SceneBuilder.Set(chat, "bubble", bubbleRt);
             SceneBuilder.Set(chat, "speechText", speech);
+            // icon món khách gọi: nằm đè góc dưới-phải avatar (bong bóng vẫn chỉ có lời thoại)
+            var orderIcon = NewImage(order, "OrderIcon", 40, 34, 40, 40);
+            orderIcon.preserveAspect = true;
+            SceneBuilder.Set(chat, "orderIcon", orderIcon);
+            SceneBuilder.Set(chat, "catalog", LoadOrCreateCatalog());
 
             // ---- hàng nút: Hoàn tác, Làm lại (chỉ những nút game có) ----
             var undo = IconButton(bottom, "UndoButton", "ic_undo", 16, 0, "Hoàn tác");
@@ -357,7 +363,7 @@ namespace KoreanGame.EditorTools
         // ================= Main Menu: 3 tab dưới cùng (Hành trình · Trang chủ · Cửa hàng), xe dùng chung =================
         // Thứ tự trong khung: xe → 3 trang → nút Cài đặt → thanh tab. Trang vẽ đè lên xe (nhân vật đứng trước xe).
 
-        static readonly string[] ShopTabs = { "Thân xe", "Trang trí", "Phụ kiện" };
+        static readonly string[] ShopTabs = { "Hộp cơm", "Thớt", "Theme" };   // trùng thứ tự ShopCategory
 
         static MainMenuView BuildMainMenu(GameObject ui, out RectTransform frame)
         {
@@ -404,7 +410,7 @@ namespace KoreanGame.EditorTools
             var pages = new[] { Page(frame, "Page_Journey"), Page(frame, "Page_Home"), Page(frame, "Page_Shop") };
             var journey = BuildJourney(canvas.gameObject, pages[0].transform);
             var home = pages[1].transform;
-            var shop = BuildShop(canvas.gameObject, pages[2].transform);
+            var shop = BuildShop(canvas.gameObject, pages[2].transform, BuildCosmetics(canvas.gameObject, bg));
 
             // ---- Trang chủ: logo, nhân vật, nút Chơi tiếp ----
             var plate = Inst(panelPrefab, home, "Logo", 70, 76, 250, 132).transform;
@@ -485,76 +491,105 @@ namespace KoreanGame.EditorTools
             var cat = LoadOrCreateCatalog();
             var db = AssetDatabase.LoadAssetAtPath<LevelDatabase>(LevelImporter.DatabasePath);
 
+            // ô to cho điện thoại: món đặc trưng 3 cột, món phụ 4 cột, cuộn dọc; dải giới thiệu cố định ở đáy
             var panel = Inst(panelPrefab, page, "Collection", 16, 200, 358, 526).transform;
+            var viewport = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
+            viewport.transform.SetParent(panel, false);
+            TopLeft((RectTransform)viewport.transform, 0, 8, 358, 424);
+            var vpImg = viewport.GetComponent<Image>();
+            vpImg.color = new Color(1, 1, 1, 0);           // nhận chạm để kéo cuộn ở khoảng trống
+            var contentGo = new GameObject("Content", typeof(RectTransform));
+            contentGo.transform.SetParent(viewport.transform, false);
+            var content = (RectTransform)contentGo.transform;
+            var scroll = viewport.AddComponent<ScrollRect>();
+            scroll.viewport = (RectTransform)viewport.transform;
+            scroll.content = content;
+            scroll.horizontal = false;
+            scroll.movementType = ScrollRect.MovementType.Elastic;
+            scroll.scrollSensitivity = 30;
+
             Text Header(string name, string text, float y, out Text count)
             {
-                var h = NewText(panel, name, text, 13, Palette.UiBrown, body);
+                var h = NewText(content, name, text, 15, Palette.UiBrown, body);
                 h.alignment = TextAnchor.MiddleLeft;
-                TopLeft(h.rectTransform, 20, y, 200, 22);
-                count = NewText(panel, name + "Count", "0/0", 13, Palette.UiBrown, body);
+                TopLeft(h.rectTransform, 20, y, 220, 24);
+                count = NewText(content, name + "Count", "0/0", 15, Palette.UiBrown, body);
                 count.alignment = TextAnchor.MiddleRight;
-                TopLeft(count.rectTransform, 238, y, 100, 22);
+                TopLeft(count.rectTransform, 238, y, 100, 24);
                 return h;
             }
             Button Cell(string name, float x, float y, float w, float h, out Image icon, float size)
             {
-                var bg = Sliced(NewImage(panel, name, x, y, w, h), Ui("ui_card"), Color.white);
+                var bg = Sliced(NewImage(content, name, x, y, w, h), Ui("ui_card"), Color.white);
                 bg.raycastTarget = true;
                 var btn = bg.gameObject.AddComponent<Button>();
                 btn.targetGraphic = bg;
-                icon = NewImage(bg.transform, "Icon", (w - size) / 2, 4, size, size);
+                icon = NewImage(bg.transform, "Icon", (w - size) / 2, 6, size, size);
                 icon.preserveAspect = true;
                 return btn;
             }
 
-            // ---- món đặc trưng: 4 ô mỗi vùng (thứ tự catalog.dishes: Hà Nội trước, Seoul sau) ----
-            Header("DishHeader", "MÓN ĐẶC TRƯNG", 10, out var dishCount);
+            // ---- món đặc trưng: mỗi vùng một khối 3 cột (thứ tự catalog.dishes: Hà Nội trước, Seoul sau) ----
+            Header("DishHeader", "MÓN ĐẶC TRƯNG", 4, out var dishCount);
             int nd = cat.dishes.Count;
             var dishCells = new Button[nd];
             var dishIcons = new Image[nd];
             var dishLabels = new Text[nd];
             var dishLocks = new GameObject[nd];
-            for (int i = 0; i < nd; i++)
+            const float dw = 104, dh = 124, dgap = 8;
+            float y = 32;
+            for (int r = 0; r < 2; r++)
             {
-                int row = i / 4, col = i % 4;
-                if (col == 0)
+                var chip = Sliced(NewImage(content, $"Region{r}", 20, y, 96, 26), Ui(r == 0 ? "ui_chip_peach" : "ui_chip_green"), Color.white);
+                Stretch(NewText(chip.transform, "Label", r == 0 ? "Hà Nội" : "Seoul", 14, Palette.UiText, body).rectTransform, 0, 0, 0, 0);
+                y += 32;
+                int start = r * 4, count = Mathf.Min(4, nd - start);
+                for (int k = 0; k < count; k++)
                 {
-                    var chip = Sliced(NewImage(panel, $"Region{row}", 20, 34 + row * 110, 84, 22), Ui(row == 0 ? "ui_chip_peach" : "ui_chip_green"), Color.white);
-                    Stretch(NewText(chip.transform, "Label", row == 0 ? "Hà Nội" : "Seoul", 12, Palette.UiText, body).rectTransform, 0, 0, 0, 0);
+                    int i = start + k;
+                    dishCells[i] = Cell($"Dish{i}", 19 + k % 3 * (dw + dgap), y + k / 3 * (dh + dgap), dw, dh, out dishIcons[i], 84);
+                    var lockImg = NewImage(dishCells[i].transform, "Lock", dw - 32, 6, 26, 26);
+                    lockImg.sprite = Ui("ic_lock");
+                    lockImg.preserveAspect = true;
+                    dishLocks[i] = lockImg.gameObject;
+                    var label = NewText(dishCells[i].transform, "Label", "", 15, Palette.UiText, body);
+                    TopLeft(label.rectTransform, 4, 92, dw - 8, 26);
+                    label.resizeTextForBestFit = true;
+                    label.resizeTextMinSize = 11;
+                    label.resizeTextMaxSize = 15;
+                    label.horizontalOverflow = HorizontalWrapMode.Wrap;
+                    dishLabels[i] = label;
                 }
-                float y = 58 + row * 110;
-                dishCells[i] = Cell($"Dish{i}", 16 + col * 84, y, 76, 84, out dishIcons[i], 56);
-                var lockImg = NewImage(dishCells[i].transform, "Lock", 50, 4, 22, 22);
-                lockImg.sprite = Ui("ic_lock");
-                lockImg.preserveAspect = true;
-                dishLocks[i] = lockImg.gameObject;
-                var label = NewText(dishCells[i].transform, "Label", "", 11, Palette.UiText, body);
-                TopLeft(label.rectTransform, 3, 61, 70, 20);
-                label.resizeTextForBestFit = true;
-                label.resizeTextMinSize = 8;
-                label.resizeTextMaxSize = 11;
-                label.horizontalOverflow = HorizontalWrapMode.Wrap;
-                dishLabels[i] = label;
+                y += ((count + 2) / 3) * (dh + dgap) + 6;
             }
 
-            // ---- món phụ: lưới 5 cột ----
-            float sy = 254;
-            Header("SideHeader", "MÓN PHỤ", sy, out var sideCount);
+            // ---- món phụ: lưới 4 cột ----
+            Header("SideHeader", "MÓN PHỤ", y, out var sideCount);
+            y += 30;
             int ns = cat.sideDishes.Count;
             var sideCells = new Button[ns];
             var sideIcons = new Image[ns];
+            const float sw = 76, sh = 76, sgap = 8;
             for (int i = 0; i < ns; i++)
-                sideCells[i] = Cell($"Side{i}", 16 + i % 5 * 66, sy + 24 + i / 5 * 50, 60, 44, out sideIcons[i], 36);
+                sideCells[i] = Cell($"Side{i}", 19 + i % 4 * (sw + sgap), y + i / 4 * (sh + sgap), sw, sh, out sideIcons[i], 64);
+            y += ((ns + 3) / 4) * (sh + sgap) + 8;
+            content.anchorMin = new Vector2(0, 1);
+            content.anchorMax = new Vector2(1, 1);
+            content.pivot = new Vector2(.5f, 1);
+            content.anchoredPosition = Vector2.zero;
+            content.sizeDelta = new Vector2(0, y);
 
-            // ---- dải giới thiệu ----
-            float dy = sy + 24 + ((ns + 4) / 5) * 50 + 2;
-            var detailBg = Sliced(NewImage(panel, "Detail", 16, dy, 326, 526 - dy - 14), Ui("ui_panel_peach"), Color.white);
-            var detail = NewText(detailBg.transform, "Text", "", 13, Palette.UiText, body);
+            // ---- dải giới thiệu (cố định dưới vùng cuộn) ----
+            var detailBg = Sliced(NewImage(panel, "Detail", 16, 438, 326, 76), Ui("ui_panel_peach"), Color.white);
+            var detail = NewText(detailBg.transform, "Text", "", 14, Palette.UiText, body);
             detail.horizontalOverflow = HorizontalWrapMode.Wrap;
             detail.verticalOverflow = VerticalWrapMode.Truncate;
             detail.supportRichText = true;
             detail.lineSpacing = .9f;
             detail.alignment = TextAnchor.MiddleCenter;
+            detail.resizeTextForBestFit = true;
+            detail.resizeTextMinSize = 11;
+            detail.resizeTextMaxSize = 14;
             Stretch(detail.rectTransform, 12, 4, 12, 4);
 
             SceneBuilder.Set(view, "catalog", cat);
@@ -655,7 +690,7 @@ namespace KoreanGame.EditorTools
 
         // ================= Tab Cửa hàng (vỏ giao diện): xe đỗ trên cao, danh mục + vật phẩm "Sắp có" bên dưới =================
 
-        static ShopView BuildShop(GameObject host, Transform page)
+        static ShopView BuildShop(GameObject host, Transform page, CosmeticsApplier applier)
         {
             var view = host.AddComponent<ShopView>();
             TitlePill(page, "Cửa hàng");
@@ -664,17 +699,99 @@ namespace KoreanGame.EditorTools
             var tabs = new Button[ShopTabs.Length];
             var tabLabels = new Text[ShopTabs.Length];
             for (int i = 0; i < tabs.Length; i++)
-                tabs[i] = TextButton(secondaryPrefab, panel, $"Tab{i}", ShopTabs[i], 12 + i * 113, 14, 107, 54, 16, out tabLabels[i]);
+                tabs[i] = TextButton(secondaryPrefab, panel, $"Tab{i}", ShopTabs[i], 12 + i * 113, 14, 107, 54, 17, out tabLabels[i]);
 
-            for (int i = 0; i < 6; i++)
+            // 3 thẻ to mỗi danh mục: ảnh xem trước, tên, trạng thái (Đang dùng / Dùng / Qua Màn X)
+            const int n = 3;
+            var buttons = new Button[n];
+            var icons = new Image[n];
+            var names = new Text[n];
+            var states = new Text[n];
+            var locks = new GameObject[n];
+            for (int i = 0; i < n; i++)
             {
-                var item = Sliced(NewImage(panel, $"Item{i}", 14 + i % 3 * 112, 84 + i / 3 * 166, 104, 150), Ui("ui_card"), Color.white);
-                Stretch((RectTransform)NewText(item.transform, "Label", "Sắp có", 15, Palette.UiBrown, body).transform, 0, 5, 0, 0);
+                var card = Sliced(NewImage(panel, $"Item{i}", 14 + i * 112, 84, 104, 250), Ui("ui_card"), Color.white);
+                card.raycastTarget = true;
+                buttons[i] = card.gameObject.AddComponent<Button>();
+                buttons[i].targetGraphic = card;
+                icons[i] = NewImage(card.transform, "Icon", 10, 12, 84, 120);
+                icons[i].preserveAspect = true;
+                names[i] = NewText(card.transform, "Name", "", 16, Palette.UiText, heading);
+                names[i].horizontalOverflow = HorizontalWrapMode.Wrap;
+                names[i].lineSpacing = .85f;
+                TopLeft(names[i].rectTransform, 6, 138, 92, 48);
+                states[i] = NewText(card.transform, "State", "", 15, Palette.UiOrange, body);
+                states[i].horizontalOverflow = HorizontalWrapMode.Wrap;
+                TopLeft(states[i].rectTransform, 4, 192, 96, 36);
+                var lockImg = NewImage(card.transform, "Lock", 70, 8, 28, 28);
+                lockImg.sprite = Ui("ic_lock");
+                lockImg.preserveAspect = true;
+                locks[i] = lockImg.gameObject;
             }
+            var hint = NewText(panel, "Hint", "Qua thêm màn để mở món trang trí mới", 14, Palette.UiBrown, body);
+            TopLeft(hint.rectTransform, 14, 352, 330, 24);
 
             SceneBuilder.Set(view, "tabs", tabs);
             SceneBuilder.Set(view, "tabLabels", tabLabels);
+            SceneBuilder.Set(view, "applier", applier);
+            SceneBuilder.Set(view, "itemButtons", buttons);
+            SceneBuilder.Set(view, "itemIcons", icons);
+            SceneBuilder.Set(view, "itemNames", names);
+            SceneBuilder.Set(view, "itemStates", states);
+            SceneBuilder.Set(view, "itemLocks", locks);
             return view;
+        }
+
+        /// <summary>Áp món trang trí: màu hộp, khung thớt (BoardBg), nền menu.</summary>
+        static CosmeticsApplier BuildCosmetics(GameObject host, Image menuBg)
+        {
+            var applier = host.AddComponent<CosmeticsApplier>();
+            SceneBuilder.Set(applier, "catalog", LoadOrCreateShop());
+            SceneBuilder.Set(applier, "menuBackground", menuBg);
+            SceneBuilder.Set(applier, "menuFit", menuBg.GetComponent<AspectRatioFitter>());
+            SceneBuilder.Set(applier, "boardBg", GameObject.Find("BoardBg").GetComponent<SpriteRenderer>());
+            return applier;
+        }
+
+        public const string ShopPath = "Assets/_Project/Data/Config/ShopCatalog.asset";
+
+        /// <summary>Danh mục Cửa hàng; chưa có thì tạo bộ mặc định (mở theo tiến độ). Không ghi đè bản bạn đã sửa.</summary>
+        public static ShopCatalog LoadOrCreateShop()
+        {
+            var cat = AssetDatabase.LoadAssetAtPath<ShopCatalog>(ShopPath);
+            if (cat != null) return cat;
+            cat = ScriptableObject.CreateInstance<ShopCatalog>();
+            var tin = TryLoad("InGame/Gameplay/tin_cell");
+            var frame = TryLoad("InGame/Gameplay/board_frame");
+            ShopItem Box(string id, string name, int at, string rim, string outline, string well) => new ShopItem
+            {
+                id = id, displayName = name, category = ShopCategory.Box, unlockAfter = at, icon = TryLoad("UI/Shop/shop_" + id) ?? tin,
+                customBox = rim != null,
+                boxRim = rim != null ? Palette.Hex(rim) : Color.white,
+                boxOutline = outline != null ? Palette.Hex(outline) : Color.gray,
+                boxWell = well != null ? Palette.Hex(well) : Color.gray,
+            };
+            ShopItem Board(string id, string name, int at, string tint) => new ShopItem
+            {
+                id = id, displayName = name, category = ShopCategory.Board, unlockAfter = at, icon = TryLoad("UI/Shop/shop_" + id) ?? frame,
+                boardTint = Palette.Hex(tint),
+            };
+            ShopItem Theme(string id, string name, int at, string file) => new ShopItem
+            {
+                id = id, displayName = name, category = ShopCategory.Theme, unlockAfter = at,
+                icon = TryLoad("UI/Home/" + file), menuBackground = TryLoad("UI/Home/" + file),
+            };
+            cat.items.Add(Box("box_tin", "Hộp thiếc", 0, null, null, null));
+            cat.items.Add(Box("box_wood", "Hộp gỗ", 10, "#E2B57E", "#8A5A32", "#B98352"));
+            cat.items.Add(Box("box_porcelain", "Hộp sứ xanh", 25, "#F4F7FA", "#4C7DB8", "#A9C6E8"));
+            cat.items.Add(Board("board_light", "Gỗ sáng", 0, "#FFFFFF"));
+            cat.items.Add(Board("board_dark", "Gỗ tối", 15, "#C49A7E"));
+            cat.items.Add(Board("board_stone", "Thớt đá", 30, "#C9D0D8"));
+            cat.items.Add(Theme("theme_hanoi", "Hà Nội ban ngày", 0, "bg_menu_hanoi"));
+            cat.items.Add(Theme("theme_seoul", "Seoul về đêm", 20, "bg_menu_seoul"));
+            AssetDatabase.CreateAsset(cat, ShopPath);
+            AssetDatabase.SaveAssets();
+            return cat;
         }
 
         // ================= Popup Cài đặt =================

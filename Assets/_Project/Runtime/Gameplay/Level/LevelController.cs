@@ -52,6 +52,12 @@ namespace KoreanGame.Gameplay
             if (keep) history.Push(State);
             Load(Index, keep);
         }
+        /// <summary>Vẽ lại thớt / tay bài với trạng thái hiện tại (đổi skin hộp trong Cửa hàng). Không đổi trạng thái.</summary>
+        public void Redraw()
+        {
+            if (State != null) Refresh();
+        }
+
         public void Next() => Load(Index + 1);
         public void Prev() => Load(Index - 1);
 
@@ -155,9 +161,10 @@ namespace KoreanGame.Gameplay
             foreach (var f in Level.tray.fixedFoods) CollectionSave.AddSide(f.kind);
             bool newDish = Level.unlocksDish != null && CollectionSave.AddDish(Level.unlocksDish.id);
             hand.HideGhost();
-            board.PlayWin(State.tray);
+            var dish = Level.unlocksDish;
+            float fx = board.PlayWin(State.tray, dish != null ? dish.art : null);
             EventBus<BoardChangedEvent>.Raise(default);
-            EventBus<LevelWonEvent>.Raise(new LevelWonEvent { index = Index, isLast = last, newDish = newDish });
+            EventBus<LevelWonEvent>.Raise(new LevelWonEvent { index = Index, isLast = last, newDish = newDish, popupDelay = fx + .35f });
         }
 
         /// <summary>Debug: lấp kín khay bằng một miếng cơm rồi thắng ngay.</summary>

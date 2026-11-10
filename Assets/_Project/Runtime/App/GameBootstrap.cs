@@ -31,6 +31,8 @@ namespace KoreanGame.App
         [SerializeField] CustomerChat customerChat;
         [Tooltip("Tuỳ chọn: popup Món mới khi mở khoá món đặc trưng")]
         [SerializeField] DishPopup dishPopup;
+        [Tooltip("Tuỳ chọn: áp món trang trí đang dùng (hộp, thớt, nền menu)")]
+        [SerializeField] CosmeticsApplier cosmetics;
 
         bool skipMenu;   // Play from here (Level Browser): vào thẳng level, không hiện menu
 
@@ -52,6 +54,7 @@ namespace KoreanGame.App
             if (targetPreview != null) targetPreview.Init(levelController);
             if (customerChat != null) customerChat.Init(levelController);
             if (dishPopup != null) dishPopup.Init(levelController);
+            if (cosmetics != null) cosmetics.Init(levelController);
         }
 
         void Start()

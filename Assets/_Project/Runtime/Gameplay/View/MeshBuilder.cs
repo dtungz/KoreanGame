@@ -113,12 +113,31 @@ namespace KoreanGame.Gameplay
         public static readonly Color Grid = Hex("#DEC8A8");
         public static readonly Color RiceLip = Hex("#C9A27E");
         public static readonly Color RiceEdge = Hex("#81533B");   // viền nâu cho khối thức ăn (style guide)
-        public static readonly Color TinWell = Hex("#B3A396");
-        public static readonly Color TinWellShadow = Hex("#8C7F74");
-        public static readonly Color TinWall = Hex("#DACEC3");
-        public static readonly Color TinRim = Hex("#E5D8CD");
-        public static readonly Color TinRimShadow = Hex("#C4B8AC");
-        public static readonly Color TinOutline = Hex("#968C84");
+        // màu hộp: đổi được theo skin hộp trong Cửa hàng (SetTraySkin); mặc định = hộp thiếc
+        public static Color TinWell { get; private set; } = Hex("#B3A396");
+        public static Color TinWellShadow { get; private set; } = Hex("#8C7F74");
+        public static Color TinWall { get; private set; } = Hex("#DACEC3");
+        public static Color TinRim { get; private set; } = Hex("#E5D8CD");
+        public static Color TinRimShadow { get; private set; } = Hex("#C4B8AC");
+        public static Color TinOutline { get; private set; } = Hex("#968C84");
+
+        /// <summary>Về hộp thiếc mặc định (đúng màu gốc).</summary>
+        public static void ResetTraySkin()
+        {
+            TinWell = Hex("#B3A396"); TinWellShadow = Hex("#8C7F74"); TinWall = Hex("#DACEC3");
+            TinRim = Hex("#E5D8CD"); TinRimShadow = Hex("#C4B8AC"); TinOutline = Hex("#968C84");
+        }
+
+        /// <summary>Đổi màu hộp từ 3 màu gốc (vành, viền, lòng ngăn); các màu còn lại suy ra để giữ độ nổi khối.</summary>
+        public static void SetTraySkin(Color rim, Color outline, Color well)
+        {
+            TinRim = rim;
+            TinOutline = outline;
+            TinWell = well;
+            TinWall = Color.Lerp(rim, well, .3f);
+            TinRimShadow = Color.Lerp(rim, outline, .4f);
+            TinWellShadow = Color.Lerp(well, outline, .45f);
+        }
         // Xem trước cắt (style guide Bento Journey): đường cắt nét đứt màu mực có chấm hai đầu; thả hỏng = san hô
         public static readonly Color CutValid = Hex("#3E2416");
         public static readonly Color CutInvalid = Hex("#E97855");

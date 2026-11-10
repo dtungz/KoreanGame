@@ -14,6 +14,8 @@ namespace KoreanGame.Core
         public bool isLast;
         /// <summary>Thắng lần đầu màn có món đặc trưng: vừa mở khoá món mới (hiện popup giới thiệu).</summary>
         public bool newDish;
+        /// <summary>Giây chờ trước khi hiện popup (hiệu ứng nắp hộp / ảnh món chạy xong).</summary>
+        public float popupDelay;
     }
 
     /// <summary>Trạng thái thớt / tay bài đổi (cắt, kéo, hoàn tác...).</summary>

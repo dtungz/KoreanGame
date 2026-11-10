@@ -6,9 +6,11 @@ using UnityEngine.UI;
 namespace KoreanGame.Gameplay
 {
     /// <summary>
-    /// Khách nói chuyện trong bong bóng phía trên thớt: vào màn (và khi Main Menu đóng) nói câu của màn
-    /// (câu riêng của level hoặc ngẫu nhiên), chạm avatar thì nói câu khác, thắng thì khen.
-    /// Bong bóng chỉ chứa lời thoại (hình mục tiêu đã có sẵn trên thớt). Không ảnh hưởng luật chơi.
+    /// Khách nói chuyện trong bong bóng phía trên thớt và gọi món:
+    /// - Màn có món đặc trưng: gọi đúng món ("Cho mình một hộp bún chả nhé!"), icon món ở góc avatar.
+    /// - Màn thường có món phụ: thường nhắc món phụ trong hộp, đôi khi tám chuyện; icon món phụ ở góc avatar.
+    /// - Câu riêng của level (LevelData.customerLine) luôn được ưu tiên.
+    /// Chạm avatar thì nói câu khác, thắng thì khen (màn có món: khen đúng món). Không ảnh hưởng luật chơi.
     /// </summary>
     public class CustomerChat : MonoBehaviour
     {
@@ -16,6 +18,10 @@ namespace KoreanGame.Gameplay
         [SerializeField] Button avatarButton;
         [SerializeField] RectTransform bubble;
         [SerializeField] Text speechText;
+        [Tooltip("Tuỳ chọn: icon món khách gọi ở góc avatar")]
+        [SerializeField] Image orderIcon;
+        [Tooltip("Tuỳ chọn: tên + ảnh món phụ")]
+        [SerializeField] FoodCatalog catalog;
 
         LevelController controller;
         string last, levelLine;
@@ -28,6 +34,7 @@ namespace KoreanGame.Gameplay
             EventBus<LevelWonEvent>.Subscribe(OnWon);
             EventBus<MenuClosedEvent>.Subscribe(OnMenuClosed);
             speechText.text = "";
+            if (orderIcon != null) orderIcon.gameObject.SetActive(false);
         }
 
         void OnDestroy()
@@ -41,15 +48,52 @@ namespace KoreanGame.Gameplay
 
         void OnLoaded(LevelLoadedEvent e)
         {
-            var own = controller.Level != null ? controller.Level.customerLine : null;
-            levelLine = string.IsNullOrWhiteSpace(own) ? PickTalk() : own;
+            var L = controller.Level;
+            var dish = L != null ? L.unlocksDish : null;
+            var side = Side(L);
+            Sprite icon = dish != null ? dish.icon : side != null ? side.sprite : null;
+            if (orderIcon != null)
+            {
+                orderIcon.sprite = icon;
+                orderIcon.gameObject.SetActive(icon != null);
+            }
+
+            if (L != null && !string.IsNullOrWhiteSpace(L.customerLine)) levelLine = L.customerLine;
+            else if (dish != null) levelLine = Format(lines.dishOrder, dish.displayName);
+            else if (side != null && Random.value < .7f) levelLine = Format(lines.sideOrder, side.displayName);
+            else levelLine = PickTalk();
             Say(levelLine);
         }
 
         // màn được nạp sau lưng Main Menu: khi menu đóng, bong bóng nảy lại để người chơi để ý
         void OnMenuClosed(MenuClosedEvent e) => Say(levelLine);
 
-        void OnWon(LevelWonEvent e) => Say(Pick(lines.win));
+        void OnWon(LevelWonEvent e)
+        {
+            var dish = controller.Level != null ? controller.Level.unlocksDish : null;
+            Say(dish != null ? Format(lines.dishWin, dish.displayName) : Pick(lines.win));
+        }
+
+        /// <summary>Món phụ đầu tiên của màn có trong danh mục (null nếu màn không có món phụ).</summary>
+        SideDish Side(LevelData L)
+        {
+            if (L == null || catalog == null) return null;
+            foreach (var f in L.tray.fixedFoods)
+            {
+                var s = catalog.FindSide(f.kind);
+                if (s != null) return s;
+            }
+            return null;
+        }
+
+        static string Format(string[] pool, string name)
+        {
+            var t = Pick(pool);
+            if (t == null || string.IsNullOrEmpty(name)) return t;
+            // giữa câu viết thường ("một hộp bún chả"), đầu câu giữ hoa ("Bún chả thơm quá")
+            var n = t.StartsWith("{0}") ? name : char.ToLower(name[0]) + name.Substring(1);
+            return string.Format(t, n);
+        }
 
         void Say(string text)
         {

@@ -36,6 +36,7 @@ namespace KoreanGame.Gameplay
         readonly Dictionary<Piece, PieceView> views = new Dictionary<Piece, PieceView>();
         Mesh preview, slash, flash, lid;
         MaterialPropertyBlock block;
+        SpriteRenderer dishReveal;   // ảnh món đặc trưng phủ lên khay khi thắng (tạo lúc chạy, không cần dựng lại scene)
 
         public Camera Camera => cam;
 
@@ -49,6 +50,10 @@ namespace KoreanGame.Gameplay
             flash = Setup(flashMesh, flashRenderer, "Flash", OrderFlash);
             lid = Setup(lidMesh, lidRenderer, "Lid", OrderLid);
             riceBurst.GetComponent<ParticleSystemRenderer>().sortingOrder = OrderSlash + 1;
+            dishReveal = new GameObject("DishReveal").AddComponent<SpriteRenderer>();
+            dishReveal.transform.SetParent(content, false);
+            dishReveal.sortingOrder = OrderFlash - 1;   // trên cơm, dưới chớp sáng và nắp
+            dishReveal.enabled = false;
             BuildGrid();
         }
 
@@ -111,6 +116,8 @@ namespace KoreanGame.Gameplay
             flashRenderer.KillTweens();
             lid.Clear();
             flash.Clear();
+            dishReveal.KillTweens();
+            dishReveal.enabled = false;
             content.KillTweens(true);
             content.localPosition = Vector3.zero;
         }
@@ -390,8 +397,29 @@ namespace KoreanGame.Gameplay
         /// Khoảnh khắc "vừa khít": khay nảy, viền cơm sáng một vòng, rồi nắp hộp sắt trượt xuống đóng lại.
         /// Trả về thời gian (giây) tới khi nắp đóng xong.
         /// </summary>
-        public float PlayWin(TrayState tray)
+        /// <summary>
+        /// Hiệu ứng thắng: nảy, chớp, nắp hộp đóng. dish != null (màn có món đặc trưng): ảnh món hiện dần lên khay
+        /// đúng hình khuôn, giữ một nhịp cho người chơi nhìn rồi nắp mới đóng. Trả về thời điểm nắp đóng xong (giây).
+        /// </summary>
+        public float PlayWin(TrayState tray, Sprite dish = null)
         {
+            float lidAt = .35f;
+            if (dish != null)
+            {
+                // ảnh vẽ phủ khung chữ nhật của khuôn: căn theo bbox khay hiện tại (khay có thể đã bị kéo đi)
+                var b = Geometry.BBox(tray.tris);
+                dishReveal.sprite = dish;
+                dishReveal.enabled = true;
+                var size = dish.bounds.size;
+                dishReveal.transform.localScale = new Vector3(b.W / size.x, b.H / size.y, 1);
+                dishReveal.transform.localPosition = Local(new Vector2(b.minx + b.W / 2f, b.miny + b.H / 2f));
+                dishReveal.color = new Color(1, 1, 1, 0);
+                dishReveal.KillTweens();
+                float al = 0;
+                DOTween.To(() => al, v => { al = v; if (dishReveal != null) dishReveal.color = new Color(1, 1, 1, v); }, 1f, .45f)
+                    .SetDelay(.15f).Guard(dishReveal);
+                lidAt = 1.25f;
+            }
             content.KillTweens(true);
             content.DOPunchPosition(new Vector3(0, -.14f, 0), .32f, 7, .5f).Guard(content);
             Flash(tray.tris, new Color(1, 1, 1, .9f), true, .45f);
@@ -402,12 +430,12 @@ namespace KoreanGame.Gameplay
             t.localPosition = new Vector3(0, .9f, 0);
             float a = 0;
             SetAlpha(lidRenderer, 0);
-            var s = DOTween.Sequence().Guard(lidRenderer).AppendInterval(.35f);
+            var s = DOTween.Sequence().Guard(lidRenderer).AppendInterval(lidAt);
             s.Append(t.DOLocalMove(Vector3.zero, .28f).SetEase(Ease.InQuad));
             s.Join(DOTween.To(() => a, v => { a = v; SetAlpha(lidRenderer, v); }, 1f, .18f));
             s.AppendCallback(() => EventBus<LidClosedEvent>.Raise(default));
             s.Append(t.DOPunchPosition(new Vector3(0, -.06f, 0), .18f, 4, .5f));
-            return .65f;
+            return lidAt + .3f;
         }
 
         void BuildLid(TrayState tray)

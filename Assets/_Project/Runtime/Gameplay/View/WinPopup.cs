@@ -44,7 +44,7 @@ namespace KoreanGame.Gameplay
             group.alpha = 0;
             panel.localScale = Vector3.one * .9f;
             this.KillTweens();
-            var s = DOTween.Sequence().Guard(this).AppendInterval(1f);   // đợi nắp hộp đóng xong (BoardView.PlayWin)
+            var s = DOTween.Sequence().Guard(this).AppendInterval(e.popupDelay > 0 ? e.popupDelay : 1f);   // đợi nắp hộp đóng xong (BoardView.PlayWin)
             s.Append(DOTween.To(() => group.alpha, a => group.alpha = a, 1f, .2f));
             s.Join(panel.DOScale(1f, .25f).SetEase(Ease.OutBack));
         }

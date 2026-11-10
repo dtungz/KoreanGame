@@ -57,7 +57,7 @@ namespace KoreanGame.Gameplay
             panel.localScale = Vector3.one * .85f;
             art.rectTransform.localEulerAngles = Vector3.zero;
             this.KillTweens();
-            var s = DOTween.Sequence().Guard(this).AppendInterval(1f);   // như popup Hoàn thành: đợi nắp hộp đóng
+            var s = DOTween.Sequence().Guard(this).AppendInterval(e.popupDelay > 0 ? e.popupDelay : 1f);   // như popup Hoàn thành: đợi ảnh món + nắp hộp
             s.Append(DOTween.To(() => group.alpha, a => group.alpha = a, 1f, .2f));
             s.Join(panel.DOScale(1f, .3f).SetEase(Ease.OutBack));
             s.Append(art.rectTransform.DOPunchRotation(new Vector3(0, 0, 6), .45f, 6, .5f));
