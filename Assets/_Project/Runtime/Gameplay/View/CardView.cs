@@ -37,6 +37,9 @@ namespace KoreanGame.Gameplay
             {
                 icon.sprite = d.icon;
                 var t = icon.rectTransform;
+                t.localEulerAngles = Vector3.zero;   // về gốc trước khi đổi pivot (công thức bù vị trí cần chưa xoay / lật)
+                t.localScale = Vector3.one;
+                CenterPivot(t);
                 t.localEulerAngles = d.kind == CardKind.Flip && c.rot % 2 == 1 ? new Vector3(0, 0, -90) : Vector3.zero;
                 t.localScale = d.kind == CardKind.Rot && c.rot % 2 == 1 ? new Vector3(-1, 1, 1) : Vector3.one;
                 if (d.kind == CardKind.Glue) t.localEulerAngles = c.rot % 2 == 1 ? new Vector3(0, 0, 90) : Vector3.zero;
@@ -55,6 +58,18 @@ namespace KoreanGame.Gameplay
                 body.DOScale(1, .32f).SetEase(Ease.OutCubic).Guard(body);
                 DOTween.To(() => group.alpha, a => group.alpha = a, 1f, .32f).Guard(body);
             }
+        }
+
+        /// <summary>
+        /// Icon trong scene có pivot góc trên-trái (SceneBuilder.Place) nên xoay / lật quanh góc đó làm icon văng ra ngoài thẻ.
+        /// Đổi pivot về tâm nhưng giữ nguyên vị trí. Chỉ đổi lúc chạy, không sửa scene.
+        /// </summary>
+        static void CenterPivot(RectTransform t)
+        {
+            var center = new Vector2(.5f, .5f);
+            if (t.pivot == center) return;
+            t.anchoredPosition += Vector2.Scale(center - t.pivot, t.rect.size);
+            t.pivot = center;
         }
 
         public void SetDragging(bool on) => group.alpha = on ? .25f : 1f;
