@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: rotate_card
   levelIndex: 1
+  version: 2
   steps:
   - key: tut.rotate_card.step1
     vi: "Ch\u1EA1m th\u1EBB \u0111\u1EC3 xoay"

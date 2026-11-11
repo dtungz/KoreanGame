@@ -38,8 +38,8 @@ namespace KoreanGame.Gameplay
 
         void OnWon(LevelWonEvent e)
         {
-            infoText.text = $"Màn {e.index + 1} xong.";
-            nextLabel.text = e.isLast ? "Chơi lại từ đầu" : "Tiếp tục";
+            infoText.text = e.gold > 0 ? Loc.T("win.info_gold", e.index + 1, e.gold) : Loc.T("win.info", e.index + 1);
+            nextLabel.text = Loc.T(e.isLast ? "win.restart_all" : "win.next");
             root.SetActive(true);
             group.alpha = 0;
             panel.localScale = Vector3.one * .9f;

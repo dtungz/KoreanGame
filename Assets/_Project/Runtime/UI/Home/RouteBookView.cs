@@ -65,7 +65,7 @@ namespace KoreanGame.Home
         {
             int first = page * PerPage, last = Mathf.Min(first + PerPage, database.Count) - 1;
             var region = database.levels[first].region;
-            pageTitle.text = $"{(region == FoodRegion.Seoul ? "Seoul" : "Hà Nội")} · Màn {first + 1}–{last + 1}";
+            pageTitle.text = Loc.T("journey.page", LocNames.Region(region == FoodRegion.Seoul ? FoodRegion.Seoul : FoodRegion.HaNoi), first + 1, last + 1);
             prevButton.interactable = page > 0;
             nextButton.interactable = page < PageCount - 1;
             int frontier = Frontier;

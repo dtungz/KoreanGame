@@ -198,29 +198,37 @@ namespace KoreanGame.Gameplay
             var src = cardsOverride ?? L.cards;
             var cards = new List<CardDef>();
             for (int i = 0; i < src.Count; i++) if (i != skip) cards.Add(src[i]);
+            var s0 = new int[BoardState.SlotCount];
+            for (int k = 0; k < s0.Length; k++) s0[k] = k < cards.Count ? k : -1;
+            return Search(A.rice, A.need, A.wk, cards, s0, Mathf.Min(BoardState.SlotCount, cards.Count), all, maxNodes);
+        }
+
+        /// <summary>Tìm lời giải từ một trạng thái hình dạng bất kỳ (cards[i] theo chỉ số; slots = chỉ số thẻ đang ở 3 ô; qp = thẻ chờ kế tiếp).</summary>
+        public static SolveResult Search(List<List<Tri>> shapes, List<Tri> need, HashSet<EdgeKey> wk, List<CardDef> cards, int[] slots, int qp, bool all, int maxNodes)
+        {
             var seen = new HashSet<string>();
             var res = new SolveResult();
 
-            bool Rec(List<List<Tri>> shapes, int[] slots, int qp, List<string> path)
+            bool Rec(List<List<Tri>> sh, int[] sl, int q, List<string> path)
             {
-                var key = string.Join(",", slots) + "|" + qp + "|" + ShapesKey(shapes);
+                var key = string.Join(",", sl) + "|" + q + "|" + ShapesKey(sh);
                 if (res.nodes > maxNodes) { res.capped = true; return false; }
                 if (!seen.Add(key)) return false;
                 res.nodes++;
-                if (PackShapes(shapes, A.need, A.wk))
+                if (PackShapes(sh, need, wk))
                 {
                     res.solutions++;
                     if (res.path == null) res.path = path;
                     return !all;
                 }
-                for (int k = 0; k < slots.Length; k++)
+                for (int k = 0; k < sl.Length; k++)
                 {
-                    int i = slots[k];
-                    if (i < 0) continue;
-                    foreach (var (desc, next) in Successors(cards[i], shapes))
+                    int i = sl[k];
+                    if (i < 0 || i >= cards.Count || cards[i] == null) continue;
+                    foreach (var (desc, next) in Successors(cards[i], sh))
                     {
-                        var ns = (int[])slots.Clone();
-                        int nq = qp;
+                        var ns = (int[])sl.Clone();
+                        int nq = q;
                         ns[k] = nq < cards.Count ? nq++ : -1;
                         if (Rec(next, ns, nq, new List<string>(path) { desc })) return true;
                     }
@@ -228,11 +236,32 @@ namespace KoreanGame.Gameplay
                 return false;
             }
 
-            var s0 = new int[BoardState.SlotCount];
-            for (int k = 0; k < s0.Length; k++) s0[k] = k < cards.Count ? k : -1;
-            Rec(A.rice, s0, Mathf.Min(BoardState.SlotCount, cards.Count), new List<string>());
+            Rec(shapes, slots, qp, new List<string>());
             res.solved = res.path != null;
             return res;
+        }
+
+        /// <summary>
+        /// Trạng thái đang chơi còn thắng được không: miếng nằm gọn trong khay coi như đã đặt, miếng ngoài khay + thẻ còn lại
+        /// phải lấp được phần khay còn trống. Hết ngân sách tìm kiếm thì coi là được (không chặn nhầm người chơi).
+        /// </summary>
+        public static bool Solvable(BoardState s, int maxNodes = 20000)
+        {
+            var wk = s.WallKeys();
+            var inside = s.PiecesInsideTray();
+            var covered = new HashSet<Tri>();
+            foreach (var p in inside)
+            {
+                if (Geometry.CrossesWall(p.tris, wk)) return false;
+                foreach (var q in p.tris) covered.Add(q);
+            }
+            var need = s.tray.Need().FindAll(q => !covered.Contains(q));
+            if (need.Count == 0) return true;
+            var shapes = new List<List<Tri>>();
+            foreach (var p in s.pieces) if (!inside.Contains(p)) shapes.Add(Geometry.Normalize(p.tris));
+            var cards = s.hand.ConvertAll(h => h.used ? null : h.def);
+            var r = Search(shapes, need, wk, cards, (int[])s.slots.Clone(), s.queuePos, false, maxNodes);
+            return r.solved || r.capped;
         }
 
         /// <summary>Độ khó: số trạng thái phải duyệt / số lời giải (log), cộng số thẻ.</summary>

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: cut_drag
   levelIndex: 0
+  version: 2
   steps:
   - key: tut.cut_drag.step1
     vi: "K\xE9o th\u1EBB l\xEAn c\u01A1m \u0111\u1EC3 c\u1EAFt"
@@ -42,6 +43,48 @@ MonoBehaviour:
     anyEffect: 1
     effect: 0
     timer: 2.5
+    waitForCard: 0
+  - key: tut.cut_drag.undo
+    vi: "L\u1EE1 tay? B\u1EA5m Ho\xE0n t\xE1c"
+    ko: "\uC2E4\uC218\uD558\uBA74 \uB418\uB3CC\uB9AC\uAE30\uB97C \uB20C\uB7EC\uC694"
+    target: 9
+    slot: 0
+    byKind: 0
+    cardKind: 0
+    gesture: 1
+    dragTo: 0
+    done: 5
+    anyEffect: 1
+    effect: 0
+    timer: 3
+    waitForCard: 0
+  - key: tut.cut_drag.restart
+    vi: "L\xE0m l\u1EA1i \u0111\u1EC3 x\u1EBFp t\u1EEB \u0111\u1EA7u"
+    ko: "\uCC98\uC74C\uBD80\uD130 \uB2E4\uC2DC \uD560 \uC218 \uC788\uC5B4\uC694"
+    target: 10
+    slot: 0
+    byKind: 0
+    cardKind: 0
+    gesture: 1
+    dragTo: 0
+    done: 5
+    anyEffect: 1
+    effect: 0
+    timer: 3
+    waitForCard: 0
+  - key: tut.cut_drag.hint
+    vi: "B\xED th\xEC b\u1EA5m G\u1EE3i \xFD"
+    ko: "\uB9C9\uD788\uBA74 \uD78C\uD2B8\uB97C \uB20C\uB7EC\uC694"
+    target: 11
+    slot: 0
+    byKind: 0
+    cardKind: 0
+    gesture: 1
+    dragTo: 0
+    done: 5
+    anyEffect: 1
+    effect: 0
+    timer: 3
     waitForCard: 0
   - key: tut.cut_drag.step3
     vi: "L\u1EA5p k\xEDn h\u1ED9p nh\xE9!"

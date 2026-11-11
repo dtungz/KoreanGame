@@ -70,7 +70,7 @@ sign.hanoi.title,Bento Journey,Bento Journey,Bento Journey,,giữ tên game Lati
 sign.hanoi.sub,Cơm hộp Hà Nội,하노이 도시락 여행,Hanoi lunchbox trip,hanoi dosirak yeohaeng,★
 sign.seoul.title,Bento Journey,Bento Journey,Bento Journey,,
 sign.seoul.sub,Hành trình cơm hộp · Seoul,서울 도시락 여행,Seoul lunchbox trip,seoul dosirak yeohaeng,
-dish.bun_cha.name,Bún chả,분짜,Bun cha (grilled pork with noodles),bunjja,
+dish.bun_cha.name,Bún chả,분짜,Bun cha,bunjja,
 dish.pho.name,Phở,쌀국수,Pho,ssalguksu,
 dish.nem_ran.name,Nem rán,짜조,Fried spring rolls,jjajo,★
 dish.banh_mi.name,Bánh mì,반미,Banh mi,banmi,
@@ -127,6 +127,9 @@ order.level40.line,Cho tôi tteokbokki cay nhé!,매콤한 떡볶이 주세요!,
 thanks.level40.line,Cay mà ngon! Tôi sẽ quay lại.,맵지만 맛있어요! 또 올게요.,Spicy but tasty! I'll be back.,maepjiman masisseoyo! tto olgeyo,★
 tut.cut_drag.step1,Kéo thẻ lên cơm để cắt,카드를 밥 위로 끌어 자르세요,Drag the card onto the rice to cut,kadeureul bap wiro kkeureo jareuseyo,★
 tut.cut_drag.step2,Kéo miếng cơm vào hộp,밥을 도시락에 넣으세요,Drag the rice into the box,babeul dosirage neoeuseyo,★
+tut.cut_drag.undo,Lỡ tay? Bấm Hoàn tác,실수하면 되돌리기를 눌러요,Oops? Tap Undo,silsuhamyeon doedolligireul nulleoyo,★
+tut.cut_drag.restart,Làm lại để xếp từ đầu,처음부터 다시 할 수 있어요,Restart to begin again,cheoeumbuteo dasi hal su isseoyo,★
+tut.cut_drag.hint,Bí thì bấm Gợi ý,막히면 힌트를 눌러요,Stuck? Tap Hint,makimyeon hinteureul nulleoyo,★
 tut.cut_drag.step3,Lấp kín hộp nhé!,도시락을 가득 채워요!,Fill the whole box!,dosirageul gadeuk chaewoyo,★
 tut.rotate_card.step1,Chạm thẻ để xoay,카드를 눌러 돌려요,Tap the card to rotate it,kadeureul nulleo dollyeoyo,★
 tut.rotate_card.step2,Giờ cắt nào!,이제 잘라요!,Now cut!,ije jallayo,★
@@ -144,3 +147,23 @@ tut.queue_copy.step1,"Dùng thẻ, thẻ chờ sẽ vào",다음 카드가 들�
 tut.queue_copy.step2,Nhân đôi miếng nhỏ,작은 밥을 복사해요,Copy the small piece,jageun babeul boksahaeyo,★
 tut.skip,Bỏ qua,건너뛰기,Skip,geonneottwigi,
 ui.tutorial_replay,Xem lại hướng dẫn,튜토리얼 다시 보기,Replay tutorials,tyutorieol dasi bogi,
+ui.language_value,Ngôn ngữ: {0},언어: {0},Language: {0},,★
+ui.lang.vi,Tiếng Việt,Tiếng Việt,Tiếng Việt,,★
+ui.lang.ko,한국어,한국어,한국어,,★
+ui.lang.en,English,English,English,,★
+ui.goal,Mẫu,주문,Order,,★
+ui.coming_soon,Sắp có,곧 공개,Coming soon,,★
+win.info_gold,Màn {0} xong · +{1} vàng,{0}단계 완료 · +{1} 골드,Level {0} done · +{1} gold,,★
+shop.hint_gold,"Qua màn để mở, mua bằng vàng",단계를 깨서 열고 골드로 사요,"Clear levels to unlock, buy with gold",,★
+tut.rotate_prompt,Chạm thẻ để xoay đúng hướng,카드를 눌러 방향을 맞춰요,Tap the card to turn it the right way,,★
+journey.side_common,món phụ quen thuộc,익숙한 반찬,everyday side dish,,★
+journey.side_region,món phụ {0},{0} 반찬,{0} side dish,,★
+journey.level,Màn {0},{0}단계,Level {0},,★
+dish.banh_mi.intro,"Ổ bánh giòn rụm kẹp pate, chả, rau thơm. Món ăn đường phố nổi tiếng khắp thế giới.","바삭한 빵에 파테, 햄, 향채를 넣었어요. 전 세계에 알려진 베트남 길거리 음식이에요.","Crispy bread with pâté, pork roll and herbs. A street food loved worldwide.",,★
+dish.bibimbap.intro,"Cơm trộn với rau, thịt, trứng và tương ớt gochujang. Trộn đều rồi thưởng thức!","밥에 나물, 고기, 달걀과 고추장을 올렸어요. 잘 비벼서 드세요!","Rice with vegetables, meat, egg and gochujang. Mix it well and enjoy!",,★
+dish.bun_cha.intro,"Chả nướng than hoa thơm lừng, ăn cùng bún và nước chấm chua ngọt. Món trưa quen thuộc của người Hà Nội.",숯불에 구운 고기를 쌀국수와 새콤달콤한 소스에 찍어 먹어요. 하노이 사람들의 단골 점심이에요.,Charcoal-grilled pork with rice noodles and sweet-sour dipping sauce. A Hanoi lunch favourite.,,★
+dish.com_nam_samgak.intro,"Samgak kimbap: cơm nắm hình tam giác bọc rong biển, món ăn nhanh của dân văn phòng Seoul.","김으로 감싼 세모 모양 주먹밥, 서울 직장인의 간편식이에요.","A triangle rice ball wrapped in seaweed, the quick bite of Seoul office workers.",,★
+dish.kimbap.intro,"Cơm cuộn rong biển với trứng, rau, củ cải vàng, cắt thành từng lát tròn xinh xắn.","달걀, 채소, 단무지를 넣고 김으로 말아 동글동글 예쁘게 썰었어요.","Rice rolled in seaweed with egg, vegetables and pickled radish, cut into pretty round slices.",,★
+dish.nem_ran.intro,"Cuốn nhân thịt, miến, mộc nhĩ rồi rán vàng giòn. Mâm cơm ngày Tết không thể thiếu.","고기, 당면, 목이버섯을 말아 노릇하게 튀겼어요. 베트남 설날 상에 꼭 오르는 음식이에요.","Rolls of pork, glass noodles and wood-ear mushroom, fried golden. A must at Tết feasts.",,★
+dish.pho.intro,"Bánh phở mềm, nước dùng ninh xương trong veo. Một bát phở nóng là cả buổi sáng Hà Nội.",부드러운 면에 뼈를 우린 맑은 국물. 뜨끈한 쌀국수 한 그릇이 하노이의 아침이에요.,Soft rice noodles in a clear bone broth. A hot bowl of pho is a Hanoi morning.,,★
+dish.tteokbokki.intro,"Bánh gạo dẻo sốt cay ngọt đỏ au, món ăn vặt được yêu thích nhất ở Seoul.","쫄깃한 떡에 빨갛고 매콤달콤한 소스, 서울에서 가장 사랑받는 간식이에요.","Chewy rice cakes in a red sweet-spicy sauce, Seoul's best-loved snack.",,★

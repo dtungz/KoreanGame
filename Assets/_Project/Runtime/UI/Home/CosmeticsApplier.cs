@@ -28,15 +28,26 @@ namespace KoreanGame.Home
 
         public static bool IsUnlocked(ShopItem item) => item.unlockAfter <= 0 || ProgressSave.UnlockedLevel >= item.unlockAfter;
 
+        public static bool IsOwned(ShopItem item) => item.price <= 0 || CosmeticsSave.Owned(item.id);
+
+        /// <summary>Mua bằng vàng (đã mở, chưa có, đủ vàng) rồi dùng luôn. false nếu không mua được.</summary>
+        public bool Buy(ShopItem item)
+        {
+            if (item == null || !IsUnlocked(item) || IsOwned(item) || !GoldSave.Spend(item.price)) return false;
+            CosmeticsSave.Own(item.id);
+            Equip(item);
+            return true;
+        }
+
         public ShopItem Equipped(ShopCategory c)
         {
             var item = catalog.Find(CosmeticsSave.Get(c.ToString()));
-            return item != null && item.category == c && IsUnlocked(item) ? item : catalog.Default(c);
+            return item != null && item.category == c && IsUnlocked(item) && IsOwned(item) ? item : catalog.Default(c);
         }
 
         public void Equip(ShopItem item)
         {
-            if (item == null || !IsUnlocked(item)) return;
+            if (item == null || !IsUnlocked(item) || !IsOwned(item)) return;
             CosmeticsSave.Set(item.category.ToString(), item.id);
             Apply();
         }

@@ -213,6 +213,8 @@ MonoBehaviour:
   selectable: {fileID: 5717928577947269570}
   content: {fileID: 5048356276445628516}
   offset: 4
+  sound: 8
+  silent: 0
 --- !u!1 &6932350435865148602
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +282,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 3856030cabe821b40a545951c27b826f, type: 3}
-    m_FontSize: 13
+    m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10

@@ -1,4 +1,7 @@
+using DG.Tweening;
+using KoreanGame.Core;
 using KoreanGame.Gameplay;
+using KoreanGame.Shared;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +9,8 @@ namespace KoreanGame.Home
 {
     /// <summary>
     /// Tab Cửa hàng: 3 danh mục (Hộp cơm, Thớt, Theme), mỗi danh mục vài món trang trí.
-    /// Món mở theo tiến độ (qua đủ màn), không dùng tiền. Chạm món đã mở để dùng ngay; món chưa mở ghi "Qua Màn X".
+    /// Món mở theo tiến độ (qua đủ màn) rồi mua bằng vàng: chưa mở ghi "Qua Màn X"; đã mở chưa mua hiện giá (đồng xu);
+    /// chạm để mua (thiếu vàng thì thẻ rung); đã có thì chạm để dùng.
     /// </summary>
     public class ShopView : MonoBehaviour
     {
@@ -19,6 +23,8 @@ namespace KoreanGame.Home
         [SerializeField] Text[] itemNames;
         [SerializeField] Text[] itemStates;
         [SerializeField] GameObject[] itemLocks;
+        [Tooltip("Đồng xu cạnh giá (hiện khi món đã mở, chưa mua)")]
+        [SerializeField] GameObject[] itemCoins;
 
         int current;
         ShopItem[] shown;
@@ -29,6 +35,7 @@ namespace KoreanGame.Home
             {
                 int k = i;
                 tabs[i].onClick.AddListener(() => Select(k));
+                ButtonPress.SetSound(tabs[i], Sfx.Tab);
             }
             for (int i = 0; i < itemButtons.Length; i++)
             {
@@ -37,8 +44,17 @@ namespace KoreanGame.Home
             }
         }
 
+        /// <summary>Vẽ lại danh mục đang mở (đổi ngôn ngữ).</summary>
+        public void Redraw() { if (shown != null) Draw(); }
+
         /// <summary>Mỗi lần vào tab Cửa hàng: về danh mục đầu.</summary>
         public void Open() => Select(0);
+
+        bool Equip(ShopItem it)
+        {
+            applier.Equip(it);
+            return true;
+        }
 
         void Select(int k)
         {
@@ -62,12 +78,14 @@ namespace KoreanGame.Home
                 itemButtons[i].gameObject.SetActive(has);
                 if (!has) continue;
                 var it = shown[i];
-                bool open = CosmeticsApplier.IsUnlocked(it), using_ = it == equipped;
+                bool open = CosmeticsApplier.IsUnlocked(it), owned = CosmeticsApplier.IsOwned(it), using_ = it == equipped;
                 itemIcons[i].sprite = it.icon;
                 itemIcons[i].color = open ? it.iconTint : new Color(it.iconTint.r, it.iconTint.g, it.iconTint.b, .35f);
-                itemNames[i].text = it.displayName;
-                itemStates[i].text = using_ ? "Đang dùng" : open ? "Dùng" : $"Qua Màn {it.unlockAfter}";
-                itemStates[i].color = using_ ? Palette.UiSage : open ? Palette.UiOrange : Palette.UiBrown;
+                itemNames[i].text = it.Name();
+                bool forSale = open && !owned;
+                itemStates[i].text = using_ ? Loc.T("shop.using") : forSale ? it.price.ToString() : open ? Loc.T("shop.use") : Loc.T("shop.unlock_at", it.unlockAfter);
+                itemStates[i].color = using_ ? Palette.UiSage : forSale ? Palette.UiText : open ? Palette.UiOrange : Palette.UiBrown;
+                if (itemCoins != null && i < itemCoins.Length && itemCoins[i] != null) itemCoins[i].SetActive(forSale);
                 itemLocks[i].SetActive(!open);
                 itemButtons[i].image.color = using_ ? Palette.UiPeach : Color.white;
             }
@@ -76,7 +94,17 @@ namespace KoreanGame.Home
         void OnItem(int i)
         {
             if (shown == null || i >= shown.Length) return;
-            applier.Equip(shown[i]);
+            var it = shown[i];
+            bool ok = !CosmeticsApplier.IsUnlocked(it) ? false
+                : !CosmeticsApplier.IsOwned(it) ? applier.Buy(it)
+                : Equip(it);
+            if (!ok)
+            {
+                AudioManager.PlayUi(Sfx.Bad, .8f);   // mua thành công thì GameFeedback phát Buy (vàng giảm)
+                var rt = (RectTransform)itemButtons[i].transform;
+                rt.DOKill(true);
+                rt.DOShakePosition(.35f, new Vector3(8, 0, 0), 20, 0).Guard(this);
+            }
             Draw();
         }
     }

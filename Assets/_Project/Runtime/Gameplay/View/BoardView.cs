@@ -37,7 +37,8 @@ namespace KoreanGame.Gameplay
         Mesh preview, slash, flash, lid;
         MaterialPropertyBlock block;
         SpriteRenderer dishReveal;
-        Material dishMaterial;       // ảnh món của màn hiện tại: miếng cơm trong hộp hiện phần ảnh tương ứng   // ảnh món đặc trưng phủ lên khay khi thắng (tạo lúc chạy, không cần dựng lại scene)
+        Material dishMaterial;
+        Mesh hintMesh;               // gợi ý: đường cắt đúng (đậm) / viền chỗ đặt miếng; xoá mỗi lần vẽ lại thớt       // ảnh món của màn hiện tại: miếng cơm trong hộp hiện phần ảnh tương ứng   // ảnh món đặc trưng phủ lên khay khi thắng (tạo lúc chạy, không cần dựng lại scene)
 
         public Camera Camera => cam;
 
@@ -55,6 +56,9 @@ namespace KoreanGame.Gameplay
             dishReveal.transform.SetParent(content, false);
             dishReveal.sortingOrder = OrderFlash - 1;   // trên cơm, dưới chớp sáng và nắp
             dishReveal.enabled = false;
+            var hintGo = new GameObject("Hint", typeof(MeshFilter), typeof(MeshRenderer));
+            hintGo.transform.SetParent(content, false);
+            hintMesh = Setup(hintGo.GetComponent<MeshFilter>(), hintGo.GetComponent<MeshRenderer>(), "Hint", OrderPreview + 2);
             BuildGrid();
         }
 
@@ -100,8 +104,30 @@ namespace KoreanGame.Gameplay
             dishMaterial.mainTexture = art.texture;
         }
 
+        /// <summary>Vẽ gợi ý: segs = đường cắt nên dùng (nét cam đậm), outline = chỗ nên đặt miếng (viền xanh đứt).</summary>
+        public void ShowHint(List<Seg> segs, List<Tri> outline)
+        {
+            var mb = new MeshBuilder(1);
+            if (segs != null)
+                foreach (var g in segs)
+                {
+                    var a = new Vector2(g.x1, g.y1); var b = new Vector2(g.x2, g.y2);
+                    mb.Line(0, a, b, .28f, new Color(1, 1, 1, .95f));   // viền trắng cho nổi trên nền cơm
+                    mb.Line(0, a, b, .16f, Palette.UiOrange);            // nét cam liền, đậm
+                }
+            if (outline != null)
+            {
+                mb.Tris(0, outline, new Color(Palette.Green.r, Palette.Green.g, Palette.Green.b, .25f));
+                foreach (var (p, q) in Geometry.Boundary(outline)) mb.DashedLine(0, p, q, .1f, Palette.Green, .2f, .1f);
+            }
+            mb.Apply(hintMesh);
+        }
+
+        public void ClearHint() => hintMesh?.Clear();
+
         public void Render(BoardState s)
         {
+            ClearHint();
             trayView.KillTweens(true);
             trayView.transform.localPosition = Vector3.zero;
             trayView.Build(s.tray);

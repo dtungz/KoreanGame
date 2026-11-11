@@ -18,6 +18,12 @@ namespace KoreanGame.Gameplay
         public bool Won { get; private set; }
         public bool CanUndo => history.Count > 0 && !Won;
 
+        /// <summary>
+        /// Tuỳ chọn (tutorial): nước dùng thẻ / đặt miếng vào khay mà làm trạng thái không còn hợp lệ (false) thì bị huỷ,
+        /// như chưa có gì xảy ra (thẻ về tay, miếng bay về chỗ cũ). null = không lọc.
+        /// </summary>
+        public System.Func<BoardState, bool> MoveFilter;
+
         public void Init(LevelDatabase database, BoardView boardView, HandView handView)
         {
             db = database;
@@ -110,6 +116,14 @@ namespace KoreanGame.Gameplay
             history.Push(State);
             Moves.Apply(State, res);
             int entering = State.UseCard(handIndex);
+            if (MoveFilter != null && !MoveFilter(State))
+            {
+                State = history.Pop();   // nước sai trong tutorial: trả lại như cũ
+                Refresh();
+                board.PlayRejectCard(res);
+                EventBus<MoveRejectedEvent>.Raise(default);
+                return false;
+            }
             Refresh(entering);
             board.PlayCardFx(res);
             EventBus<CardUsedEvent>.Raise(new CardUsedEvent
@@ -128,8 +142,15 @@ namespace KoreanGame.Gameplay
             history.Push(State);
             // history giữ bản sao; p vẫn là object của State hiện tại
             Moves.MovePiece(State, p, dx, dy);
-            Refresh();
             bool intoTray = p.tris.TrueForAll(State.tray.Contains);
+            if (intoTray && MoveFilter != null && !MoveFilter(State))
+            {
+                State = history.Pop();   // đặt sai chỗ trong tutorial: miếng bay về
+                Refresh();
+                EventBus<MoveRejectedEvent>.Raise(default);
+                return false;
+            }
+            Refresh();
             if (intoTray) board.Flash(p.tris, new Color(1, 1, 1, .45f), false, .25f);
             EventBus<PiecePlacedEvent>.Raise(new PiecePlacedEvent { intoTray = intoTray });
             CheckWin();
@@ -163,6 +184,7 @@ namespace KoreanGame.Gameplay
         {
             Won = true;
             bool last = Index == db.Count - 1;
+            bool firstClear = !ProgressSave.IsCleared(Index);
             ProgressSave.MarkCleared(Index);
             // "Chơi tiếp" = màn xa nhất đã mở (thắng lại màn cũ không làm lùi); qua hết thì về Màn 1
             ProgressSave.CurrentLevel = db.Wrap(Mathf.Max(Index + 1, ProgressSave.UnlockedLevel));
@@ -170,10 +192,13 @@ namespace KoreanGame.Gameplay
             foreach (var f in Level.tray.fixedFoods) CollectionSave.AddSide(f.kind);
             bool newDish = Level.unlocksDish != null && CollectionSave.AddDish(Level.unlocksDish.id);
             hand.HideGhost();
+            // vàng: thắng lần đầu / thắng lại, cộng thêm khi mở món đặc trưng mới
+            int gold = (firstClear ? GoldSave.WinFirst : GoldSave.WinReplay) + (newDish ? GoldSave.NewDishBonus : 0);
+            GoldSave.Add(gold);
             var dish = Level.unlocksDish;
             float fx = board.PlayWin(State.tray, dish != null ? dish.art : null);
             EventBus<BoardChangedEvent>.Raise(default);
-            EventBus<LevelWonEvent>.Raise(new LevelWonEvent { index = Index, isLast = last, newDish = newDish, popupDelay = fx + .35f });
+            EventBus<LevelWonEvent>.Raise(new LevelWonEvent { index = Index, isLast = last, newDish = newDish, popupDelay = fx + .35f, gold = gold });
         }
 
         /// <summary>Debug: lấp kín khay bằng một miếng cơm rồi thắng ngay.</summary>

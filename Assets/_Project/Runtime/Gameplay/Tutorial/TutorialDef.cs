@@ -6,7 +6,7 @@ using UnityEngine;
 namespace KoreanGame.Gameplay
 {
     /// <summary>Chỗ tutorial trỏ tới. Piece: index ≥ 0 theo thứ tự miếng; PieceLargestOutside / Second / Smallest chọn theo cỡ miếng ngoài khay.</summary>
-    public enum TutTarget { None, Card, PieceLargestOutside, PieceSecondOutside, PieceSmallestOutside, TrayEmpty, Wall, FixedFood, QueueChip, Undo }
+    public enum TutTarget { None, Card, PieceLargestOutside, PieceSecondOutside, PieceSmallestOutside, TrayEmpty, Wall, FixedFood, QueueChip, Undo, Restart, HintButton }
 
     public enum TutGesture { None, Tap, Drag }
 
@@ -48,6 +48,8 @@ namespace KoreanGame.Gameplay
         [Tooltip("Mã cố định, dùng làm cờ đã xem (PlayerPrefs tut.<id>)")]
         public string id;
         public int levelIndex;
+        [Tooltip("Phiên bản nội dung: TutorialLibrary ghi đè bước khi phiên bản trong code mới hơn")]
+        public int version;
         public List<TutorialStep> steps = new List<TutorialStep>();
     }
 }

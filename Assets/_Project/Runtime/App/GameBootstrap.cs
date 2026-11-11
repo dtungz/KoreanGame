@@ -12,6 +12,10 @@ namespace KoreanGame.App
         public const string PlayFromLevelPref = "KoreanGame.PlayFromLevel";
 
         [SerializeField] LevelDatabase levelDatabase;
+        [Tooltip("Bảng dịch Việt / Hàn / Anh (Data/Localization/localization.csv)")]
+        [SerializeField] TextAsset localization;
+        [Tooltip("Font chữ Hàn (Jua): khi chọn 한국어 mọi chữ đổi sang font này")]
+        [SerializeField] Font koreanFont;
         [SerializeField] LevelController levelController;
         [SerializeField] BoardInput boardInput;
         [SerializeField] BoardView boardView;
@@ -37,12 +41,16 @@ namespace KoreanGame.App
         [SerializeField] SideDishToast sideDishToast;
         [Tooltip("Tuỳ chọn: tutorial giới thiệu mechanic")]
         [SerializeField] TutorialManager tutorial;
+        [Tooltip("Tuỳ chọn: nút Gợi ý")]
+        [SerializeField] HintButton hintButton;
 
         bool skipMenu;   // Play from here (Level Browser): vào thẳng level, không hiện menu
 
         void Awake()
         {
             Application.targetFrameRate = 60;
+            if (localization != null) Loc.Load(localization);
+            if (koreanFont != null) KoreanGame.Shared.LangFonts.Init(koreanFont);
             boardView.Init();
             levelController.Init(levelDatabase, boardView, handView);
             boardInput.Init(levelController, boardView, handView);
@@ -61,6 +69,7 @@ namespace KoreanGame.App
             if (cosmetics != null) cosmetics.Init(levelController);
             if (sideDishToast != null) sideDishToast.Init(levelController);
             if (tutorial != null) tutorial.Init(levelController, boardView, handView, hudView);
+            if (hintButton != null) hintButton.Init(levelController, boardView, handView, hudView);
         }
 
         void Start()

@@ -1,0 +1,30 @@
+ÂM THANH - NGUỒN VÀ GIẤY PHÉP
+Tất cả file dưới đây là CC0 (Creative Commons Zero / public domain): dùng miễn phí, kể cả bán thương mại, không bắt buộc ghi tên.
+Vẫn ghi lại để tiện tra cứu và có thể cảm ơn tác giả trong màn Credits.
+
+== Nhạc nền (Music/) ==
+bgm_menu.ogg   "Cozy Puzzle Title" - MintoDog - CC0
+               https://opengameart.org/content/cozy-puzzle-title
+bgm_game.ogg   "Cozy Puzzle In-Game 2" - MintoDog - CC0
+               https://opengameart.org/content/cozy-puzzle-in-game-2
+
+== Tiếng UI (UI_SFX/) - Kenney (www.kenney.nl) - CC0 ==
+sfx_click.ogg        Interface Sounds  select_007.ogg        https://kenney.nl/assets/interface-sounds
+sfx_tab.ogg          Interface Sounds  pluck_001.ogg
+sfx_popup_open.ogg   Interface Sounds  maximize_008.ogg
+sfx_popup_close.ogg  Interface Sounds  minimize_008.ogg
+sfx_buy.ogg          Interface Sounds  confirmation_001.ogg
+sfx_hint.ogg         Interface Sounds  glass_002.ogg
+sfx_coin.ogg         Casino Audio      chips-stack-3.ogg     https://kenney.nl/assets/casino-audio
+sfx_new_dish.ogg     Music Jingles     jingles_PIZZI03.ogg   https://kenney.nl/assets/music-jingles
+sfx_new_side.ogg     Music Jingles     jingles_PIZZI04.ogg
+
+== Gameplay_SFX/ ==
+sfx_win.wav          "Win sound effect" - Listener - CC0  https://opengameart.org/content/win-sound-effect
+                     (đã tăng âm lượng lên đỉnh -1 dB, cắt còn 1,6 giây, tắt dần cuối)
+
+== Tiếng gameplay khác ==
+sfx_cut / tick / drop / bad / rotate / pop / lid: âm tự tổng hợp trong dự án.
+sfx_win_old.wav: tiếng thắng tự tổng hợp cũ, chỉ giữ cho scene Main (scene thử nghiệm); BentoJourney dùng sfx_win.wav.
+
+Muốn đổi tiếng: thả file cùng tên (wav / ogg / mp3) đè lên, chạy Tools/KoreanGame/Audio/Relink Clips trong scene BentoJourney rồi lưu scene.

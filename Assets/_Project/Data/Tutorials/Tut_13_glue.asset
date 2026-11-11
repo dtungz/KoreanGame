@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: glue
   levelIndex: 12
+  version: 2
   steps:
   - key: tut.glue.step1
     vi: "\u0110\u1EB7t hai mi\u1EBFng s\xE1t nhau"

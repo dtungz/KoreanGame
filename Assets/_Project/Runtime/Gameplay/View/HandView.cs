@@ -29,7 +29,7 @@ namespace KoreanGame.Gameplay
                 if (has) cards[k].Bind(s.hand[i], i, k == enteringSlot);
             }
             queueBadge.SetActive(s.QueuedCount > 0);
-            queueText.text = $"+{s.QueuedCount} thẻ chờ";
+            queueText.text = Loc.T("ui.queued_cards", s.QueuedCount);
         }
 
         /// <summary>Thẻ dưới điểm chạm (trả về chỉ số trong hand, -1 nếu không có).</summary>

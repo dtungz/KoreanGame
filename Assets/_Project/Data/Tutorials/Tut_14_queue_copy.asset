@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: queue_copy
   levelIndex: 13
+  version: 2
   steps:
   - key: tut.queue_copy.step1
     vi: "D\xF9ng th\u1EBB, th\u1EBB ch\u1EDD s\u1EBD v\xE0o"

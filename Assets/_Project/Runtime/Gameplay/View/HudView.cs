@@ -8,10 +8,12 @@ namespace KoreanGame.Gameplay
     public class HudView : MonoBehaviour
     {
         [SerializeField] Text levelText;
+        [Tooltip("Tuỳ chọn: bộ đếm thẻ còn lại (scene Bento Journey dùng chỗ này cho vàng)")]
         [SerializeField] Text cardsLeftText;
         [SerializeField] Button restartButton;
         [SerializeField] Button undoButton;
         public RectTransform UndoRect => (RectTransform)undoButton.transform;
+        public RectTransform RestartRect => (RectTransform)restartButton.transform;
 
         LevelController controller;
 
@@ -22,24 +24,34 @@ namespace KoreanGame.Gameplay
             undoButton.onClick.AddListener(controller.Undo);
             EventBus<LevelLoadedEvent>.Subscribe(OnLoaded);
             EventBus<BoardChangedEvent>.Subscribe(OnChanged);
+            EventBus<LanguageChangedEvent>.Subscribe(OnLanguage);
         }
 
         void OnDestroy()
         {
             EventBus<LevelLoadedEvent>.Unsubscribe(OnLoaded);
             EventBus<BoardChangedEvent>.Unsubscribe(OnChanged);
+            EventBus<LanguageChangedEvent>.Unsubscribe(OnLanguage);
         }
 
         void OnLoaded(LevelLoadedEvent e)
         {
-            levelText.text = $"Màn {e.index + 1}";
+            levelText.text = LocNames.Level(e.index + 1);
             OnChanged(default);
+        }
+
+        // đổi ngôn ngữ giữa màn: vẽ lại chữ HUD + tay bài ("+2 thẻ chờ")
+        void OnLanguage(LanguageChangedEvent e)
+        {
+            if (controller.State == null) return;
+            levelText.text = LocNames.Level(controller.Index + 1);
+            controller.Redraw();
         }
 
         void OnChanged(BoardChangedEvent e)
         {
             if (controller.State == null) return;
-            cardsLeftText.text = $"×{controller.State.CardsLeft}";
+            if (cardsLeftText != null) cardsLeftText.text = $"×{controller.State.CardsLeft}";
             undoButton.interactable = controller.CanUndo;
         }
     }

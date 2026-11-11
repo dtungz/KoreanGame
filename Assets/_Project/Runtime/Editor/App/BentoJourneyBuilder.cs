@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using KoreanGame.Core;
 using KoreanGame.Gameplay;
 using KoreanGame.Home;
 using KoreanGame.Shared;
@@ -57,7 +59,8 @@ namespace KoreanGame.EditorTools
 
             heading = LoadFont("Baloo2-ExtraBold.ttf");
             body = LoadFont("Nunito-ExtraBold.ttf");
-            korean = LoadFont("NotoSansKR-Bold.ttf");   // chữ Hàn (Baloo / Nunito không có Hangul)
+            korean = LoadFont("Jua-Regular.ttf");   // chữ Hàn: Jua tròn, đậm, hợp Baloo (NotoSansKR-Bold.ttf là variable font, Unity chỉ dựng nét Thin)
+            KoreanFallback(heading, body);
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             BuildWidgets();
@@ -72,6 +75,7 @@ namespace KoreanGame.EditorTools
             SceneBuilder.Set(built.boot, "dishPopup", dishPopup);
             SceneBuilder.Set(built.boot, "sideDishToast", built.hud.GetComponent<SideDishToast>());
             SceneBuilder.Set(built.boot, "tutorial", BuildTutorial(built, topFrame));
+            SceneBuilder.Set(built.boot, "hintButton", built.hud.GetComponent<HintButton>());
             var menu = BuildMainMenu(built.ui, out var menuFrame);
 
             SceneBuilder.Set(built.boot, "mainMenu", menu);
@@ -79,6 +83,8 @@ namespace KoreanGame.EditorTools
             SceneBuilder.Set(built.boot, "settingsPopup", settings);
             SceneBuilder.Set(built.boot, "settingsButton", hudSettings);
             SceneBuilder.Set(built.boot, "customerChat", chat);
+            SceneBuilder.Set(built.boot, "localization", AssetDatabase.LoadAssetAtPath<TextAsset>(Loc.CsvAssetPath));
+            SceneBuilder.Set(built.boot, "koreanFont", korean);
 
             // safe area + mọi tỉ lệ màn hình dọc
             var fitter = built.cam.gameObject.AddComponent<DesignFrameFitter>();
@@ -96,7 +102,7 @@ namespace KoreanGame.EditorTools
             so.FindProperty("boardSize").vector2Value = BoardSize;
             so.ApplyModifiedPropertiesWithoutUndo();
 
-            foreach (var c in new[] { built.hud.gameObject, built.popup.gameObject, menu.gameObject }) ApplyFonts(c.transform);
+            foreach (var c in new[] { built.hud.gameObject, built.popup.gameObject, menu.gameObject }) { ApplyFonts(c.transform); ApplyLoc(c.transform); }
 
             SavePrefab(built.hud.gameObject, HudPrefabPath);
             SavePrefab(built.popup.gameObject, PopupPrefabPath);
@@ -149,7 +155,7 @@ namespace KoreanGame.EditorTools
             img.preserveAspect = true;
             img.raycastTarget = false;
             // chú thích nhỏ dưới nút (để trống nếu không cần)
-            var cap = NewText(go.transform, "Caption", "", 13, Palette.UiBrown, body);
+            var cap = NewText(go.transform, "Caption", "", 14, Palette.UiBrown, body);
             var crt = (RectTransform)cap.transform;
             crt.anchorMin = new Vector2(0, 0);
             crt.anchorMax = new Vector2(1, 0);
@@ -232,13 +238,23 @@ namespace KoreanGame.EditorTools
             top = NewFrame(canvas, "TopFrame", 390, TopH);
             bottom = NewFrame(canvas, "BottomFrame", 390, BottomH);
 
-            // ---- thanh trên: Cài đặt | Màn N | kéo ×N ----
+            // ---- thanh trên: Cài đặt | Màn N | vàng (số thẻ đã có ở khay bên dưới nên bỏ bộ đếm kéo) ----
             hudSettings = IconButton(top, "SettingsButton", "ic_gear", 16, 6, null);
             var lv = Sliced(NewImage(top, "LevelPill", 115, 4, 160, 60), Ui("ui_btn_secondary"), Color.white);
             Restyle(Req(old, "LevelText"), lv.transform, 0, 0, 160, 55, 26, Palette.UiText, heading);
-            var cnt = Sliced(NewImage(top, "CounterPill", 282, 6, 92, 56), Ui("ui_btn_secondary"), Color.white);
-            NewImage(cnt.transform, "Scissors", 10, 9, 34, 34).sprite = Ui("ic_scissors");
-            Restyle(Req(old, "CardsLeft"), cnt.transform, 40, 0, 48, 51, 24, Palette.UiText, heading);
+            var cnt = Sliced(NewImage(top, "GoldPill", 282, 6, 92, 56), Ui("ui_btn_secondary"), Color.white);
+            var coin = NewImage(cnt.transform, "Coin", 8, 9, 34, 34);
+            coin.sprite = Ui("ic_coin");
+            coin.preserveAspect = true;
+            var goldAmount = NewText(cnt.transform, "Amount", "0", 22, Palette.UiText, heading);
+            TopLeft(goldAmount.rectTransform, 42, 0, 48, 51);
+            FitText(goldAmount, 12, 20);
+            var hudGold = cnt.gameObject.AddComponent<KoreanGame.Home.GoldView>();
+            SceneBuilder.Set(hudGold, "amount", goldAmount);
+            SceneBuilder.Set(hudGold, "chip", cnt.rectTransform);
+            CenterPivot(cnt.rectTransform);
+            Object.DestroyImmediate(Req(old, "CardsLeft").gameObject);
+            SceneBuilder.Set(hudView, "cardsLeftText", null);
 
             // ---- dải khách: avatar (chạm để nói chuyện) + bong bóng chỉ chứa lời thoại (mục tiêu đã có trên thớt) ----
             var order = Inst(panelPrefab, top, "OrderPanel", 16, 72, 358, 78).transform;
@@ -293,6 +309,7 @@ namespace KoreanGame.EditorTools
             TopLeft(tHead.rectTransform, 92, 10, 250, 22);
             var tName = NewText(tPanel.transform, "Name", "", 24, Palette.UiText, heading);
             tName.alignment = TextAnchor.MiddleLeft;
+            FitText(tName, 15, 24);
             TopLeft(tName.rectTransform, 92, 32, 250, 36);
             SceneBuilder.Set(toast, "catalog", LoadOrCreateCatalog());
             SceneBuilder.Set(toast, "root", toastRoot);
@@ -310,6 +327,20 @@ namespace KoreanGame.EditorTools
             Object.DestroyImmediate(Req(old, "RestartButton").gameObject);
             SceneBuilder.Set(hudView, "undoButton", undo);
             SceneBuilder.Set(hudView, "restartButton", redo);
+            // Gợi ý: cùng hàng nhưng tách hẳn sang bên phải để không bấm nhầm với Hoàn tác / Làm lại
+            var hintBtn = IconButton(bottom, "HintButton", "ic_hint", 390 - 16 - 56, 0, "Gợi ý");
+            var hint = b.hud.gameObject.AddComponent<HintButton>();
+            SceneBuilder.Set(hint, "button", hintBtn);
+            SceneBuilder.Set(hint, "icon", hintBtn.transform.Find("Content/Icon").GetComponent<Image>());
+            var tag = Sliced(NewImage(hintBtn.transform, "PriceTag", 26, -12, 46, 22), Ui("ui_chip_peach"), Color.white);
+            var tagCoin = NewImage(tag.transform, "Coin", 3, 2, 18, 18);
+            tagCoin.sprite = Ui("ic_coin");
+            tagCoin.preserveAspect = true;
+            var tagText = NewText(tag.transform, "Price", "20", 13, Palette.UiText, body);
+            TopLeft(tagText.rectTransform, 20, 0, 24, 22);
+            SceneBuilder.Set(hint, "priceTag", tag.gameObject);
+            SceneBuilder.Set(hint, "priceText", tagText);
+            tag.gameObject.SetActive(false);
 
             // ---- khay thẻ màu đào neo đáy (kéo dài xuống dưới vùng an toàn cho kín thanh gesture) ----
             var tray = Sliced(NewImage(bottom, "CardTray", 0, 80, 390, 190), Ui("ui_panel_peach"), Color.white);
@@ -465,16 +496,47 @@ namespace KoreanGame.EditorTools
 
             var play = Inst(primaryPrefab, home, "PlayButton", 40, 638, 310, 80);
             var content = play.transform.Find("Content");
-            var title = content.Find("Label").GetComponent<Text>();
-            title.text = "Chơi tiếp";
-            title.fontSize = 30;
-            TopLeft(title.rectTransform, 64, 6, 230, 40);
-            var sub = NewText(content, "Sub", "Màn 1", 15, Palette.UiText, body);
-            TopLeft((RectTransform)sub.transform, 64, 44, 230, 22);
-            NewImage(content, "PlayIcon", 26, 20, 34, 34).sprite = Ui("ic_play");
+            // cụm [▶  Chơi tiếp / Màn N] luôn nằm giữa nút, chữ dài ngắn theo ngôn ngữ nào cũng vậy
+            var playGroup = new GameObject("Group", typeof(RectTransform), typeof(HorizontalLayoutGroup));
+            playGroup.transform.SetParent(content, false);
+            Stretch((RectTransform)playGroup.transform, 0, 0, 0, 0);
+            var hl = playGroup.GetComponent<HorizontalLayoutGroup>();
+            hl.childAlignment = TextAnchor.MiddleCenter;
+            hl.spacing = 14;
+            hl.childControlWidth = hl.childControlHeight = true;
+            hl.childForceExpandWidth = hl.childForceExpandHeight = false;
+            var playIcon = NewImage(playGroup.transform, "PlayIcon", 0, 0, 34, 34);
+            playIcon.sprite = Ui("ic_play");
+            playIcon.preserveAspect = true;
+            var ile = playIcon.gameObject.AddComponent<LayoutElement>();
+            ile.preferredWidth = ile.preferredHeight = 34;
+            var texts = new GameObject("Texts", typeof(RectTransform), typeof(VerticalLayoutGroup));
+            texts.transform.SetParent(playGroup.transform, false);
+            var vl = texts.GetComponent<VerticalLayoutGroup>();
+            vl.childAlignment = TextAnchor.MiddleCenter;
+            vl.spacing = -1;
+            vl.childControlWidth = vl.childControlHeight = true;
+            vl.childForceExpandWidth = vl.childForceExpandHeight = false;
+            // nhãn của prefab không chuyển cha được (con của prefab instance): ẩn đi, dùng nhãn mới trong cụm
+            var prefabLabel = content.Find("Label").GetComponent<Text>();
+            prefabLabel.text = "";
+            prefabLabel.gameObject.SetActive(false);
+            var title = NewText(texts.transform, "Label", "Chơi tiếp", 30, prefabLabel.color, heading);
+            var sub = NewText(texts.transform, "Sub", "Màn 1", 15, Palette.UiText, body);
 
             // ---- chung: nút Cài đặt (trên trái), thanh 3 tab (dưới) ----
             var settingsBtn = IconButton(frame, "SettingsButton", "ic_gear", 16, 16, null);
+            var goldChip = Sliced(NewImage(frame, "GoldChip", 288, 26, 88, 40), Ui("ui_chip_peach"), Color.white);
+            var goldCoin = NewImage(goldChip.transform, "Coin", 6, 5, 30, 30);
+            goldCoin.sprite = Ui("ic_coin");
+            goldCoin.preserveAspect = true;
+            var goldText = NewText(goldChip.transform, "Amount", "0", 18, Palette.UiText, heading);
+            goldText.alignment = TextAnchor.MiddleCenter;
+            TopLeft(goldText.rectTransform, 36, 2, 48, 36);
+            var goldView = goldChip.gameObject.AddComponent<GoldView>();
+            SceneBuilder.Set(goldView, "amount", goldText);
+            SceneBuilder.Set(goldView, "chip", goldChip.rectTransform);
+            CenterPivot(goldChip.rectTransform);
             var dock = Inst(panelPrefab, frame, "TabBar", 16, 734, 358, 104).transform;
             var tabs = new[]
             {
@@ -596,11 +658,9 @@ namespace KoreanGame.EditorTools
                     lockImg.preserveAspect = true;
                     dishLocks[i] = lockImg.gameObject;
                     var label = NewText(dishCells[i].transform, "Label", "", 17, Palette.UiText, body);
-                    TopLeft(label.rectTransform, 6, 122, dw - 12, 32);
-                    label.resizeTextForBestFit = true;
-                    label.resizeTextMinSize = 12;
-                    label.resizeTextMaxSize = 17;
-                    label.horizontalOverflow = HorizontalWrapMode.Wrap;
+                    TopLeft(label.rectTransform, 6, 116, dw - 12, 40);
+                    FitText(label, 11, 17);
+                    label.lineSpacing = .9f;
                     dishLabels[i] = label;
                 }
                 y += ((count + 1) / 2) * (dh + dgap) + 6;
@@ -753,6 +813,7 @@ namespace KoreanGame.EditorTools
             var names = new Text[n];
             var states = new Text[n];
             var locks = new GameObject[n];
+            var coins = new GameObject[n];
             for (int i = 0; i < n; i++)
             {
                 var card = Sliced(NewImage(panel, $"Item{i}", 14 + i * 112, 84, 104, 250), Ui("ui_card"), Color.white);
@@ -763,18 +824,23 @@ namespace KoreanGame.EditorTools
                 icons[i].preserveAspect = true;
                 CenterPivot(icons[i].rectTransform);
                 names[i] = NewText(card.transform, "Name", "", 16, Palette.UiText, heading);
-                names[i].horizontalOverflow = HorizontalWrapMode.Wrap;
+                FitText(names[i], 12, 16);
                 names[i].lineSpacing = .85f;
                 TopLeft(names[i].rectTransform, 6, 138, 92, 48);
                 states[i] = NewText(card.transform, "State", "", 15, Palette.UiOrange, body);
-                states[i].horizontalOverflow = HorizontalWrapMode.Wrap;
+                FitText(states[i], 11, 15);
+                states[i].lineSpacing = .9f;
                 TopLeft(states[i].rectTransform, 4, 192, 96, 36);
                 var lockImg = NewImage(card.transform, "Lock", 70, 8, 28, 28);
                 lockImg.sprite = Ui("ic_lock");
                 lockImg.preserveAspect = true;
                 locks[i] = lockImg.gameObject;
+                var coin = NewImage(card.transform, "Coin", 14, 199, 22, 22);   // trái số giá
+                coin.sprite = Ui("ic_coin");
+                coin.preserveAspect = true;
+                coins[i] = coin.gameObject;
             }
-            var hint = NewText(panel, "Hint", "Qua thêm màn để mở món trang trí mới", 14, Palette.UiBrown, body);
+            var hint = NewText(panel, "Hint", "Qua màn để mở, mua bằng vàng", 14, Palette.UiBrown, body);
             TopLeft(hint.rectTransform, 14, 352, 330, 24);
 
             SceneBuilder.Set(view, "tabs", tabs);
@@ -785,6 +851,7 @@ namespace KoreanGame.EditorTools
             SceneBuilder.Set(view, "itemNames", names);
             SceneBuilder.Set(view, "itemStates", states);
             SceneBuilder.Set(view, "itemLocks", locks);
+            SceneBuilder.Set(view, "itemCoins", coins);
             return view;
         }
 
@@ -800,6 +867,18 @@ namespace KoreanGame.EditorTools
         }
 
         public const string ShopPath = "Assets/_Project/Data/Config/ShopCatalog.asset";
+
+        /// <summary>Giá vàng đã duyệt (món mặc định miễn phí). Chỉ đặt cho món còn giá 0, không ghi đè giá bạn đã sửa.</summary>
+        public static void ApplyShopPrices(ShopCatalog cat)
+        {
+            var prices = new System.Collections.Generic.Dictionary<string, int>
+            {
+                { "box_wood", 120 }, { "box_porcelain", 240 }, { "board_dark", 120 }, { "board_stone", 240 }, { "theme_seoul", 300 },
+            };
+            foreach (var it in cat.items)
+                if (it != null && it.price <= 0 && prices.TryGetValue(it.id, out var p)) it.price = p;
+            EditorUtility.SetDirty(cat);
+        }
 
         /// <summary>Danh mục Cửa hàng; chưa có thì tạo bộ mặc định (mở theo tiến độ). Không ghi đè bản bạn đã sửa.</summary>
         public static ShopCatalog LoadOrCreateShop()
@@ -835,6 +914,7 @@ namespace KoreanGame.EditorTools
             cat.items.Add(Board("board_stone", "Thớt đá", 30, "#C9D0D8"));
             cat.items.Add(Theme("theme_hanoi", "Hà Nội ban ngày", 0, "bg_menu_hanoi"));
             cat.items.Add(Theme("theme_seoul", "Seoul về đêm", 20, "bg_menu_seoul"));
+            ApplyShopPrices(cat);
             AssetDatabase.CreateAsset(cat, ShopPath);
             AssetDatabase.SaveAssets();
             return cat;
@@ -852,7 +932,7 @@ namespace KoreanGame.EditorTools
             frame = NewFrame(root.transform, "Frame", 390, 844);
 
             // panel căn giữa; mở từ menu thì thu ngắn (SettingsPopup đổi chiều cao, pivot giữa nên vẫn căn giữa)
-            var panel = Inst(panelPrefab, frame, "Panel", 45, 237, 300, 370);
+            var panel = Inst(panelPrefab, frame, "Panel", 45, 203, 300, 438);
             var prt = (RectTransform)panel.transform;
             prt.anchorMin = prt.anchorMax = prt.pivot = new Vector2(.5f, .5f);
             prt.anchoredPosition = Vector2.zero;
@@ -864,8 +944,11 @@ namespace KoreanGame.EditorTools
             var close = IconButton(pt, "CloseButton", "ic_close", 238, 12, null, 48, 52);
             var sound = TextButton(secondaryPrefab, pt, "SoundButton", "Âm thanh: Bật", 30, 70, 240, 60, 18, out var soundLabel);
             var vib = TextButton(secondaryPrefab, pt, "VibrationButton", "Rung: Bật", 30, 138, 240, 60, 18, out var vibLabel);
-            var restart = TextButton(secondaryPrefab, pt, "RestartButton", "Chơi lại", 30, 216, 240, 60, 18, out _);
-            var home = TextButton(primaryPrefab, pt, "HomeButton", "Về menu", 30, 284, 240, 64, 20, out _);
+            var lang = TextButton(secondaryPrefab, pt, "LanguageButton", "Ngôn ngữ: Tiếng Việt", 30, 206, 240, 60, 18, out var langLabel);
+            var restart = TextButton(secondaryPrefab, pt, "RestartButton", "Chơi lại", 30, 284, 240, 60, 18, out _);
+            var home = TextButton(primaryPrefab, pt, "HomeButton", "Về menu", 30, 352, 240, 64, 20, out _);
+            SceneBuilder.Set(view, "languageButton", lang);
+            SceneBuilder.Set(view, "languageLabel", langLabel);
 
             SceneBuilder.Set(view, "root", root);
             root.SetActive(false);
@@ -909,7 +992,8 @@ namespace KoreanGame.EditorTools
             art.preserveAspect = true;
 
             var name = NewText(pt, "Name", "Bún chả", 28, Palette.UiText, heading);
-            TopLeft((RectTransform)name.transform, 20, 330, 302, 40);
+            TopLeft((RectTransform)name.transform, 20, 328, 302, 44);
+            FitText(name, 18, 28);
             var intro = NewText(pt, "Intro", "", 15, Palette.UiBrown, body);
             intro.horizontalOverflow = HorizontalWrapMode.Wrap;
             intro.alignment = TextAnchor.UpperCenter;
@@ -943,8 +1027,11 @@ namespace KoreanGame.EditorTools
             overlay.SetParent(b.hud.transform, false);
             Stretch(overlay, 0, 0, 0, 0);
             overlay.SetAsLastSibling();
-            var dims = new RectTransform[4];
-            for (int i = 0; i < 4; i++) dims[i] = NewImage(overlay, $"Dim{i}", 0, 0, 10, 10).rectTransform;
+            var dimGo = new GameObject("Dim", typeof(RectTransform), typeof(CanvasRenderer));
+            dimGo.transform.SetParent(overlay, false);
+            Stretch((RectTransform)dimGo.transform, 0, 0, 0, 0);
+            var dim = dimGo.AddComponent<DimGraphic>();
+            dim.raycastTarget = false;
             RectTransform Frame(string name)
             {
                 var f = Sliced(NewImage(overlay, name, 0, 0, 10, 10), Ui("ui_card_ring"), Palette.UiOrange);
@@ -967,18 +1054,21 @@ namespace KoreanGame.EditorTools
             var vi = NewText(tip.transform, "Vi", "", 17, Palette.UiText, body);
             vi.alignment = TextAnchor.MiddleLeft;
             vi.horizontalOverflow = HorizontalWrapMode.Wrap;
-            vi.resizeTextForBestFit = true; vi.resizeTextMinSize = 12; vi.resizeTextMaxSize = 17;
-            TopLeft(vi.rectTransform, 74, 8, 214, 36);
+            FitText(vi, 13, 17);
+            vi.lineSpacing = .95f;
+            TopLeft(vi.rectTransform, 74, 6, 214, 66);   // một ngôn ngữ mỗi lúc (đổi trong Cài đặt): dùng cả chiều cao khung
             var ko = NewText(tip.transform, "Ko", "", 13, Palette.UiBrown, korean);
             ko.alignment = TextAnchor.MiddleLeft;
             ko.horizontalOverflow = HorizontalWrapMode.Wrap;
             ko.resizeTextForBestFit = true; ko.resizeTextMinSize = 10; ko.resizeTextMaxSize = 13;
             TopLeft(ko.rectTransform, 74, 44, 214, 26);
-            var skip = TextButton(secondaryPrefab, tip.transform, "SkipButton", "Bỏ qua", 292, 22, 60, 34, 13, out _);
+            var skip = TextButton(secondaryPrefab, tip.transform, "SkipButton", "Bỏ qua", 292, 22, 60, 34, 13, out var skipLabel);
+            FitText(skipLabel, 10, 13);
 
             SceneBuilder.Set(mgr, "tutorials", TutorialLibrary.EnsureAll());
             SceneBuilder.Set(mgr, "overlay", overlay);
-            SceneBuilder.Set(mgr, "dims", dims);
+            SceneBuilder.Set(mgr, "dim", dim);
+            SceneBuilder.Set(mgr, "hintButton", b.hud.GetComponent<HintButton>()?.Rect);
             SceneBuilder.Set(mgr, "frameA", frameA);
             SceneBuilder.Set(mgr, "frameB", frameB);
             SceneBuilder.Set(mgr, "hand", hand.rectTransform);
@@ -1114,6 +1204,16 @@ namespace KoreanGame.EditorTools
             return img;
         }
 
+        /// <summary>Chữ động (tên món, câu dịch…): xuống dòng trong khung, dài quá thì tự co về tối thiểu min.</summary>
+        static void FitText(Text t, int min, int max)
+        {
+            t.horizontalOverflow = HorizontalWrapMode.Wrap;
+            t.verticalOverflow = VerticalWrapMode.Truncate;
+            t.resizeTextForBestFit = true;
+            t.resizeTextMinSize = min;
+            t.resizeTextMaxSize = max;
+        }
+
         static Text NewText(Transform parent, string name, string text, int size, Color col, Font font)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(Text));
@@ -1157,6 +1257,54 @@ namespace KoreanGame.EditorTools
                 }
                 var o = t.GetComponent<Outline>();
                 if (o != null) Object.DestroyImmediate(o);
+            }
+        }
+
+        // nhãn cố định → key bảng dịch (chữ động như "Màn 5", tên món… do view tự đặt theo ngôn ngữ)
+        static readonly Dictionary<string, string> LocKeys = new Dictionary<string, string>
+        {
+            { "Món mới trong hộp!", "side_toast.title" }, { "Hoàn tác", "ui.undo" }, { "Làm lại", "ui.restart" },
+            { "Gợi ý", "ui.hint" }, { "THẺ CẮT", "ui.cut_cards" }, { "Hộp cơm", "shop.tab.box" }, { "Thớt", "shop.tab.board" },
+            { "Theme", "shop.tab.theme" }, { "Hà Nội · Seoul", "region.both" }, { "Chơi tiếp", "ui.play" },
+            { "Hành trình", "ui.tab.journey" }, { "Trang chủ", "ui.tab.home" }, { "Cửa hàng", "ui.tab.shop" },
+            { "MÓN ĐẶC TRƯNG", "journey.dishes" }, { "MÓN PHỤ", "journey.sides" }, { "Bộ sưu tập", "journey.collection" },
+            { "Sổ hành trình", "journey.book" }, { "Chạm vào màn đã qua để chơi lại", "journey.replay_hint" },
+            { "Sắp có", "ui.coming_soon" }, { "Qua màn để mở, mua bằng vàng", "shop.hint_gold" }, { "Cài đặt", "ui.settings" },
+            { "Chơi lại", "ui.replay" }, { "Về menu", "ui.home" }, { "Món mới!", "dish_popup.title" }, { "Tuyệt!", "dish_popup.ok" },
+            { "Bỏ qua", "tut.skip" }, { "Hoàn thành!", "win.title" }, { "Mẫu", "ui.goal" },
+        };
+
+        // chip vùng ở bộ sưu tập: chỉ object tên "Label" (DishPopup tự đặt tên vùng của món)
+        static readonly Dictionary<string, string> RegionChips = new Dictionary<string, string> { { "Hà Nội", "region.hanoi" }, { "Seoul", "region.seoul" } };
+
+        /// <summary>Gắn LocText cho nhãn cố định; in ra các chữ tiếng Việt chưa có key để bổ sung sau.</summary>
+        static void ApplyLoc(Transform root)
+        {
+            var missing = new List<string>();
+            foreach (var t in root.GetComponentsInChildren<Text>(true))
+            {
+                if (string.IsNullOrEmpty(t.text) || t.GetComponent<LocText>() != null) continue;
+                if (!LocKeys.TryGetValue(t.text, out var key) && !(t.name == "Label" && RegionChips.TryGetValue(t.text, out key)))
+                {
+                    if (System.Text.RegularExpressions.Regex.IsMatch(t.text, "[À-ỹ]")) missing.Add($"{t.transform.parent.name}/{t.name}: {t.text}");
+                    continue;
+                }
+                t.gameObject.AddComponent<LocText>().Key = key;
+            }
+            if (missing.Count > 0) Debug.Log($"[BentoJourneyBuilder] {root.name}: chữ chưa gắn bảng dịch (view tự đặt hoặc cần thêm key):\n" + string.Join("\n", missing));
+        }
+
+        /// <summary>Baloo / Nunito không có chữ Hàn: khai NotoSansKR làm font dự phòng để mọi Text hiện được Hangul.</summary>
+        static void KoreanFallback(params Font[] fonts)
+        {
+            foreach (var f in fonts)
+            {
+                var path = AssetDatabase.GetAssetPath(f);
+                if (!(AssetImporter.GetAtPath(path) is TrueTypeFontImporter imp)) continue;
+                if (imp.fontReferences != null && System.Array.IndexOf(imp.fontReferences, korean) >= 0) continue;
+                imp.fontReferences = new[] { korean };
+                EditorUtility.SetDirty(imp);
+                imp.SaveAndReimport();
             }
         }
 

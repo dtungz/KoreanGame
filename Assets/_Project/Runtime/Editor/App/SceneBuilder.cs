@@ -298,12 +298,8 @@ namespace KoreanGame.EditorTools
                 src.spatialBlend = 0;
                 sources[i] = src;
             }
-            var names = new[] { "cut", "tick", "drop", "bad", "rotate", "pop", "lid", "win" };   // theo thứ tự enum Sfx
-            var clips = new AudioClip[names.Length];
-            for (int i = 0; i < names.Length; i++)
-                clips[i] = AssetDatabase.LoadAssetAtPath<AudioClip>($"Assets/_Project/Source/Audio/Gameplay_SFX/sfx_{names[i]}.wav");
             Set(mgr, "sources", sources);
-            Set(mgr, "clips", clips);
+            AudioLinker.Link(mgr);   // clip theo tên file trong Source/Audio + nguồn nhạc nền
             return mgr;
         }
 

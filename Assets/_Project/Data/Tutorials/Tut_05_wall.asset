@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: wall
   levelIndex: 4
+  version: 2
   steps:
   - key: tut.wall.step1
     vi: "Kh\xF4ng \u0111\u1EB7t c\u01A1m v\u1EAFt qua v\xE1ch"

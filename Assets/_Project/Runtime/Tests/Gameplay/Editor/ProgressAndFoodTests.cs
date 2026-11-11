@@ -56,6 +56,38 @@ namespace KoreanGame.Tests
         }
 
         [Test]
+        public void GoldSpendNeverGoesNegative()
+        {
+            bool had = PlayerPrefs.HasKey(GoldSave.Key);
+            int saved = GoldSave.Gold;
+            try
+            {
+                PlayerPrefs.SetInt(GoldSave.Key, 10);
+                Assert.IsFalse(GoldSave.Spend(GoldSave.HintPrice), "thiếu vàng: không trừ");
+                Assert.AreEqual(10, GoldSave.Gold);
+                GoldSave.Add(GoldSave.WinFirst);
+                Assert.IsTrue(GoldSave.Spend(GoldSave.HintPrice));
+                Assert.AreEqual(10 + GoldSave.WinFirst - GoldSave.HintPrice, GoldSave.Gold);
+            }
+            finally
+            {
+                if (had) PlayerPrefs.SetInt(GoldSave.Key, saved); else PlayerPrefs.DeleteKey(GoldSave.Key);
+                PlayerPrefs.Save();
+            }
+        }
+
+        [Test]
+        public void ShopDefaultsAreFreeOthersHavePrice()
+        {
+            var cat = AssetDatabase.LoadAssetAtPath<ShopCatalog>(BentoJourneyBuilder.ShopPath);
+            if (cat == null) Assert.Ignore("Chưa có ShopCatalog");
+            foreach (ShopCategory c in System.Enum.GetValues(typeof(ShopCategory)))
+                Assert.AreEqual(0, cat.Default(c).price, $"{c}: món mặc định phải miễn phí");
+            foreach (var it in cat.items)
+                if (it.unlockAfter > 0) Assert.Greater(it.price, 0, $"{it.displayName}: món mở thêm phải có giá");
+        }
+
+        [Test]
         public void ReplayingOldLevelDoesNotLowerUnlocked()
         {
             ProgressSave.MarkCleared(4);

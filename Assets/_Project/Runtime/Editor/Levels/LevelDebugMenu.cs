@@ -47,8 +47,16 @@ namespace KoreanGame.EditorTools
         {
             ProgressSave.Reset();
             CollectionSave.Reset();
+            GoldSave.Reset();
             Controller?.Load(0);
-            Debug.Log("[Debug] Đã xoá tiến độ và bộ sưu tập, về Level 1.");
+            Debug.Log("[Debug] Đã xoá tiến độ, bộ sưu tập và vàng, về Level 1.");
+        }
+
+        [MenuItem(Root + "Add 500 Gold", false, 61)]
+        public static void AddGold()
+        {
+            GoldSave.Add(500);
+            Debug.Log("[Debug] +500 vàng, hiện có " + GoldSave.Gold);
         }
 
         [MenuItem(Root + "Next Level %&RIGHT", true)]

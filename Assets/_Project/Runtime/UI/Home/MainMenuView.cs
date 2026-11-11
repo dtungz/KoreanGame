@@ -1,6 +1,7 @@
 using DG.Tweening;
 using KoreanGame.Core;
 using KoreanGame.Gameplay;
+using KoreanGame.Shared;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,8 +47,10 @@ namespace KoreanGame.Home
             {
                 int k = i;
                 tabs[i].onClick.AddListener(() => SelectTab(k));
+                ButtonPress.SetSound(tabs[i], Sfx.Tab);
             }
             shop.Init();
+            EventBus<LanguageChangedEvent>.Subscribe(OnLanguage);
             journey.Init(PlayLevel);
             if (settings != null) settingsButton.onClick.AddListener(() => settings.Open(false));
             root.SetActive(false);
@@ -63,9 +66,10 @@ namespace KoreanGame.Home
             root.SetActive(true);
             EventBus<MenuOpenedEvent>.Raise(default);
             group.alpha = 1;
+            group.blocksRaycasts = true;
             SetPage(HomeTab);
             Park(HomeTab);
-            playLabel.text = $"Màn {controller.Index + 1}";
+            playLabel.text = LocNames.Level(controller.Index + 1);
             input.Enabled = false;   // chạm vào menu không lọt xuống tay bài / thớt bên dưới
             StartIdle();
         }
@@ -141,7 +145,7 @@ namespace KoreanGame.Home
         {
             if (leaving) return;
             controller.Load(level);
-            playLabel.text = $"Màn {controller.Index + 1}";
+            playLabel.text = LocNames.Level(controller.Index + 1);
             Play();
         }
 
@@ -151,6 +155,7 @@ namespace KoreanGame.Home
             if (switching) this.KillTweens(true);
             leaving = true;
             this.KillTweens();
+            group.blocksRaycasts = false;   // xe đang chạy đi: chạm lọt xuống màn chơi (nút Cài đặt, Gợi ý… bấm được ngay)
             var from = truck.anchoredPosition;
             var exit = new Vector2(-truck.sizeDelta.x - Off, from.y);   // theo hướng đầu xe
             float p = 0;
@@ -169,5 +174,16 @@ namespace KoreanGame.Home
         }
 
         void OnDisable() => this.KillTweens();
+
+        void OnDestroy() => EventBus<LanguageChangedEvent>.Unsubscribe(OnLanguage);
+
+        // đổi ngôn ngữ trong Cài đặt mở từ menu: vẽ lại nút Chơi và trang đang mở
+        void OnLanguage(LanguageChangedEvent e)
+        {
+            if (controller == null) return;
+            playLabel.text = LocNames.Level(controller.Index + 1);
+            if (current == JourneyTab) journey.Refresh();
+            if (current == ShopTab) shop.Redraw();
+        }
     }
 }

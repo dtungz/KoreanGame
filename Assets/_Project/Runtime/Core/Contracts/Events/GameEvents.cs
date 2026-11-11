@@ -16,6 +16,14 @@ namespace KoreanGame.Core
         public bool newDish;
         /// <summary>Giây chờ trước khi hiện popup (hiệu ứng nắp hộp / ảnh món chạy xong).</summary>
         public float popupDelay;
+        /// <summary>Vàng vừa nhận khi thắng màn.</summary>
+        public int gold;
+    }
+
+    /// <summary>Số vàng vừa đổi (kiếm / tiêu).</summary>
+    public struct GoldChangedEvent
+    {
+        public int gold;
     }
 
     /// <summary>Trạng thái thớt / tay bài đổi (cắt, kéo, hoàn tác...).</summary>

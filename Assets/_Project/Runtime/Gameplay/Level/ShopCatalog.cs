@@ -6,7 +6,7 @@ namespace KoreanGame.Gameplay
 {
     public enum ShopCategory { Box, Board, Theme }
 
-    /// <summary>Một món trang trí trong Cửa hàng. Mở theo tiến độ (qua đủ màn), không dùng tiền.</summary>
+    /// <summary>Một món trang trí trong Cửa hàng: mở theo tiến độ (qua đủ màn), rồi mua bằng vàng (price).</summary>
     [Serializable]
     public class ShopItem
     {
@@ -16,6 +16,8 @@ namespace KoreanGame.Gameplay
         public ShopCategory category;
         [Tooltip("Số màn phải qua để mở (0 = có sẵn)")]
         public int unlockAfter;
+        [Tooltip("Giá vàng sau khi đã mở (0 = miễn phí)")]
+        public int price;
         [Tooltip("Ảnh xem trước trong Cửa hàng (nhân với iconTint)")]
         public Sprite icon;
         public Color iconTint = Color.white;

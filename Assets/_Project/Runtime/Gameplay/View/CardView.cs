@@ -30,7 +30,7 @@ namespace KoreanGame.Gameplay
             var d = c.def;
             frame.sprite = d.family == CardFamily.Mold ? moldFrame : d.family == CardFamily.Diag ? diagFrame
                 : d.family == CardFamily.Line ? lineFrame : fnFrame;
-            nameText.text = d.displayName;
+            nameText.text = d.Name();
             rotBadge.SetActive(d.CanRotate);
 
             bool showIcon = d.icon != null;

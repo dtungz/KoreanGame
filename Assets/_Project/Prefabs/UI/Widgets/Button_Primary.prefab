@@ -137,6 +137,8 @@ MonoBehaviour:
   selectable: {fileID: 5387839875607126158}
   content: {fileID: 929146867276180976}
   offset: 4
+  sound: 8
+  silent: 0
 --- !u!1 &4074827947686087392
 GameObject:
   m_ObjectHideFlags: 0

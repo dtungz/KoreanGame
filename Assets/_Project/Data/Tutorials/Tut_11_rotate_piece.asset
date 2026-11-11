@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: rotate_piece
   levelIndex: 10
+  version: 2
   steps:
   - key: tut.rotate_piece.step1
     vi: "Th\u1EA3 th\u1EBB l\xEAn mi\u1EBFng c\u01A1m"

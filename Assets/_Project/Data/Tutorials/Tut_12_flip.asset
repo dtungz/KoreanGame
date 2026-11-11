@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: flip
   levelIndex: 11
+  version: 2
   steps:
   - key: tut.flip.step1
     vi: "L\u1EADt mi\u1EBFng c\u01A1m cho v\u1EEBa"

@@ -82,13 +82,13 @@ namespace KoreanGame.Gameplay
             pending = null;
             showing = s;
             icon.sprite = s.sprite;
-            nameText.text = s.displayName;
+            nameText.text = s.Name();
             root.SetActive(true);
             group.alpha = 0;
             panel.localScale = Vector3.one * .9f;
             this.KillTweens();
             var seq = DOTween.Sequence().Guard(this).AppendInterval(delay);
-            seq.AppendCallback(() => controller.HighlightFood(s.id));
+            seq.AppendCallback(() => { controller.HighlightFood(s.id); AudioManager.PlayUi(Sfx.NewSide); });
             seq.Append(DOTween.To(() => group.alpha, a => group.alpha = a, 1f, .2f));
             seq.Join(panel.DOScale(1f, .3f).SetEase(Ease.OutBack));
             seq.Append(icon.rectTransform.DOPunchScale(Vector3.one * .15f, .4f, 6, .5f));

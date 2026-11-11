@@ -20,11 +20,19 @@ namespace KoreanGame.Tests
         static readonly HashSet<string> OptionalInMain = new HashSet<string>
         {
             "GameBootstrap.mainMenu", "GameBootstrap.settingsPopup", "GameBootstrap.settingsButton",
-            "GameBootstrap.customerChat", "CardView.selectRing", "TrayView.catalog", "GameBootstrap.dishPopup", "GameBootstrap.cosmetics", "GameBootstrap.sideDishToast", "GameBootstrap.tutorial",
+            "GameBootstrap.customerChat", "CardView.selectRing", "TrayView.catalog", "GameBootstrap.dishPopup", "GameBootstrap.cosmetics", "GameBootstrap.sideDishToast", "GameBootstrap.tutorial", "GameBootstrap.hintButton",
+            "AudioManager.musicSource", "GameBootstrap.localization", "GameBootstrap.koreanFont",
         };
 
         // tham chiếu tuỳ chọn ở mọi scene (hiện chưa dùng ở đâu)
-        static readonly HashSet<string> OptionalAnywhere = new HashSet<string> { "GameBootstrap.targetPreview" };
+        static readonly HashSet<string> OptionalAnywhere = new HashSet<string> { "GameBootstrap.targetPreview", "HudView.cardsLeftText", "AudioManager.menuMusic", "AudioManager.gameMusic" };
+
+        // tiếng UI (từ Sfx.Click trở đi) chờ file âm thanh: để trống thì tiếng đó im, không lỗi
+        static bool OptionalClip(string key)
+        {
+            const string pre = "AudioManager.clips.Array.data[";
+            return key.StartsWith(pre) && int.TryParse(key.Substring(pre.Length).TrimEnd(']'), out int i) && i >= (int)KoreanGame.Core.Sfx.Click;
+        }
 
         static void RequireScene(string path)
         {
@@ -51,7 +59,7 @@ namespace KoreanGame.Tests
                         while (p.NextVisible(true))
                             if (p.propertyType == SerializedPropertyType.ObjectReference && p.objectReferenceValue == null
                                 && p.name != "m_Script" && p.name != "m_Material"
-                                && !OptionalAnywhere.Contains($"{mb.GetType().Name}.{p.propertyPath}")
+                                && !OptionalAnywhere.Contains($"{mb.GetType().Name}.{p.propertyPath}") && !OptionalClip($"{mb.GetType().Name}.{p.propertyPath}")
                                 && !(path == SceneBuilder.ScenePath && OptionalInMain.Contains($"{mb.GetType().Name}.{p.propertyPath}")))
                                 missing.Add($"{mb.GetType().Name} ({mb.name}).{p.propertyPath}");
                     }

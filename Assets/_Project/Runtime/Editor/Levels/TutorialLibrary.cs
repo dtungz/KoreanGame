@@ -13,12 +13,15 @@ namespace KoreanGame.EditorTools
     public static class TutorialLibrary
     {
         public const string Folder = "Assets/_Project/Data/Tutorials";
+        /// <summary>Tăng khi đổi nội dung bước: asset có phiên bản cũ hơn sẽ được ghi đè.</summary>
+        public const int Version = 2;
 
         static TutorialStep S(string key, string vi, string ko, TutTarget target, TutGesture gesture, TutTarget dragTo, TutDone done)
             => new TutorialStep { key = key, vi = vi, ko = ko, target = target, gesture = gesture, dragTo = dragTo, done = done };
 
         static TutorialStep Kind(TutorialStep s, CardKind k) { s.byKind = true; s.cardKind = k; return s; }
         static TutorialStep Effect(TutorialStep s, CardEffect e) { s.anyEffect = false; s.effect = e; return s; }
+        static TutorialStep Timer(TutorialStep s, float t) { s.timer = t; return s; }
 
         static readonly TutTarget Big = TutTarget.PieceLargestOutside;
 
@@ -29,6 +32,9 @@ namespace KoreanGame.EditorTools
             {
                 S("tut.cut_drag.step1", "Kéo thẻ lên cơm để cắt", "카드를 밥 위로 끌어 자르세요", TutTarget.Card, TutGesture.Drag, Big, TutDone.CardUsed),
                 S("tut.cut_drag.step2", "Kéo miếng cơm vào hộp", "밥을 도시락에 넣으세요", Big, TutGesture.Drag, TutTarget.TrayEmpty, TutDone.PieceIntoTray),
+                Timer(S("tut.cut_drag.undo", "Lỡ tay? Bấm Hoàn tác", "실수하면 되돌리기를 눌러요", TutTarget.Undo, TutGesture.Tap, TutTarget.None, TutDone.Timer), 3f),
+                Timer(S("tut.cut_drag.restart", "Làm lại để xếp từ đầu", "처음부터 다시 할 수 있어요", TutTarget.Restart, TutGesture.Tap, TutTarget.None, TutDone.Timer), 3f),
+                Timer(S("tut.cut_drag.hint", "Bí thì bấm Gợi ý", "막히면 힌트를 눌러요", TutTarget.HintButton, TutGesture.Tap, TutTarget.None, TutDone.Timer), 3f),
                 S("tut.cut_drag.step3", "Lấp kín hộp nhé!", "도시락을 가득 채워요!", Big, TutGesture.Drag, TutTarget.TrayEmpty, TutDone.Win),
             });
             yield return ("rotate_card", 2, new[]
@@ -82,13 +88,16 @@ namespace KoreanGame.EditorTools
             {
                 var path = $"{Folder}/Tut_{level:00}_{id}.asset";
                 var t = AssetDatabase.LoadAssetAtPath<TutorialDef>(path);
-                if (t == null)
+                bool create = t == null;
+                if (create) t = ScriptableObject.CreateInstance<TutorialDef>();
+                if (create || t.version < Version)
                 {
-                    t = ScriptableObject.CreateInstance<TutorialDef>();
                     t.id = id;
                     t.levelIndex = level - 1;
+                    t.version = Version;
                     t.steps = new List<TutorialStep>(steps);
-                    AssetDatabase.CreateAsset(t, path);
+                    if (create) AssetDatabase.CreateAsset(t, path);
+                    else EditorUtility.SetDirty(t);
                 }
                 list.Add(t);
             }

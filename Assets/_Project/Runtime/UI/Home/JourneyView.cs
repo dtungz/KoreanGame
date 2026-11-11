@@ -38,7 +38,6 @@ namespace KoreanGame.Home
         [SerializeField] RouteBookView book;
 
         static readonly Color Locked = new Color(Palette.UiBrown.r, Palette.UiBrown.g, Palette.UiBrown.b, .4f);
-        const string Hint = "Chạm vào một món để xem giới thiệu.";
 
         bool wired, showBook;
 
@@ -75,7 +74,7 @@ namespace KoreanGame.Home
                 dishIcons[i].color = has ? Color.white : Locked;
                 dishIcons[i].rectTransform.localScale = has ? Vector3.one : Vector3.one * .5f;
                 dishLocks[i].SetActive(false);
-                dishLabels[i].text = has ? d.displayName : lvl >= 0 ? $"Màn {lvl + 1}" : "???";
+                dishLabels[i].text = has ? d.Name() : lvl >= 0 ? LocNames.Level(lvl + 1) : "???";
             }
             for (int i = 0; i < sideCells.Length && i < catalog.sideDishes.Count; i++)
             {
@@ -86,7 +85,7 @@ namespace KoreanGame.Home
             }
             dishCount.text = $"{open}/{Mathf.Min(dishCells.Length, catalog.dishes.Count)}";
             sideCount.text = $"{seen}/{Mathf.Min(sideCells.Length, catalog.sideDishes.Count)}";
-            detailText.text = Hint;
+            detailText.text = Loc.T("journey.tap_hint");
         }
 
         void Wire()
@@ -109,8 +108,8 @@ namespace KoreanGame.Home
             if (i >= catalog.dishes.Count) return;
             var d = catalog.dishes[i];
             detailText.text = DishOpen(d, out int lvl)
-                ? $"<b>{d.displayName}</b> · {RegionName(d.region)}\n{d.intro}"
-                : $"<b>Món bí mật</b> · {RegionName(d.region)}\nQua Màn {lvl + 1} để mở khoá món này.";
+                ? $"<b>{d.Name()}</b> · {LocNames.Region(d.region)}\n{d.Intro()}"
+                : $"<b>{Loc.T("journey.secret")}</b> · {LocNames.Region(d.region)}\n{Loc.T("journey.unlock_at", lvl + 1)}";
         }
 
         void ShowSide(int i)
@@ -118,8 +117,8 @@ namespace KoreanGame.Home
             if (i >= catalog.sideDishes.Count) return;
             var s = catalog.sideDishes[i];
             detailText.text = SideSeen(s.id)
-                ? $"<b>{s.displayName}</b> · {(s.region == FoodRegion.None ? "món phụ quen thuộc" : "món phụ " + RegionName(s.region))}"
-                : "<b>Món phụ chưa gặp</b>\nTiếp tục hành trình để gặp món này trong hộp cơm.";
+                ? $"<b>{s.Name()}</b> · {(s.region == FoodRegion.None ? Loc.T("journey.side_common") : Loc.T("journey.side_region", LocNames.Region(s.region)))}"
+                : $"<b>{Loc.T("journey.side_unknown")}</b>\n{Loc.T("journey.side_unknown_hint")}";
         }
 
         bool DishOpen(DishData d, out int level)
@@ -140,7 +139,5 @@ namespace KoreanGame.Home
             }
             return false;
         }
-
-        static string RegionName(FoodRegion r) => r == FoodRegion.HaNoi ? "Hà Nội" : r == FoodRegion.Seoul ? "Seoul" : "";
     }
 }

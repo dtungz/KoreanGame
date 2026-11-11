@@ -9,6 +9,15 @@ namespace KoreanGame.Core
 
         public static string Get(string category) => PlayerPrefs.GetString(Prefix + category, "");
 
+        /// <summary>Đồ trang trí đã mua bằng vàng (PlayerPrefs "owned.&lt;id&gt;").</summary>
+        public static bool Owned(string id) => PlayerPrefs.GetInt("owned." + id, 0) == 1;
+
+        public static void Own(string id)
+        {
+            PlayerPrefs.SetInt("owned." + id, 1);
+            PlayerPrefs.Save();
+        }
+
         public static void Set(string category, string id)
         {
             PlayerPrefs.SetString(Prefix + category, id);

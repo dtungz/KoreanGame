@@ -17,6 +17,7 @@ MonoBehaviour:
     displayName: "H\u1ED9p thi\u1EBFc"
     category: 0
     unlockAfter: 0
+    price: 0
     icon: {fileID: 21300000, guid: 811782a4613d3694ba04f53aa5163699, type: 3}
     iconTint: {r: 1, g: 1, b: 1, a: 1}
     customBox: 0
@@ -29,6 +30,7 @@ MonoBehaviour:
     displayName: "H\u1ED9p g\u1ED7"
     category: 0
     unlockAfter: 10
+    price: 120
     icon: {fileID: 21300000, guid: c0bdb302a8494814198db8c7ffb0826a, type: 3}
     iconTint: {r: 1, g: 1, b: 1, a: 1}
     customBox: 1
@@ -41,6 +43,7 @@ MonoBehaviour:
     displayName: "H\u1ED9p s\u1EE9 xanh"
     category: 0
     unlockAfter: 25
+    price: 240
     icon: {fileID: 21300000, guid: 76d6eec829e198743ad8054f315c7720, type: 3}
     iconTint: {r: 1, g: 1, b: 1, a: 1}
     customBox: 1
@@ -53,6 +56,7 @@ MonoBehaviour:
     displayName: "G\u1ED7 s\xE1ng"
     category: 1
     unlockAfter: 0
+    price: 0
     icon: {fileID: 21300000, guid: dc4867090e308c046a6918d03e4e19ec, type: 3}
     iconTint: {r: 1, g: 1, b: 1, a: 1}
     customBox: 0
@@ -65,6 +69,7 @@ MonoBehaviour:
     displayName: "G\u1ED7 t\u1ED1i"
     category: 1
     unlockAfter: 15
+    price: 120
     icon: {fileID: 21300000, guid: 8aac4c8168b56024583e60a0f1583b68, type: 3}
     iconTint: {r: 1, g: 1, b: 1, a: 1}
     customBox: 0
@@ -77,6 +82,7 @@ MonoBehaviour:
     displayName: "Th\u1EDBt \u0111\xE1"
     category: 1
     unlockAfter: 30
+    price: 240
     icon: {fileID: 21300000, guid: 82c27b91f227bc14e855248314a0be11, type: 3}
     iconTint: {r: 1, g: 1, b: 1, a: 1}
     customBox: 0
@@ -89,6 +95,7 @@ MonoBehaviour:
     displayName: "H\xE0 N\u1ED9i ban ng\xE0y"
     category: 2
     unlockAfter: 0
+    price: 0
     icon: {fileID: 21300000, guid: 30853fb5ee1a02d4d84606e12aced24e, type: 3}
     iconTint: {r: 1, g: 1, b: 1, a: 1}
     customBox: 0
@@ -101,6 +108,7 @@ MonoBehaviour:
     displayName: "Seoul v\u1EC1 \u0111\xEAm"
     category: 2
     unlockAfter: 20
+    price: 300
     icon: {fileID: 21300000, guid: cebaa2e8a631b0748a8a32f00ac18bc5, type: 3}
     iconTint: {r: 1, g: 1, b: 1, a: 1}
     customBox: 0

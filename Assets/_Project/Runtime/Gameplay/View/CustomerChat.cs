@@ -32,10 +32,11 @@ namespace KoreanGame.Gameplay
         public void Init(LevelController c)
         {
             controller = c;
-            avatarButton.onClick.AddListener(() => Say(PickTalk()));
+            avatarButton.onClick.AddListener(() => Say(Loc.Current != Lang.Vi ? ForeignPick("order") : PickTalk()));
             EventBus<LevelLoadedEvent>.Subscribe(OnLoaded);
             EventBus<LevelWonEvent>.Subscribe(OnWon);
             EventBus<MenuClosedEvent>.Subscribe(OnMenuClosed);
+            EventBus<LanguageChangedEvent>.Subscribe(OnLanguage);
             speechText.text = "";
         }
 
@@ -44,6 +45,7 @@ namespace KoreanGame.Gameplay
             EventBus<LevelLoadedEvent>.Unsubscribe(OnLoaded);
             EventBus<LevelWonEvent>.Unsubscribe(OnWon);
             EventBus<MenuClosedEvent>.Unsubscribe(OnMenuClosed);
+            EventBus<LanguageChangedEvent>.Unsubscribe(OnLanguage);
         }
 
         void OnDisable() => this.KillTweens(true);
@@ -51,16 +53,64 @@ namespace KoreanGame.Gameplay
         void OnLoaded(LevelLoadedEvent e)
         {
             var L = controller.Level;
-            var dish = L != null ? L.unlocksDish : null;
-            var side = Side(L);
             var faces = L != null && L.region == FoodRegion.Seoul ? seoulFaces : hanoiFaces;
             if (avatar != null && faces != null && faces.Length > 0)
                 avatar.sprite = faces[(e.index * 7 + 3) % faces.Length];   // trải đều, chơi lại vẫn gặp đúng người cũ
 
-            if (L != null && !string.IsNullOrWhiteSpace(L.customerLine)) levelLine = L.customerLine;
-            else if (dish != null) levelLine = Format(lines.dishOrder, dish.displayName);
-            else if (side != null && Random.value < .7f) levelLine = Format(lines.sideOrder, side.displayName);
-            else levelLine = PickTalk();
+            levelLine = OrderLine();
+            Say(levelLine);
+        }
+
+        /// <summary>Câu gọi món của màn. Tiếng Việt: kho câu trong CustomerLines; Hàn / Anh: bảng dịch (order.*).</summary>
+        string OrderLine()
+        {
+            var L = controller.Level;
+            var dish = L != null ? L.unlocksDish : null;
+            var side = Side(L);
+            if (Loc.Current != Lang.Vi)
+            {
+                if (dish != null) return Loc.Or(LevelKey("order"), ForeignPick("order"));
+                if (side != null && Random.value < .7f)
+                {
+                    var n = side.Name();
+                    if (Loc.Current == Lang.En && n.Length > 1) n = char.ToLowerInvariant(n[0]) + n.Substring(1);   // giữa câu tiếng Anh viết thường
+                    return Loc.T($"order.side.{RegionKey}", n);
+                }
+                return ForeignPick("order");
+            }
+            if (L != null && !string.IsNullOrWhiteSpace(L.customerLine)) return L.customerLine;
+            if (dish != null) return Format(lines.dishOrder, dish.Name());
+            if (side != null && Random.value < .7f) return Format(lines.sideOrder, side.Name());
+            return PickTalk();
+        }
+
+        string RegionKey => controller.Level != null && controller.Level.region == FoodRegion.Seoul ? "seoul" : "hanoi";
+
+        string LevelKey(string kind) => $"{kind}.level{controller.Index + 1:00}.line";
+
+        /// <summary>Câu ngẫu nhiên trong order.&lt;vùng&gt;.01, 02… (hoặc thanks.*) của bảng dịch, tránh lặp câu vừa nói.</summary>
+        string ForeignPick(string kind)
+        {
+            var keys = new System.Collections.Generic.List<string>();
+            for (int i = 1; i < 20; i++)
+            {
+                var k = $"{kind}.{RegionKey}.{i:00}";
+                if (Loc.Has(k)) keys.Add(k); else break;
+            }
+            if (keys.Count == 0) return null;
+            for (int tries = 0; tries < 4; tries++)
+            {
+                var s = Loc.T(keys[Random.Range(0, keys.Count)]);
+                if (s != last || keys.Count == 1) return s;
+            }
+            return Loc.T(keys[0]);
+        }
+
+        // đổi ngôn ngữ giữa màn: khách nói lại câu gọi món bằng ngôn ngữ mới
+        void OnLanguage(LanguageChangedEvent e)
+        {
+            if (controller == null || controller.Level == null || controller.Won) return;
+            levelLine = OrderLine();
             Say(levelLine);
         }
 
@@ -70,7 +120,8 @@ namespace KoreanGame.Gameplay
         void OnWon(LevelWonEvent e)
         {
             var dish = controller.Level != null ? controller.Level.unlocksDish : null;
-            Say(dish != null ? Format(lines.dishWin, dish.displayName) : Pick(lines.win));
+            if (Loc.Current != Lang.Vi) Say(dish != null ? Loc.Or(LevelKey("thanks"), ForeignPick("thanks")) : ForeignPick("thanks"));
+            else Say(dish != null ? Format(lines.dishWin, dish.Name()) : Pick(lines.win));
         }
 
         /// <summary>Món phụ đầu tiên của màn có trong danh mục (null nếu màn không có món phụ).</summary>

@@ -47,9 +47,9 @@ namespace KoreanGame.Gameplay
             if (!e.newDish || dish == null) return;
             art.sprite = dish.art;
             art.enabled = dish.art != null;
-            nameText.text = dish.displayName;
-            regionText.text = dish.region == FoodRegion.Seoul ? "Seoul" : dish.region == FoodRegion.HaNoi ? "Hà Nội" : "";
-            introText.text = dish.intro;
+            nameText.text = dish.Name();
+            regionText.text = LocNames.Region(dish.region);
+            introText.text = dish.Intro();
 
             root.SetActive(true);
             group.alpha = 0;
