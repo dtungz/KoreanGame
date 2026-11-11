@@ -167,3 +167,6 @@ dish.kimbap.intro,"Cơm cuộn rong biển với trứng, rau, củ cải vàng,
 dish.nem_ran.intro,"Cuốn nhân thịt, miến, mộc nhĩ rồi rán vàng giòn. Mâm cơm ngày Tết không thể thiếu.","고기, 당면, 목이버섯을 말아 노릇하게 튀겼어요. 베트남 설날 상에 꼭 오르는 음식이에요.","Rolls of pork, glass noodles and wood-ear mushroom, fried golden. A must at Tết feasts.",,★
 dish.pho.intro,"Bánh phở mềm, nước dùng ninh xương trong veo. Một bát phở nóng là cả buổi sáng Hà Nội.",부드러운 면에 뼈를 우린 맑은 국물. 뜨끈한 쌀국수 한 그릇이 하노이의 아침이에요.,Soft rice noodles in a clear bone broth. A hot bowl of pho is a Hanoi morning.,,★
 dish.tteokbokki.intro,"Bánh gạo dẻo sốt cay ngọt đỏ au, món ăn vặt được yêu thích nhất ở Seoul.","쫄깃한 떡에 빨갛고 매콤달콤한 소스, 서울에서 가장 사랑받는 간식이에요.","Chewy rice cakes in a red sweet-spicy sauce, Seoul's best-loved snack.",,★
+journey.dish_title,Món đặc trưng,대표 메뉴,Signature dish,,★
+journey.side_title,Món phụ,반찬,Side dish,,★
+ui.close,Đóng,닫기,Close,,★

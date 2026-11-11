@@ -79,6 +79,7 @@ namespace KoreanGame.EditorTools
             var menu = BuildMainMenu(built.ui, out var menuFrame);
 
             SceneBuilder.Set(built.boot, "mainMenu", menu);
+            SceneBuilder.Set(menu.GetComponentInChildren<JourneyView>(true), "infoPopup", dishPopup);   // chạm món trong bộ sưu tập: popup chữ to
             SceneBuilder.Set(built.boot, "cosmetics", menu.GetComponent<CosmeticsApplier>());
             SceneBuilder.Set(built.boot, "settingsPopup", settings);
             SceneBuilder.Set(built.boot, "settingsButton", hudSettings);
@@ -102,7 +103,7 @@ namespace KoreanGame.EditorTools
             so.FindProperty("boardSize").vector2Value = BoardSize;
             so.ApplyModifiedPropertiesWithoutUndo();
 
-            foreach (var c in new[] { built.hud.gameObject, built.popup.gameObject, menu.gameObject }) { ApplyFonts(c.transform); ApplyLoc(c.transform); }
+            foreach (var c in new[] { built.hud.gameObject, built.popup.gameObject, menu.gameObject }) { ApplyFonts(c.transform); Readable(c.transform); ApplyLoc(c.transform); }
 
             SavePrefab(built.hud.gameObject, HudPrefabPath);
             SavePrefab(built.popup.gameObject, PopupPrefabPath);
@@ -272,7 +273,7 @@ namespace KoreanGame.EditorTools
 
             var speech = NewText(bubble, "Speech", "", 15, Palette.UiText, body);
             speech.alignment = TextAnchor.MiddleLeft;
-            speech.horizontalOverflow = HorizontalWrapMode.Wrap;
+            FitText(speech, 13, 17);   // câu thường cỡ 16-17, câu dài nhất co tới 13 cho vừa bong bóng 2 dòng
             speech.lineSpacing = .9f;
             Stretch(speech.rectTransform, 16, 8, 14, 4);
 
@@ -496,33 +497,18 @@ namespace KoreanGame.EditorTools
 
             var play = Inst(primaryPrefab, home, "PlayButton", 40, 638, 310, 80);
             var content = play.transform.Find("Content");
-            // cụm [▶  Chơi tiếp / Màn N] luôn nằm giữa nút, chữ dài ngắn theo ngôn ngữ nào cũng vậy
-            var playGroup = new GameObject("Group", typeof(RectTransform), typeof(HorizontalLayoutGroup));
-            playGroup.transform.SetParent(content, false);
-            Stretch((RectTransform)playGroup.transform, 0, 0, 0, 0);
-            var hl = playGroup.GetComponent<HorizontalLayoutGroup>();
-            hl.childAlignment = TextAnchor.MiddleCenter;
-            hl.spacing = 14;
-            hl.childControlWidth = hl.childControlHeight = true;
-            hl.childForceExpandWidth = hl.childForceExpandHeight = false;
-            var playIcon = NewImage(playGroup.transform, "PlayIcon", 0, 0, 34, 34);
-            playIcon.sprite = Ui("ic_play");
-            playIcon.preserveAspect = true;
-            var ile = playIcon.gameObject.AddComponent<LayoutElement>();
-            ile.preferredWidth = ile.preferredHeight = 34;
-            var texts = new GameObject("Texts", typeof(RectTransform), typeof(VerticalLayoutGroup));
-            texts.transform.SetParent(playGroup.transform, false);
-            var vl = texts.GetComponent<VerticalLayoutGroup>();
-            vl.childAlignment = TextAnchor.MiddleCenter;
-            vl.spacing = -1;
-            vl.childControlWidth = vl.childControlHeight = true;
-            vl.childForceExpandWidth = vl.childForceExpandHeight = false;
-            // nhãn của prefab không chuyển cha được (con của prefab instance): ẩn đi, dùng nhãn mới trong cụm
-            var prefabLabel = content.Find("Label").GetComponent<Text>();
+            // hai dòng chữ trải hết chiều ngang nút, căn giữa tuyệt đối (không icon, không layout: chữ dài ngắn ngôn ngữ nào cũng giữa)
+            var prefabLabel = content.Find("Label").GetComponent<Text>();   // nhãn của prefab (con prefab instance không đổi cha được): ẩn
             prefabLabel.text = "";
             prefabLabel.gameObject.SetActive(false);
-            var title = NewText(texts.transform, "Label", "Chơi tiếp", 30, prefabLabel.color, heading);
-            var sub = NewText(texts.transform, "Sub", "Màn 1", 15, Palette.UiText, body);
+            var title = NewText(content, "Label", "Chơi tiếp", 32, prefabLabel.color, heading);
+            title.alignment = TextAnchor.MiddleCenter;
+            Stretch(title.rectTransform, 16, 26, 16, 2);    // nửa trên (cao 47: đủ cỡ 32 không bị co)
+            FitText(title, 22, 32);
+            var sub = NewText(content, "Sub", "Màn 1", 18, Palette.UiText, body);
+            sub.alignment = TextAnchor.MiddleCenter;
+            Stretch(sub.rectTransform, 16, 4, 16, 48);      // dải dưới (cao 23)
+            FitText(sub, 14, 18);
 
             // ---- chung: nút Cài đặt (trên trái), thanh 3 tab (dưới) ----
             var settingsBtn = IconButton(frame, "SettingsButton", "ic_gear", 16, 16, null);
@@ -620,13 +606,13 @@ namespace KoreanGame.EditorTools
                 TopLeft(count.rectTransform, 238, y, 100, 24);
                 return h;
             }
-            Button Cell(string name, float x, float y, float w, float h, out Image icon, float size)
+            Button Cell(string name, float x, float y, float w, float h, out Image icon, float size, float top = 6)
             {
                 var bg = Sliced(NewImage(content, name, x, y, w, h), Ui("ui_card"), Color.white);
                 bg.raycastTarget = true;
                 var btn = bg.gameObject.AddComponent<Button>();
                 btn.targetGraphic = bg;
-                icon = NewImage(bg.transform, "Icon", (w - size) / 2, 6, size, size);
+                icon = NewImage(bg.transform, "Icon", (w - size) / 2, top, size, size);
                 icon.preserveAspect = true;
                 CenterPivot(icon.rectTransform);
                 return btn;
@@ -651,9 +637,9 @@ namespace KoreanGame.EditorTools
                 {
                     int i = start + k;
                     dishCells[i] = Cell($"Dish{i}", dx0 + k % 2 * (dw + dgap), y + k / 2 * (dh + dgap), dw, dh, out dishIcons[i], 112);
-                    TopLeft(dishIcons[i].rectTransform, 7, 8, dw - 14, 110);   // khung icon chữ nhật: món dáng dài (bánh mì, nem) không bị thu nhỏ
+                    TopLeft(dishIcons[i].rectTransform, 16, 14, dw - 32, 98);   // khung icon chữ nhật, chừa lề 16 trong ô: món dáng dài không chạm viền
                     CenterPivot(dishIcons[i].rectTransform);
-                    var lockImg = NewImage(dishCells[i].transform, "Lock", dw - 34, 8, 26, 26);
+                    var lockImg = NewImage(dishCells[i].transform, "Lock", dw - 30, 6, 22, 22);
                     lockImg.sprite = Ui("ic_lock");
                     lockImg.preserveAspect = true;
                     dishLocks[i] = lockImg.gameObject;
@@ -674,7 +660,7 @@ namespace KoreanGame.EditorTools
             var sideIcons = new Image[ns];
             const float sw = 76, sh = 76, sgap = 8;
             for (int i = 0; i < ns; i++)
-                sideCells[i] = Cell($"Side{i}", 19 + i % 4 * (sw + sgap), y + i / 4 * (sh + sgap), sw, sh, out sideIcons[i], 64);
+                sideCells[i] = Cell($"Side{i}", 19 + i % 4 * (sw + sgap), y + i / 4 * (sh + sgap), sw, sh, out sideIcons[i], 54, (sh - 8 - 54) / 2);   // ảnh nằm gọn trong mặt ô (chừa viền bóng 8 ở đáy)
             y += ((ns + 3) / 4) * (sh + sgap) + 8;
             content.anchorMin = new Vector2(0, 1);
             content.anchorMax = new Vector2(1, 1);
@@ -973,7 +959,7 @@ namespace KoreanGame.EditorTools
             root.AddComponent<Image>().color = new Color(Palette.UiText.r, Palette.UiText.g, Palette.UiText.b, .55f);
             frame = NewFrame(root.transform, "Frame", 390, 844);
 
-            var panel = Inst(panelPrefab, frame, "Panel", 24, 150, 342, 540);
+            var panel = Inst(panelPrefab, frame, "Panel", 24, 130, 342, 590);
             var prt = (RectTransform)panel.transform;
             prt.anchorMin = prt.anchorMax = prt.pivot = new Vector2(.5f, .5f);
             prt.anchoredPosition = new Vector2(0, 10);
@@ -994,12 +980,12 @@ namespace KoreanGame.EditorTools
             var name = NewText(pt, "Name", "Bún chả", 28, Palette.UiText, heading);
             TopLeft((RectTransform)name.transform, 20, 328, 302, 44);
             FitText(name, 18, 28);
-            var intro = NewText(pt, "Intro", "", 15, Palette.UiBrown, body);
-            intro.horizontalOverflow = HorizontalWrapMode.Wrap;
+            var intro = NewText(pt, "Intro", "", 18, Palette.UiBrown, body);   // mô tả chữ to, dễ đọc
+            FitText(intro, 15, 18);
             intro.alignment = TextAnchor.UpperCenter;
             intro.lineSpacing = .95f;
-            TopLeft(intro.rectTransform, 26, 374, 290, 74);
-            var ok = TextButton(primaryPrefab, pt, "OkButton", "Tuyệt!", 61, 456, 220, 64, 22, out _);
+            TopLeft(intro.rectTransform, 22, 374, 298, 120);
+            var ok = TextButton(primaryPrefab, pt, "OkButton", "Tuyệt!", 61, 504, 220, 64, 22, out var okLabel);
 
             SceneBuilder.Set(view, "root", root);
             SceneBuilder.Set(view, "group", root.GetComponent<CanvasGroup>());
@@ -1009,6 +995,8 @@ namespace KoreanGame.EditorTools
             SceneBuilder.Set(view, "regionText", region);
             SceneBuilder.Set(view, "introText", intro);
             SceneBuilder.Set(view, "okButton", ok);
+            SceneBuilder.Set(view, "titleText", title);
+            SceneBuilder.Set(view, "okLabel", okLabel);
             root.transform.SetAsLastSibling();
             root.SetActive(false);
             return view;
@@ -1202,6 +1190,37 @@ namespace KoreanGame.EditorTools
             var img = go.GetComponent<Image>();
             img.raycastTarget = false;
             return img;
+        }
+
+        public const int MinReadable = 16;   // cỡ chữ nhỏ nhất (khung 390): nhỏ hơn thì khó đọc trên điện thoại
+
+        /// <summary>
+        /// Nâng mọi chữ lên tối thiểu MinReadable: ô thấp quá thì nới chiều cao (giữ mép trên),
+        /// ô chật thì tự co nhưng không nhỏ hơn cỡ cũ; chữ do layout xếp chỉ tăng cỡ.
+        /// </summary>
+        static void Readable(Transform root)
+        {
+            foreach (var t in root.GetComponentsInChildren<Text>(true))
+            {
+                if (t.name == "Glyph" || t.name == "Ko") continue;   // ký tự icon / dòng Hàn phụ (đã ẩn)
+                int cur = t.resizeTextForBestFit ? t.resizeTextMaxSize : t.fontSize;
+                if (cur >= MinReadable) continue;
+                if (t.transform.parent != null && t.transform.parent.GetComponent<LayoutGroup>() != null) { t.fontSize = MinReadable; continue; }
+                var rt = t.rectTransform;
+                float need = MinReadable * 1.4f;
+                if (rt.anchorMin.y == rt.anchorMax.y && rt.rect.height < need)
+                {
+                    float grow = need - rt.rect.height;
+                    rt.sizeDelta += new Vector2(0, grow);
+                    rt.anchoredPosition -= new Vector2(0, grow * (1 - rt.pivot.y));   // giữ mép trên
+                }
+                if (t.resizeTextForBestFit) { t.resizeTextMaxSize = MinReadable; t.fontSize = MinReadable; continue; }
+                t.fontSize = MinReadable;
+                t.resizeTextForBestFit = true;
+                t.resizeTextMinSize = Mathf.Max(cur, 10);
+                t.resizeTextMaxSize = MinReadable;
+                if (t.horizontalOverflow == HorizontalWrapMode.Overflow && rt.rect.width > 0) t.horizontalOverflow = HorizontalWrapMode.Wrap;
+            }
         }
 
         /// <summary>Chữ động (tên món, câu dịch…): xuống dòng trong khung, dài quá thì tự co về tối thiểu min.</summary>

@@ -257,6 +257,7 @@ namespace KoreanGame.EditorTools
         {
             var size = t.rectTransform.rect.size;
             if (size.x < 1 || size.y < 1) return null;
+            if (t.transform.parent != null && t.transform.parent.GetComponent<HorizontalOrVerticalLayoutGroup>() != null) return null;   // layout tự co giãn theo chữ
             var gen = new TextGenerator();
             var st = t.GetGenerationSettings(size);
             st.scaleFactor = 1;   // đo theo đơn vị khung thiết kế, không phụ thuộc cỡ Game view (canvas thu nhỏ làm font dựng ở vài pixel, sai số lớn)

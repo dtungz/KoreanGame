@@ -27,6 +27,8 @@ namespace KoreanGame.Home
         [SerializeField] Text dishCount;
         [SerializeField] Text sideCount;
         [SerializeField] Text detailText;
+        [Tooltip("Popup xem món (ảnh to + mô tả chữ to); để trống thì hiện ở dải dưới như cũ")]
+        [SerializeField] DishPopup infoPopup;
         [Tooltip("Món chưa mở: hiện ổ khoá thay cho icon (giữ bí mật món)")]
         [SerializeField] Sprite lockedIcon;
 
@@ -107,6 +109,13 @@ namespace KoreanGame.Home
         {
             if (i >= catalog.dishes.Count) return;
             var d = catalog.dishes[i];
+            if (infoPopup != null)
+            {
+                bool open = DishOpen(d, out int at);
+                if (open) infoPopup.ShowInfo(Loc.T("journey.dish_title"), d.icon != null ? d.icon : d.art, false, d.Name(), LocNames.Region(d.region), d.Intro(), Loc.T("ui.close"));
+                else infoPopup.ShowInfo(Loc.T("journey.dish_title"), lockedIcon, true, Loc.T("journey.secret"), LocNames.Region(d.region), Loc.T("journey.unlock_at", at + 1), Loc.T("ui.close"));
+                return;
+            }
             detailText.text = DishOpen(d, out int lvl)
                 ? $"<b>{d.Name()}</b> · {LocNames.Region(d.region)}\n{d.Intro()}"
                 : $"<b>{Loc.T("journey.secret")}</b> · {LocNames.Region(d.region)}\n{Loc.T("journey.unlock_at", lvl + 1)}";
@@ -116,6 +125,17 @@ namespace KoreanGame.Home
         {
             if (i >= catalog.sideDishes.Count) return;
             var s = catalog.sideDishes[i];
+            if (infoPopup != null)
+            {
+                if (SideSeen(s.id))
+                {
+                    string kind = s.region == FoodRegion.None ? Loc.T("journey.side_common") : Loc.T("journey.side_region", LocNames.Region(s.region));
+                    if (kind.Length > 0) kind = char.ToUpperInvariant(kind[0]) + kind.Substring(1);
+                    infoPopup.ShowInfo(Loc.T("journey.side_title"), s.sprite, false, s.Name(), LocNames.Region(s.region), kind, Loc.T("ui.close"));
+                }
+                else infoPopup.ShowInfo(Loc.T("journey.side_title"), s.sprite, true, Loc.T("journey.side_unknown"), "", Loc.T("journey.side_unknown_hint"), Loc.T("ui.close"));
+                return;
+            }
             detailText.text = SideSeen(s.id)
                 ? $"<b>{s.Name()}</b> · {(s.region == FoodRegion.None ? Loc.T("journey.side_common") : Loc.T("journey.side_region", LocNames.Region(s.region)))}"
                 : $"<b>{Loc.T("journey.side_unknown")}</b>\n{Loc.T("journey.side_unknown_hint")}";

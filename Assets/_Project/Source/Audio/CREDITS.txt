@@ -1,5 +1,5 @@
 ÂM THANH - NGUỒN VÀ GIẤY PHÉP
-Tất cả file dưới đây là CC0 (Creative Commons Zero / public domain): dùng miễn phí, kể cả bán thương mại, không bắt buộc ghi tên.
+Các file dưới đây là CC0 (trừ sfx_win.wav: Pixabay Content License) (Creative Commons Zero / public domain): dùng miễn phí, kể cả bán thương mại, không bắt buộc ghi tên.
 Vẫn ghi lại để tiện tra cứu và có thể cảm ơn tác giả trong màn Credits.
 
 == Nhạc nền (Music/) ==
@@ -10,18 +10,19 @@ bgm_game.ogg   "Cozy Puzzle In-Game 2" - MintoDog - CC0
 
 == Tiếng UI (UI_SFX/) - Kenney (www.kenney.nl) - CC0 ==
 sfx_click.ogg        Interface Sounds  select_007.ogg        https://kenney.nl/assets/interface-sounds
-sfx_tab.ogg          Interface Sounds  pluck_001.ogg
+sfx_tab.ogg          Interface Sounds  drop_002.ogg
 sfx_popup_open.ogg   Interface Sounds  maximize_008.ogg
 sfx_popup_close.ogg  Interface Sounds  minimize_008.ogg
 sfx_buy.ogg          Interface Sounds  confirmation_001.ogg
 sfx_hint.ogg         Interface Sounds  glass_002.ogg
 sfx_coin.ogg         Casino Audio      chips-stack-3.ogg     https://kenney.nl/assets/casino-audio
-sfx_new_dish.ogg     Music Jingles     jingles_PIZZI03.ogg   https://kenney.nl/assets/music-jingles
-sfx_new_side.ogg     Music Jingles     jingles_PIZZI04.ogg
+sfx_new_dish.ogg     Music Jingles     jingles_HIT15.ogg     https://kenney.nl/assets/music-jingles
+sfx_new_side.ogg     Music Jingles     jingles_HIT10.ogg
 
 == Gameplay_SFX/ ==
-sfx_win.wav          "Win sound effect" - Listener - CC0  https://opengameart.org/content/win-sound-effect
-                     (đã tăng âm lượng lên đỉnh -1 dB, cắt còn 1,6 giây, tắt dần cuối)
+sfx_win.wav          "yummy" - Pixabay (freesound_community)  https://pixabay.com/sound-effects/film-special-effects-yummy-82939/
+                     Pixabay Content License: dùng thương mại miễn phí, không bắt buộc ghi tên.
+                     (đã cắt khoảng lặng, tăng âm lượng lên đỉnh -1 dB)
 
 == Tiếng gameplay khác ==
 sfx_cut / tick / drop / bad / rotate / pop / lid: âm tự tổng hợp trong dự án.
