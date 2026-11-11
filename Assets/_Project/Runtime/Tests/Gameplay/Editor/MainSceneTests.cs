@@ -20,7 +20,7 @@ namespace KoreanGame.Tests
         static readonly HashSet<string> OptionalInMain = new HashSet<string>
         {
             "GameBootstrap.mainMenu", "GameBootstrap.settingsPopup", "GameBootstrap.settingsButton",
-            "GameBootstrap.customerChat", "CardView.selectRing", "TrayView.catalog", "GameBootstrap.dishPopup", "GameBootstrap.cosmetics", "GameBootstrap.sideDishToast",
+            "GameBootstrap.customerChat", "CardView.selectRing", "TrayView.catalog", "GameBootstrap.dishPopup", "GameBootstrap.cosmetics", "GameBootstrap.sideDishToast", "GameBootstrap.tutorial",
         };
 
         // tham chiếu tuỳ chọn ở mọi scene (hiện chưa dùng ở đâu)

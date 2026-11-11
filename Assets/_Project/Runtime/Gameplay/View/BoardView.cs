@@ -79,6 +79,9 @@ namespace KoreanGame.Gameplay
 
         static Vector3 Local(Vector2 board) => new Vector3(board.x, -board.y, 0);
 
+        /// <summary>Toạ độ thớt (đơn vị ô, y hướng xuống) → điểm màn hình (tutorial chỉ vào ô / miếng / khay).</summary>
+        public Vector2 BoardToScreen(Vector2 board) => cam.WorldToScreenPoint(content.TransformPoint(Local(board)));
+
         /// <summary>Điểm màn hình → toạ độ thớt (đơn vị ô, y hướng xuống).</summary>
         public Vector2 ScreenToBoard(Vector2 screen)
         {

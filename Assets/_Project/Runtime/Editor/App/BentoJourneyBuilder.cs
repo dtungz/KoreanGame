@@ -33,7 +33,7 @@ namespace KoreanGame.EditorTools
         static readonly Vector2 BoardSize = new Vector2(332 / 44f, 464 / 44f);
 
         static GameObject primaryPrefab, secondaryPrefab, iconPrefab, panelPrefab;
-        static Font heading, body;
+        static Font heading, body, korean;
 
         [MenuItem("Tools/KoreanGame/Bento Journey/Build Scene")]
         public static void Build() => Build(true);
@@ -57,6 +57,7 @@ namespace KoreanGame.EditorTools
 
             heading = LoadFont("Baloo2-ExtraBold.ttf");
             body = LoadFont("Nunito-ExtraBold.ttf");
+            korean = LoadFont("NotoSansKR-Bold.ttf");   // chữ Hàn (Baloo / Nunito không có Hangul)
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             BuildWidgets();
@@ -70,6 +71,7 @@ namespace KoreanGame.EditorTools
             var dishPopup = BuildDishPopup(built.popup, out var dishFrame);
             SceneBuilder.Set(built.boot, "dishPopup", dishPopup);
             SceneBuilder.Set(built.boot, "sideDishToast", built.hud.GetComponent<SideDishToast>());
+            SceneBuilder.Set(built.boot, "tutorial", BuildTutorial(built, topFrame));
             var menu = BuildMainMenu(built.ui, out var menuFrame);
 
             SceneBuilder.Set(built.boot, "mainMenu", menu);
@@ -928,6 +930,70 @@ namespace KoreanGame.EditorTools
             return view;
         }
 
+        // ================= Tutorial giới thiệu mechanic =================
+
+        /// <summary>
+        /// Overlay trên HUD (vùng mờ 4 khối quanh lỗ sáng, 2 khung sáng, bàn tay) + khung câu chữ đè lên dải khách.
+        /// Overlay không nhận chạm; chỉ nút Bỏ qua nhận chạm.
+        /// </summary>
+        static TutorialManager BuildTutorial(SceneBuilder.Built b, RectTransform top)
+        {
+            var mgr = b.hud.gameObject.AddComponent<TutorialManager>();
+            var overlay = (RectTransform)new GameObject("TutorialOverlay", typeof(RectTransform)).transform;
+            overlay.SetParent(b.hud.transform, false);
+            Stretch(overlay, 0, 0, 0, 0);
+            overlay.SetAsLastSibling();
+            var dims = new RectTransform[4];
+            for (int i = 0; i < 4; i++) dims[i] = NewImage(overlay, $"Dim{i}", 0, 0, 10, 10).rectTransform;
+            RectTransform Frame(string name)
+            {
+                var f = Sliced(NewImage(overlay, name, 0, 0, 10, 10), Ui("ui_card_ring"), Palette.UiOrange);
+                return f.rectTransform;
+            }
+            var frameA = Frame("FrameA");
+            var frameB = Frame("FrameB");
+            var hand = NewImage(overlay, "Hand", 0, 0, 54, 68);
+            hand.sprite = Ui("ui_hand_pointer");
+            hand.preserveAspect = true;
+            hand.rectTransform.pivot = new Vector2(63f / 160, 1 - 8f / 200);   // đầu ngón trỏ
+            hand.rectTransform.localEulerAngles = new Vector3(0, 0, 12);
+
+            // khung câu chữ: cùng chỗ với dải khách, mặt đầu bếp + câu Việt (to) + câu Hàn (nhỏ) + Bỏ qua
+            var tip = Sliced(NewImage(top, "TutorialTip", 16, 72, 358, 78), Ui("ui_panel"), Color.white);
+            tip.raycastTarget = false;
+            var guide = NewImage(tip.transform, "Guide", 6, 6, 62, 66);
+            guide.preserveAspect = true;
+            CenterPivot(guide.rectTransform);
+            var vi = NewText(tip.transform, "Vi", "", 17, Palette.UiText, body);
+            vi.alignment = TextAnchor.MiddleLeft;
+            vi.horizontalOverflow = HorizontalWrapMode.Wrap;
+            vi.resizeTextForBestFit = true; vi.resizeTextMinSize = 12; vi.resizeTextMaxSize = 17;
+            TopLeft(vi.rectTransform, 74, 8, 214, 36);
+            var ko = NewText(tip.transform, "Ko", "", 13, Palette.UiBrown, korean);
+            ko.alignment = TextAnchor.MiddleLeft;
+            ko.horizontalOverflow = HorizontalWrapMode.Wrap;
+            ko.resizeTextForBestFit = true; ko.resizeTextMinSize = 10; ko.resizeTextMaxSize = 13;
+            TopLeft(ko.rectTransform, 74, 44, 214, 26);
+            var skip = TextButton(secondaryPrefab, tip.transform, "SkipButton", "Bỏ qua", 292, 22, 60, 34, 13, out _);
+
+            SceneBuilder.Set(mgr, "tutorials", TutorialLibrary.EnsureAll());
+            SceneBuilder.Set(mgr, "overlay", overlay);
+            SceneBuilder.Set(mgr, "dims", dims);
+            SceneBuilder.Set(mgr, "frameA", frameA);
+            SceneBuilder.Set(mgr, "frameB", frameB);
+            SceneBuilder.Set(mgr, "hand", hand.rectTransform);
+            SceneBuilder.Set(mgr, "tip", tip.gameObject);
+            SceneBuilder.Set(mgr, "tipVi", vi);
+            SceneBuilder.Set(mgr, "tipKo", ko);
+            SceneBuilder.Set(mgr, "skipButton", skip);
+            SceneBuilder.Set(mgr, "guide", guide);
+            SceneBuilder.Set(mgr, "guideHanoi", TryLoad("UI/Home/char_vn"));
+            SceneBuilder.Set(mgr, "guideSeoul", TryLoad("UI/Home/char_kr"));
+            overlay.gameObject.SetActive(false);
+            tip.gameObject.SetActive(false);
+            return mgr;
+        }
+
         // ================= Danh mục món ăn =================
 
         public const string CatalogPath = "Assets/_Project/Data/Config/FoodCatalog.asset";
@@ -1084,7 +1150,7 @@ namespace KoreanGame.EditorTools
         {
             foreach (var t in root.GetComponentsInChildren<Text>(true))
             {
-                if (t.font != null && t.font != heading && t.font != body)
+                if (t.font != null && t.font != heading && t.font != body && t.font != korean)
                 {
                     t.font = body;
                     t.fontStyle = FontStyle.Normal;

@@ -35,6 +35,8 @@ namespace KoreanGame.App
         [SerializeField] CosmeticsApplier cosmetics;
         [Tooltip("Tuỳ chọn: thẻ Món mới khi gặp món phụ lần đầu")]
         [SerializeField] SideDishToast sideDishToast;
+        [Tooltip("Tuỳ chọn: tutorial giới thiệu mechanic")]
+        [SerializeField] TutorialManager tutorial;
 
         bool skipMenu;   // Play from here (Level Browser): vào thẳng level, không hiện menu
 
@@ -58,6 +60,7 @@ namespace KoreanGame.App
             if (dishPopup != null) dishPopup.Init(levelController);
             if (cosmetics != null) cosmetics.Init(levelController);
             if (sideDishToast != null) sideDishToast.Init(levelController);
+            if (tutorial != null) tutorial.Init(levelController, boardView, handView, hudView);
         }
 
         void Start()

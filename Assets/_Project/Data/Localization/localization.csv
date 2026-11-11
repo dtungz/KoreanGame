@@ -125,3 +125,22 @@ order.level35.line,Cho tôi một bát bibimbap nhé!,비빔밥 하나 주세요
 thanks.level35.line,"Trộn đều rồi ăn thôi, cảm ơn!","잘 비벼 먹을게요, 감사해요!","I'll mix it well, thanks!","jal bibyeo meogeulgeyo, gamsahaeyo",★
 order.level40.line,Cho tôi tteokbokki cay nhé!,매콤한 떡볶이 주세요!,"Spicy tteokbokki, please!",maekomhan tteokbokki juseyo,★
 thanks.level40.line,Cay mà ngon! Tôi sẽ quay lại.,맵지만 맛있어요! 또 올게요.,Spicy but tasty! I'll be back.,maepjiman masisseoyo! tto olgeyo,★
+tut.cut_drag.step1,Kéo thẻ lên cơm để cắt,카드를 밥 위로 끌어 자르세요,Drag the card onto the rice to cut,kadeureul bap wiro kkeureo jareuseyo,★
+tut.cut_drag.step2,Kéo miếng cơm vào hộp,밥을 도시락에 넣으세요,Drag the rice into the box,babeul dosirage neoeuseyo,★
+tut.cut_drag.step3,Lấp kín hộp nhé!,도시락을 가득 채워요!,Fill the whole box!,dosirageul gadeuk chaewoyo,★
+tut.rotate_card.step1,Chạm thẻ để xoay,카드를 눌러 돌려요,Tap the card to rotate it,kadeureul nulleo dollyeoyo,★
+tut.rotate_card.step2,Giờ cắt nào!,이제 잘라요!,Now cut!,ije jallayo,★
+tut.fixed_food.step1,Lấp cơm quanh món có sẵn,반찬 주위를 채워요,Fill rice around the side dish,banchan juwireul chaewoyo,★
+tut.wall.step1,Không đặt cơm vắt qua vách,칸막이를 넘으면 안 돼요,Rice can't cross the divider,kanmagireul neomeumyeon an dwaeyo,★
+tut.diagonal.step1,Thẻ chéo cắt xéo,대각선으로 잘라요,Diagonal cards cut at an angle,daegakseoneuro jallayo,★
+tut.rotate_piece.step1,Thả thẻ lên miếng cơm,카드를 밥 위에 놓아요,Drop the card on the rice,kadeureul bap wie noayo,★
+tut.rotate_piece.step2,Vừa khít rồi!,딱 맞아요!,A perfect fit!,ttak majayo,★
+tut.flip.step1,Lật miếng cơm cho vừa,밥을 뒤집어 맞춰요,Flip the rice to fit,babeul dwijibeo matchwoyo,★
+tut.flip.step2,Vừa khít rồi!,딱 맞아요!,A perfect fit!,ttak majayo,★
+tut.glue.step1,Đặt hai miếng sát nhau,두 밥을 붙여 놓아요,Put the two pieces side by side,du babeul butyeo noayo,★
+tut.glue.step2,Dán thành một miếng,하나로 붙여요,Glue them into one,hanaro butyeoyo,★
+tut.glue.step3,Xoay rồi xếp vào hộp,돌려서 넣어요,"Rotate, then pack it",dollyeoseo neoeoyo,★
+tut.queue_copy.step1,"Dùng thẻ, thẻ chờ sẽ vào",다음 카드가 들어와요,"Use a card, the next one slides in",daeum kadeuga deureowayo,★
+tut.queue_copy.step2,Nhân đôi miếng nhỏ,작은 밥을 복사해요,Copy the small piece,jageun babeul boksahaeyo,★
+tut.skip,Bỏ qua,건너뛰기,Skip,geonneottwigi,
+ui.tutorial_replay,Xem lại hướng dẫn,튜토리얼 다시 보기,Replay tutorials,tyutorieol dasi bogi,

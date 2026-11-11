@@ -41,6 +41,12 @@ namespace KoreanGame.Gameplay
             return -1;
         }
 
+        /// <summary>Ô thẻ thứ k (tutorial trỏ tay vào). null nếu ô trống.</summary>
+        public RectTransform SlotRect(int k) => k >= 0 && k < cards.Length && cards[k].gameObject.activeInHierarchy ? cards[k].Rect : null;
+
+        /// <summary>Nhãn "+N thẻ chờ" (null nếu đang ẩn).</summary>
+        public RectTransform QueueRect => queueBadge.activeInHierarchy ? (RectTransform)queueBadge.transform : null;
+
         CardView Find(int handIndex)
         {
             foreach (var c in cards) if (c.gameObject.activeSelf && c.HandIndex == handIndex) return c;

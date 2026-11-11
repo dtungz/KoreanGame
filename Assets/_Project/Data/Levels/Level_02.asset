@@ -12,158 +12,158 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42196c6920412c4393ff5da1c46ea86, type: 3}
   m_Name: Level_02
   m_EditorClassIdentifier: 
-  hint: "H\u1ED9p l\u1EC7ch b\u1EADc thang. Ch\u1EA1m th\u1EBB \u0111\u1EC3 xoay
-    th\u1EBB n\u1EBFu c\u1EA7n."
+  hint: "Ch\u1EA1m th\u1EBB \u0111\u1EC3 xoay th\u1EBB, r\u1ED3i c\u1EAFt d\u1ECDc
+    kh\u1ED1i c\u01A1m."
   rice:
   - tris:
     - x: 0
       y: 0
-      t: 0
-    - x: 0
-      y: 0
-      t: 1
+      t: 3
     - x: 0
       y: 0
       t: 2
     - x: 0
       y: 0
-      t: 3
-    - x: 1
-      y: 0
-      t: 0
-    - x: 1
-      y: 0
       t: 1
-    - x: 1
-      y: 0
-      t: 2
-    - x: 1
-      y: 0
-      t: 3
-    - x: 2
-      y: 0
-      t: 0
-    - x: 2
-      y: 0
-      t: 1
-    - x: 2
-      y: 0
-      t: 2
-    - x: 2
-      y: 0
-      t: 3
     - x: 0
-      y: 1
+      y: 0
       t: 0
     - x: 0
       y: 1
-      t: 1
+      t: 3
     - x: 0
       y: 1
       t: 2
     - x: 0
       y: 1
+      t: 1
+    - x: 0
+      y: 1
+      t: 0
+    - x: 0
+      y: 2
+      t: 3
+    - x: 0
+      y: 2
+      t: 2
+    - x: 0
+      y: 2
+      t: 1
+    - x: 0
+      y: 2
+      t: 0
+    - x: 1
+      y: 0
       t: 3
     - x: 1
-      y: 1
+      y: 0
+      t: 2
+    - x: 1
+      y: 0
+      t: 1
+    - x: 1
+      y: 0
       t: 0
     - x: 1
       y: 1
-      t: 1
+      t: 3
     - x: 1
       y: 1
       t: 2
     - x: 1
       y: 1
-      t: 3
-    - x: 2
+      t: 1
+    - x: 1
       y: 1
       t: 0
-    - x: 2
-      y: 1
-      t: 1
-    - x: 2
-      y: 1
-      t: 2
-    - x: 2
-      y: 1
+    - x: 1
+      y: 2
       t: 3
+    - x: 1
+      y: 2
+      t: 2
+    - x: 1
+      y: 2
+      t: 1
+    - x: 1
+      y: 2
+      t: 0
     at: {x: 2, y: 6}
   tray:
     tris:
     - x: 0
       y: 0
-      t: 0
-    - x: 0
-      y: 0
-      t: 1
+      t: 3
     - x: 0
       y: 0
       t: 2
     - x: 0
       y: 0
-      t: 3
-    - x: 1
+      t: 1
+    - x: 0
       y: 0
       t: 0
-    - x: 1
-      y: 0
-      t: 1
-    - x: 1
-      y: 0
-      t: 2
-    - x: 1
-      y: 0
+    - x: 0
+      y: 1
       t: 3
-    - x: 2
-      y: 0
-      t: 0
-    - x: 2
-      y: 0
-      t: 1
-    - x: 2
-      y: 0
+    - x: 0
+      y: 1
       t: 2
-    - x: 2
-      y: 0
-      t: 3
-    - x: 1
+    - x: 0
+      y: 1
+      t: 1
+    - x: 0
       y: 1
       t: 0
+    - x: 0
+      y: 2
+      t: 3
+    - x: 0
+      y: 2
+      t: 2
+    - x: 0
+      y: 2
+      t: 1
+    - x: 0
+      y: 2
+      t: 0
     - x: 1
       y: 1
-      t: 1
+      t: 3
     - x: 1
       y: 1
       t: 2
     - x: 1
       y: 1
-      t: 3
-    - x: 2
+      t: 1
+    - x: 1
       y: 1
       t: 0
-    - x: 2
-      y: 1
-      t: 1
-    - x: 2
-      y: 1
-      t: 2
-    - x: 2
-      y: 1
+    - x: 1
+      y: 2
       t: 3
-    - x: 3
-      y: 1
+    - x: 1
+      y: 2
+      t: 2
+    - x: 1
+      y: 2
+      t: 1
+    - x: 1
+      y: 2
       t: 0
-    - x: 3
-      y: 1
-      t: 1
-    - x: 3
-      y: 1
-      t: 2
-    - x: 3
-      y: 1
+    - x: 1
+      y: 3
       t: 3
-    at: {x: 1, y: 1}
+    - x: 1
+      y: 3
+      t: 2
+    - x: 1
+      y: 3
+      t: 1
+    - x: 1
+      y: 3
+      t: 0
+    at: {x: 2, y: 1}
     walls: []
     fixedFoods: []
   cards:
@@ -175,4 +175,4 @@ MonoBehaviour:
   customerLine: 
   difficulty: 24
   solutions: 1
-  solution: "Th\u1EB3ng 3 xoay 0\xB0 t\u1EA1i (0,1) l\xEAn mi\u1EBFng 1"
+  solution: "Th\u1EB3ng 3 xoay 90\xB0 t\u1EA1i (1,0) l\xEAn mi\u1EBFng 1"

@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4a44694a4558a46a16a8a4aa4fae1f, type: 3}
+  m_Name: Tut_01_cut_drag
+  m_EditorClassIdentifier: 
+  id: cut_drag
+  levelIndex: 0
+  steps:
+  - key: tut.cut_drag.step1
+    vi: "K\xE9o th\u1EBB l\xEAn c\u01A1m \u0111\u1EC3 c\u1EAFt"
+    ko: "\uCE74\uB4DC\uB97C \uBC25 \uC704\uB85C \uB04C\uC5B4 \uC790\uB974\uC138\uC694"
+    target: 1
+    slot: 0
+    byKind: 0
+    cardKind: 0
+    gesture: 2
+    dragTo: 2
+    done: 0
+    anyEffect: 1
+    effect: 0
+    timer: 2.5
+    waitForCard: 0
+  - key: tut.cut_drag.step2
+    vi: "K\xE9o mi\u1EBFng c\u01A1m v\xE0o h\u1ED9p"
+    ko: "\uBC25\uC744 \uB3C4\uC2DC\uB77D\uC5D0 \uB123\uC73C\uC138\uC694"
+    target: 2
+    slot: 0
+    byKind: 0
+    cardKind: 0
+    gesture: 2
+    dragTo: 5
+    done: 3
+    anyEffect: 1
+    effect: 0
+    timer: 2.5
+    waitForCard: 0
+  - key: tut.cut_drag.step3
+    vi: "L\u1EA5p k\xEDn h\u1ED9p nh\xE9!"
+    ko: "\uB3C4\uC2DC\uB77D\uC744 \uAC00\uB4DD \uCC44\uC6CC\uC694!"
+    target: 2
+    slot: 0
+    byKind: 0
+    cardKind: 0
+    gesture: 2
+    dragTo: 5
+    done: 4
+    anyEffect: 1
+    effect: 0
+    timer: 2.5
+    waitForCard: 0

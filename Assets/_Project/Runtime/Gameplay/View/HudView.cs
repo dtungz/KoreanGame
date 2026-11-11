@@ -11,6 +11,7 @@ namespace KoreanGame.Gameplay
         [SerializeField] Text cardsLeftText;
         [SerializeField] Button restartButton;
         [SerializeField] Button undoButton;
+        public RectTransform UndoRect => (RectTransform)undoButton.transform;
 
         LevelController controller;
 
