@@ -59,6 +59,14 @@ namespace KoreanGame.Gameplay
             if (State != null) Refresh();
         }
 
+        /// <summary>Nháy sáng ô món phụ trong hộp (thẻ "Món mới" chỉ chỗ món nằm). Chỉ là hiệu ứng.</summary>
+        public void HighlightFood(string kind)
+        {
+            if (State == null) return;
+            foreach (var f in State.tray.fixedFoods)
+                if (f.kind == kind) board.Flash(Geometry.Full(f.cells), new Color(1f, .95f, .6f, .7f), false, .45f, 3);
+        }
+
         public void Next() => Load(Index + 1);
         public void Prev() => Load(Index - 1);
 

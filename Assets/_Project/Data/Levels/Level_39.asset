@@ -306,39 +306,39 @@ MonoBehaviour:
     - x: 1
       y: 0
       t: 1
-    - x: 5
-      y: 0
+    - x: 1
+      y: 2
       t: 0
-    - x: 5
-      y: 0
+    - x: 1
+      y: 2
       t: 1
-    - x: 5
-      y: 0
+    - x: 1
+      y: 2
       t: 2
-    - x: 5
-      y: 0
+    - x: 1
+      y: 2
       t: 3
-    - x: 5
-      y: 1
+    - x: 3
+      y: 2
       t: 0
-    - x: 5
-      y: 1
+    - x: 3
+      y: 2
       t: 1
-    - x: 5
-      y: 1
+    - x: 3
+      y: 2
       t: 2
-    - x: 5
-      y: 1
+    - x: 3
+      y: 2
       t: 3
     at: {x: 1, y: 1}
     walls: []
     fixedFoods:
     - kind: com_nam
       cells:
-      - {x: 5, y: 0}
+      - {x: 1, y: 2}
     - kind: kimchi
       cells:
-      - {x: 5, y: 1}
+      - {x: 3, y: 2}
   cards:
   - {fileID: 11400000, guid: bed3745240405eb4f85106ad57edaa61, type: 2}
   - {fileID: 11400000, guid: 0729ccc7eced63f48b2cc6c7988c4529, type: 2}

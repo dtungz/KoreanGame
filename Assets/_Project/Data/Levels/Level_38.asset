@@ -306,17 +306,17 @@ MonoBehaviour:
     - x: 0
       y: 0
       t: 2
-    - x: 5
-      y: 0
+    - x: 2
+      y: 3
       t: 0
-    - x: 5
-      y: 0
+    - x: 2
+      y: 3
       t: 1
-    - x: 5
-      y: 0
+    - x: 2
+      y: 3
       t: 2
-    - x: 5
-      y: 0
+    - x: 2
+      y: 3
       t: 3
     at: {x: 1, y: 1}
     walls:
@@ -327,7 +327,7 @@ MonoBehaviour:
     fixedFoods:
     - kind: lat_kimbap
       cells:
-      - {x: 5, y: 0}
+      - {x: 2, y: 3}
   cards:
   - {fileID: 11400000, guid: 66ade0ae529f5ec479871a71c818e809, type: 2}
   - {fileID: 11400000, guid: 0729ccc7eced63f48b2cc6c7988c4529, type: 2}

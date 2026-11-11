@@ -45,6 +45,9 @@ namespace KoreanGame.Core
     /// <summary>Khay đã kín nhưng có miếng cơm vắt qua vách ngăn (chưa thắng).</summary>
     public struct WallBlockedEvent { }
 
+    /// <summary>Main Menu vừa mở (che màn chơi).</summary>
+    public struct MenuOpenedEvent { }
+
     /// <summary>Main Menu vừa đóng, người chơi nhìn thấy màn chơi.</summary>
     public struct MenuClosedEvent { }
 

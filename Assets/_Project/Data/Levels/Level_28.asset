@@ -210,24 +210,24 @@ MonoBehaviour:
     - x: 4
       y: 1
       t: 1
-    - x: 5
-      y: 0
+    - x: 1
+      y: 1
       t: 0
-    - x: 5
-      y: 0
+    - x: 1
+      y: 1
       t: 1
-    - x: 5
-      y: 0
+    - x: 1
+      y: 1
       t: 2
-    - x: 5
-      y: 0
+    - x: 1
+      y: 1
       t: 3
     at: {x: 1, y: 1}
     walls: []
     fixedFoods:
     - kind: rong_bien
       cells:
-      - {x: 5, y: 0}
+      - {x: 1, y: 1}
   cards:
   - {fileID: 11400000, guid: c1f2ab002fde12e428d1613ffbeb1aa5, type: 2}
   - {fileID: 11400000, guid: 9033b579b925e384597196cfbf929d0d, type: 2}

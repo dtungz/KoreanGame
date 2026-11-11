@@ -318,17 +318,17 @@ MonoBehaviour:
     - x: 4
       y: 0
       t: 3
-    - x: 5
-      y: 0
+    - x: 4
+      y: 1
       t: 0
-    - x: 5
-      y: 0
+    - x: 4
+      y: 1
       t: 1
-    - x: 5
-      y: 0
+    - x: 4
+      y: 1
       t: 2
-    - x: 5
-      y: 0
+    - x: 4
+      y: 1
       t: 3
     at: {x: 1, y: 1}
     walls:
@@ -342,7 +342,7 @@ MonoBehaviour:
       - {x: 4, y: 0}
     - kind: gia_tron
       cells:
-      - {x: 5, y: 0}
+      - {x: 4, y: 1}
   cards:
   - {fileID: 11400000, guid: bed3745240405eb4f85106ad57edaa61, type: 2}
   - {fileID: 11400000, guid: 0729ccc7eced63f48b2cc6c7988c4529, type: 2}

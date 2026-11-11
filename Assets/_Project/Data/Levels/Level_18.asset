@@ -234,7 +234,7 @@ MonoBehaviour:
     - x: 3
       y: 0
       t: 3
-    at: {x: 2, y: 1}
+    at: {x: 1, y: 1}
     walls: []
     fixedFoods:
     - kind: egg

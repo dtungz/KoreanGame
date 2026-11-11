@@ -103,6 +103,19 @@ namespace KoreanGame.Tests
         }
 
         [Test]
+        public void TraysStayInsideBoardFrame()
+        {
+            // viền hộp rộng ~0,2 ô: hộp ở cột 0 hoặc 6 sẽ lấn ra ngoài khung thớt
+            var db = AssetDatabase.LoadAssetAtPath<LevelDatabase>(LevelImporter.DatabasePath);
+            for (int i = 0; i < db.Count; i++)
+            {
+                var t = db.levels[i].tray;
+                var b = Geometry.BBox(Geometry.Shift(t.tris, t.at.x, t.at.y));
+                Assert.IsTrue(b.minx >= 1 && b.maxx <= Geometry.Cols - 2, $"Level {i + 1}: hộp ở cột {b.minx}–{b.maxx}, chạm mép thớt");
+            }
+        }
+
+        [Test]
         public void SignatureDishArtMatchesItsTray()
         {
             var db = AssetDatabase.LoadAssetAtPath<LevelDatabase>(LevelImporter.DatabasePath);

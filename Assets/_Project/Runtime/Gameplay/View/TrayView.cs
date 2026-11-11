@@ -86,7 +86,8 @@ namespace KoreanGame.Gameplay
                 Well(mb, x0, y0, w, h);
                 var sr = Food(fi++);
                 sr.sprite = FoodSprite(f.kind);
-                FitSprite(sr, new Vector2(x0 + w / 2, y0 + h / 2), new Vector2(w - .28f, h - .3f));
+                // món gần kín ngăn (chừa vừa đủ thấy lòng ngăn) để nhìn rõ trên điện thoại
+                FitSprite(sr, new Vector2(x0 + w / 2, y0 + h / 2), new Vector2(w - .12f, h - .14f));
             }
             for (int i = fi; i < foods.Count; i++) foods[i].gameObject.SetActive(false);
 

@@ -33,6 +33,8 @@ namespace KoreanGame.App
         [SerializeField] DishPopup dishPopup;
         [Tooltip("Tuỳ chọn: áp món trang trí đang dùng (hộp, thớt, nền menu)")]
         [SerializeField] CosmeticsApplier cosmetics;
+        [Tooltip("Tuỳ chọn: thẻ Món mới khi gặp món phụ lần đầu")]
+        [SerializeField] SideDishToast sideDishToast;
 
         bool skipMenu;   // Play from here (Level Browser): vào thẳng level, không hiện menu
 
@@ -55,6 +57,7 @@ namespace KoreanGame.App
             if (customerChat != null) customerChat.Init(levelController);
             if (dishPopup != null) dishPopup.Init(levelController);
             if (cosmetics != null) cosmetics.Init(levelController);
+            if (sideDishToast != null) sideDishToast.Init(levelController);
         }
 
         void Start()

@@ -69,6 +69,7 @@ namespace KoreanGame.EditorTools
             var settings = BuildSettings(built.popup, out var settingsFrame);
             var dishPopup = BuildDishPopup(built.popup, out var dishFrame);
             SceneBuilder.Set(built.boot, "dishPopup", dishPopup);
+            SceneBuilder.Set(built.boot, "sideDishToast", built.hud.GetComponent<SideDishToast>());
             var menu = BuildMainMenu(built.ui, out var menuFrame);
 
             SceneBuilder.Set(built.boot, "mainMenu", menu);
@@ -262,11 +263,43 @@ namespace KoreanGame.EditorTools
             SceneBuilder.Set(chat, "avatarButton", avatarBtn);
             SceneBuilder.Set(chat, "bubble", bubbleRt);
             SceneBuilder.Set(chat, "speechText", speech);
-            // icon món khách gọi: nằm đè góc dưới-phải avatar (bong bóng vẫn chỉ có lời thoại)
-            var orderIcon = NewImage(order, "OrderIcon", 40, 34, 40, 40);
-            orderIcon.preserveAspect = true;
-            SceneBuilder.Set(chat, "orderIcon", orderIcon);
+            // không đặt icon món lên avatar (che mặt khách): khách đã gọi tên món trong câu thoại
             SceneBuilder.Set(chat, "catalog", LoadOrCreateCatalog());
+            // nhiều khách: mỗi vùng 3 người (Source/Art/UI/Customers), thiếu file thì giữ ảnh tạm
+            Sprite[] Faces(params string[] files) => System.Array.FindAll(System.Array.ConvertAll(files, f => TryLoad("UI/Customers/" + f)), s => s != null);
+            SceneBuilder.Set(chat, "avatar", avatar);
+            SceneBuilder.Set(chat, "hanoiFaces", Faces("customer_hn_office", "customer_hn_student", "customer_hn_grandpa"));
+            SceneBuilder.Set(chat, "seoulFaces", Faces("customer_kr_office", "customer_kr_girl", "customer_kr_ajumma"));
+
+            // thẻ "Món mới trong hộp!": đè đúng lên dải khách (không che thớt), chạm để tắt
+            var toast = b.hud.gameObject.AddComponent<SideDishToast>();
+            var toastRoot = new GameObject("SideDishToast", typeof(RectTransform), typeof(CanvasGroup));
+            toastRoot.transform.SetParent(top, false);
+            TopLeft((RectTransform)toastRoot.transform, 16, 72, 358, 78);
+            var tPanel = Sliced(NewImage(toastRoot.transform, "Panel", 0, 0, 358, 78), Ui("ui_panel"), Color.white);
+            tPanel.raycastTarget = true;
+            var tRt = tPanel.rectTransform;
+            tRt.pivot = new Vector2(.5f, .5f);
+            tRt.anchoredPosition = new Vector2(179, -39);
+            var tBtn = tPanel.gameObject.AddComponent<Button>();
+            tBtn.targetGraphic = tPanel;
+            var tIcon = NewImage(tPanel.transform, "Icon", 10, 4, 70, 70);
+            tIcon.preserveAspect = true;
+            CenterPivot(tIcon.rectTransform);
+            var tHead = NewText(tPanel.transform, "Head", "Món mới trong hộp!", 14, Palette.UiOrange, body);
+            tHead.alignment = TextAnchor.MiddleLeft;
+            TopLeft(tHead.rectTransform, 92, 10, 250, 22);
+            var tName = NewText(tPanel.transform, "Name", "", 24, Palette.UiText, heading);
+            tName.alignment = TextAnchor.MiddleLeft;
+            TopLeft(tName.rectTransform, 92, 32, 250, 36);
+            SceneBuilder.Set(toast, "catalog", LoadOrCreateCatalog());
+            SceneBuilder.Set(toast, "root", toastRoot);
+            SceneBuilder.Set(toast, "group", toastRoot.GetComponent<CanvasGroup>());
+            SceneBuilder.Set(toast, "panel", tRt);
+            SceneBuilder.Set(toast, "icon", tIcon);
+            SceneBuilder.Set(toast, "nameText", tName);
+            SceneBuilder.Set(toast, "closeButton", tBtn);
+            toastRoot.SetActive(false);
 
             // ---- hàng nút: Hoàn tác, Làm lại (chỉ những nút game có) ----
             var undo = IconButton(bottom, "UndoButton", "ic_undo", 16, 0, "Hoàn tác");
@@ -531,6 +564,7 @@ namespace KoreanGame.EditorTools
                 btn.targetGraphic = bg;
                 icon = NewImage(bg.transform, "Icon", (w - size) / 2, 6, size, size);
                 icon.preserveAspect = true;
+                CenterPivot(icon.rectTransform);
                 return btn;
             }
 
@@ -553,6 +587,8 @@ namespace KoreanGame.EditorTools
                 {
                     int i = start + k;
                     dishCells[i] = Cell($"Dish{i}", dx0 + k % 2 * (dw + dgap), y + k / 2 * (dh + dgap), dw, dh, out dishIcons[i], 112);
+                    TopLeft(dishIcons[i].rectTransform, 7, 8, dw - 14, 110);   // khung icon chữ nhật: món dáng dài (bánh mì, nem) không bị thu nhỏ
+                    CenterPivot(dishIcons[i].rectTransform);
                     var lockImg = NewImage(dishCells[i].transform, "Lock", dw - 34, 8, 26, 26);
                     lockImg.sprite = Ui("ic_lock");
                     lockImg.preserveAspect = true;
@@ -723,6 +759,7 @@ namespace KoreanGame.EditorTools
                 buttons[i].targetGraphic = card;
                 icons[i] = NewImage(card.transform, "Icon", 10, 12, 84, 120);
                 icons[i].preserveAspect = true;
+                CenterPivot(icons[i].rectTransform);
                 names[i] = NewText(card.transform, "Name", "", 16, Palette.UiText, heading);
                 names[i].horizontalOverflow = HorizontalWrapMode.Wrap;
                 names[i].lineSpacing = .85f;
@@ -978,6 +1015,17 @@ namespace KoreanGame.EditorTools
             rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0, 1);
             rt.anchoredPosition = new Vector2(x, -y);
             rt.sizeDelta = new Vector2(w, h);
+        }
+
+        /// <summary>
+        /// Đổi pivot về tâm mà giữ nguyên chỗ: ảnh giữ tỉ lệ (preserveAspect) được Unity căn theo pivot,
+        /// pivot góc trên-trái làm ảnh dáng dài dính lên mép trên; pivot tâm thì ảnh nằm giữa khung.
+        /// </summary>
+        static void CenterPivot(RectTransform rt)
+        {
+            var size = rt.sizeDelta;
+            rt.pivot = new Vector2(.5f, .5f);
+            rt.anchoredPosition += new Vector2(size.x / 2, -size.y / 2);
         }
 
         /// <summary>Phủ kín cha, chừa lề trái / dưới / phải / trên.</summary>

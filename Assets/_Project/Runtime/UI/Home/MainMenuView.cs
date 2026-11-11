@@ -61,6 +61,7 @@ namespace KoreanGame.Home
             if (controller.Index != ProgressSave.CurrentLevel && ProgressSave.IsCleared(controller.Index))
                 controller.Load(ProgressSave.CurrentLevel);
             root.SetActive(true);
+            EventBus<MenuOpenedEvent>.Raise(default);
             group.alpha = 1;
             SetPage(HomeTab);
             Park(HomeTab);

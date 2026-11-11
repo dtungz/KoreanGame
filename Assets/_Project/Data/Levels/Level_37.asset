@@ -138,28 +138,28 @@ MonoBehaviour:
     - x: 2
       y: 1
       t: 1
-    - x: 5
-      y: 0
+    - x: 3
+      y: 1
       t: 0
-    - x: 5
-      y: 0
+    - x: 3
+      y: 1
       t: 1
-    - x: 5
-      y: 0
+    - x: 3
+      y: 1
       t: 2
-    - x: 5
-      y: 0
+    - x: 3
+      y: 1
       t: 3
-    - x: 3
+    - x: 4
       y: 1
       t: 0
-    - x: 3
+    - x: 4
       y: 1
       t: 1
-    - x: 3
+    - x: 4
       y: 1
       t: 2
-    - x: 3
+    - x: 4
       y: 1
       t: 3
     at: {x: 1, y: 1}
@@ -167,10 +167,10 @@ MonoBehaviour:
     fixedFoods:
     - kind: kimchi
       cells:
-      - {x: 5, y: 0}
+      - {x: 3, y: 1}
     - kind: gia_tron
       cells:
-      - {x: 3, y: 1}
+      - {x: 4, y: 1}
   cards:
   - {fileID: 11400000, guid: 6de886efc20ef5343a79a93276e397fd, type: 2}
   - {fileID: 11400000, guid: 653a730a0e0bffd4dba091a8a9467228, type: 2}

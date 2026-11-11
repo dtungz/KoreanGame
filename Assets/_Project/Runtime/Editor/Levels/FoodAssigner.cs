@@ -113,6 +113,7 @@ namespace KoreanGame.EditorTools
                         if (Place(work, id)) { ready.Add(id); line.Append($" +{id}"); placed++; }
                         else { line.Append($" +{id}(KHÔNG CÓ CHỖ)"); failed++; }
                     }
+                Recenter(work);
                 var after = ready.Count > 0 ? LevelSolver.Solve(work, all: true, maxNodes: 60000) : before;
                 bool same = after.solved == before.solved && after.solutions == before.solutions;
                 if (!same) { line.Append($" LỜI GIẢI ĐỔI {before.solutions}→{after.solutions}, bỏ qua món phụ"); failed++; }
@@ -149,40 +150,72 @@ namespace KoreanGame.EditorTools
             L.tray.tris.RemoveAll(q => drop.Contains(q.Cell));
         }
 
-        /// <summary>Gắn ngăn món phụ (1–2 ô dọc) vào cạnh phải, không được thì cạnh trái, cạnh ô đầy của hộp, trong thớt.</summary>
+        /// <summary>Hộp rộng tối đa 5 ô: thớt 7 ô, chừa 1 ô mỗi bên để viền hộp không lấn ra ngoài khung thớt.</summary>
+        public const int MaxTrayWidth = 5;
+
+        /// <summary>
+        /// Gắn ngăn món phụ (1–2 ô) vào hộp: cạnh phải, cạnh trái, rồi dưới đáy. Ngăn chỉ hợp lệ khi hộp vẫn rộng ≤ 5 ô
+        /// và (đặt dưới đáy) còn ít nhất 1 hàng trống tới khối cơm. Vị trí trên thớt chỉnh lại sau bằng Recenter.
+        /// </summary>
         static bool Place(LevelData L, string id)
         {
             int n = CellsOf(id);
-            var at = L.tray.at;
             var cells = new Dictionary<Vector2Int, int>();
             foreach (var q in L.tray.tris) cells[q.Cell] = cells.TryGetValue(q.Cell, out var c) ? c + 1 : 1;
             var list = new List<Vector2Int>(cells.Keys);
             list.Sort((a, b) => a.y != b.y ? a.y.CompareTo(b.y) : a.x.CompareTo(b.x));
+            int minx = int.MaxValue, maxx = int.MinValue;
+            foreach (var c in cells.Keys) { minx = Mathf.Min(minx, c.x); maxx = Mathf.Max(maxx, c.x); }
+            int riceTop = int.MaxValue;
+            foreach (var r in L.rice) riceTop = Mathf.Min(riceTop, Geometry.BBox(r.tris).miny + r.at.y);
 
-            bool Free(Vector2Int c)
-            {
-                var w = c + at;
-                return !cells.ContainsKey(c) && w.x >= 0 && w.x < Geometry.Cols && w.y >= 0 && w.y < Geometry.Rows;
-            }
             bool Full(Vector2Int c) => cells.TryGetValue(c, out var k) && k == 4;
+            bool Fits(List<Vector2Int> spot)
+            {
+                int lo = minx, hi = maxx;
+                foreach (var s in spot)
+                {
+                    if (cells.ContainsKey(s)) return false;
+                    var w = s + L.tray.at;
+                    if (w.y < 0 || w.y > riceTop - 2) return false;   // chừa ≥ 1 hàng trống trên khối cơm
+                    lo = Mathf.Min(lo, s.x); hi = Mathf.Max(hi, s.x);
+                }
+                return hi - lo + 1 <= MaxTrayWidth;
+            }
+            bool Try(List<Vector2Int> spot)
+            {
+                if (spot == null || !Fits(spot)) return false;
+                L.tray.tris.AddRange(Geometry.Full(spot));
+                L.tray.fixedFoods.Add(new FixedFood { kind = id, cells = spot });
+                return true;
+            }
 
+            // cạnh phải / trái: ngăn dọc n ô cạnh n ô đầy
             foreach (int dx in new[] { 1, -1 })
                 foreach (var c in list)
                 {
                     var spot = new List<Vector2Int>();
-                    for (int k = 0; k < n; k++)
-                    {
-                        var host = new Vector2Int(c.x, c.y + k);
-                        var s = new Vector2Int(c.x + dx, c.y + k);
-                        if (!Full(host) || !Free(s)) { spot = null; break; }
-                        spot.Add(s);
-                    }
-                    if (spot == null) continue;
-                    L.tray.tris.AddRange(Geometry.Full(spot));
-                    L.tray.fixedFoods.Add(new FixedFood { kind = id, cells = spot });
-                    return true;
+                    for (int k = 0; k < n && spot != null; k++)
+                        if (Full(new Vector2Int(c.x, c.y + k))) spot.Add(new Vector2Int(c.x + dx, c.y + k)); else spot = null;
+                    if (Try(spot)) return true;
                 }
+            // dưới đáy: ngăn ngang n ô dưới n ô đầy
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                var c = list[i];
+                var spot = new List<Vector2Int>();
+                for (int k = 0; k < n && spot != null; k++)
+                    if (Full(new Vector2Int(c.x + k, c.y))) spot.Add(new Vector2Int(c.x + k, c.y + 1)); else spot = null;
+                if (Try(spot)) return true;
+            }
             return false;
+        }
+
+        /// <summary>Căn hộp vào giữa thớt theo chiều ngang (sau khi gắn ngăn).</summary>
+        static void Recenter(LevelData L)
+        {
+            var b = Geometry.BBox(Geometry.Shift(L.tray.tris, L.tray.at.x, L.tray.at.y));
+            L.tray.at = new Vector2Int(L.tray.at.x + (Geometry.Cols - b.W) / 2 - b.minx, L.tray.at.y);
         }
 
         static Dictionary<string, DishData> EnsureDishes(FoodCatalog cat)

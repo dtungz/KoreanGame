@@ -7,8 +7,9 @@ namespace KoreanGame.Gameplay
 {
     /// <summary>
     /// Khách nói chuyện trong bong bóng phía trên thớt và gọi món:
-    /// - Màn có món đặc trưng: gọi đúng món ("Cho mình một hộp bún chả nhé!"), icon món ở góc avatar.
-    /// - Màn thường có món phụ: thường nhắc món phụ trong hộp, đôi khi tám chuyện; icon món phụ ở góc avatar.
+    /// - Mỗi màn một khách của vùng (Hà Nội / Seoul), chọn cố định theo số màn.
+    /// - Màn có món đặc trưng: gọi đúng món ("Cho mình một hộp bún chả nhé!").
+    /// - Màn thường có món phụ: thường nhắc món phụ trong hộp, đôi khi tám chuyện.
     /// - Câu riêng của level (LevelData.customerLine) luôn được ưu tiên.
     /// Chạm avatar thì nói câu khác, thắng thì khen (màn có món: khen đúng món). Không ảnh hưởng luật chơi.
     /// </summary>
@@ -18,8 +19,10 @@ namespace KoreanGame.Gameplay
         [SerializeField] Button avatarButton;
         [SerializeField] RectTransform bubble;
         [SerializeField] Text speechText;
-        [Tooltip("Tuỳ chọn: icon món khách gọi ở góc avatar")]
-        [SerializeField] Image orderIcon;
+        [Header("Khách: mỗi màn một người của vùng đó (cố định theo số màn)")]
+        [SerializeField] Image avatar;
+        [SerializeField] Sprite[] hanoiFaces;
+        [SerializeField] Sprite[] seoulFaces;
         [Tooltip("Tuỳ chọn: tên + ảnh món phụ")]
         [SerializeField] FoodCatalog catalog;
 
@@ -34,7 +37,6 @@ namespace KoreanGame.Gameplay
             EventBus<LevelWonEvent>.Subscribe(OnWon);
             EventBus<MenuClosedEvent>.Subscribe(OnMenuClosed);
             speechText.text = "";
-            if (orderIcon != null) orderIcon.gameObject.SetActive(false);
         }
 
         void OnDestroy()
@@ -51,12 +53,9 @@ namespace KoreanGame.Gameplay
             var L = controller.Level;
             var dish = L != null ? L.unlocksDish : null;
             var side = Side(L);
-            Sprite icon = dish != null ? dish.icon : side != null ? side.sprite : null;
-            if (orderIcon != null)
-            {
-                orderIcon.sprite = icon;
-                orderIcon.gameObject.SetActive(icon != null);
-            }
+            var faces = L != null && L.region == FoodRegion.Seoul ? seoulFaces : hanoiFaces;
+            if (avatar != null && faces != null && faces.Length > 0)
+                avatar.sprite = faces[(e.index * 7 + 3) % faces.Length];   // trải đều, chơi lại vẫn gặp đúng người cũ
 
             if (L != null && !string.IsNullOrWhiteSpace(L.customerLine)) levelLine = L.customerLine;
             else if (dish != null) levelLine = Format(lines.dishOrder, dish.displayName);
