@@ -1,0 +1,127 @@
+﻿key,vi,ko,en,ko_romanization,review
+ui.level,Màn {0},{0}단계,Level {0},{0}-dangye,
+ui.play,Chơi tiếp,계속하기,Continue,gyesokhagi,
+ui.undo,Hoàn tác,되돌리기,Undo,doedolligi,
+ui.restart,Làm lại,다시 하기,Restart,dasi hagi,
+ui.hint,Gợi ý,힌트,Hint,hinteu,chưa có nút trong game
+ui.cut_cards,THẺ CẮT,자르기 카드,CUT CARDS,jareugi kadeu,
+ui.queued_cards,+{0} thẻ chờ,+{0}장 대기,+{0} waiting,+{0}-jang daegi,
+ui.settings,Cài đặt,설정,Settings,seoljeong,
+ui.sound_on,Âm thanh: Bật,소리: 켜짐,Sound: On,sori: kyeojim,
+ui.sound_off,Âm thanh: Tắt,소리: 꺼짐,Sound: Off,sori: kkeojim,
+ui.vibration_on,Rung: Bật,진동: 켜짐,Vibration: On,jindong: kyeojim,
+ui.vibration_off,Rung: Tắt,진동: 꺼짐,Vibration: Off,jindong: kkeojim,
+ui.replay,Chơi lại,다시 하기,Replay,dasi hagi,
+ui.home,Về menu,메뉴로,Main menu,menyuro,
+ui.language,Ngôn ngữ,언어,Language,eoneo,
+ui.tab.journey,Hành trình,여정,Journey,yeojeong,
+ui.tab.home,Trang chủ,홈,Home,hom,
+ui.tab.shop,Cửa hàng,상점,Shop,sangjeom,
+win.title,Hoàn thành!,완성!,Complete!,wanseong,
+win.info,Màn {0} xong.,{0}단계 완료.,Level {0} done.,{0}-dangye wallyo,
+win.next,Tiếp tục,다음,Next,daeum,
+win.restart_all,Chơi lại từ đầu,처음부터 다시,Play from start,cheoeumbuteo dasi,
+dish_popup.title,Món mới!,새 메뉴!,New dish!,sae menyu,
+dish_popup.ok,Tuyệt!,좋아요!,Great!,joayo,
+side_toast.title,Món mới trong hộp!,도시락에 새 반찬!,New side dish!,dosirage sae banchan,
+journey.collection,Bộ sưu tập,컬렉션,Collection,keollekswon,
+journey.book,Sổ hành trình,여행 수첩,Travel book,yeohaeng sucheop,★
+journey.dishes,MÓN ĐẶC TRƯNG,대표 메뉴,SIGNATURE DISHES,daepyo menyu,
+journey.sides,MÓN PHỤ,반찬,SIDE DISHES,banchan,
+journey.tap_hint,Chạm vào một món để xem giới thiệu.,메뉴를 눌러 소개를 보세요.,Tap a dish to read about it.,menyureul nulleo sogaereul boseyo,
+journey.secret,Món bí mật,비밀 메뉴,Secret dish,bimil menyu,
+journey.unlock_at,Qua Màn {0} để mở khoá món này.,{0}단계를 깨면 열려요.,Clear level {0} to unlock.,{0}-dangyereul kkaemyeon yeollyeoyo,★
+journey.side_unknown,Món phụ chưa gặp,아직 못 본 반찬,Side dish not found yet,ajik mot bon banchan,
+journey.side_unknown_hint,Tiếp tục hành trình để gặp món này trong hộp cơm.,여행을 계속하면 도시락에서 만나요.,Keep travelling to find it in a lunchbox.,yeohaengeul gyesokhamyeon dosirageseo mannayo,★
+journey.page,{0} · Màn {1}–{2},{0} · {1}–{2}단계,{0} · Levels {1}–{2},,
+journey.replay_hint,Chạm vào màn đã qua để chơi lại,깬 단계를 눌러 다시 플레이,Tap a cleared level to replay,kkaen dangyereul nulleo dasi peullei,
+region.hanoi,Hà Nội,하노이,Hanoi,hanoi,
+region.seoul,Seoul,서울,Seoul,seoul,
+region.both,Hà Nội · Seoul,하노이 · 서울,Hanoi · Seoul,hanoi · seoul,
+shop.tab.box,Hộp cơm,도시락통,Lunchbox,dosiraktong,
+shop.tab.board,Thớt,도마,Board,doma,
+shop.tab.theme,Theme,테마,Theme,tema,
+shop.using,Đang dùng,사용 중,In use,sayong jung,
+shop.use,Dùng,사용,Use,sayong,
+shop.unlock_at,Qua Màn {0},{0}단계 클리어,Clear level {0},{0}-dangye keullieo,
+shop.hint,Qua thêm màn để mở món trang trí mới,단계를 깨면 새 꾸미기가 열려요,Clear more levels to unlock decorations,dangyereul kkaemyeon sae kkumigiga yeollyeoyo,★
+shop.box_tin,Hộp thiếc,양철 도시락,Tin box,yangcheol dosirak,
+shop.box_wood,Hộp gỗ,나무 도시락,Wooden box,namu dosirak,
+shop.box_porcelain,Hộp sứ xanh,파란 도자기 도시락,Blue porcelain box,paran dojagi dosirak,★
+shop.board_light,Gỗ sáng,밝은 나무,Light wood,balgeun namu,
+shop.board_dark,Gỗ tối,어두운 나무,Dark wood,eoduun namu,
+shop.board_stone,Thớt đá,돌 도마,Stone board,dol doma,
+shop.theme_hanoi,Hà Nội ban ngày,낮의 하노이,Hanoi by day,najui hanoi,
+shop.theme_seoul,Seoul về đêm,밤의 서울,Seoul at night,bamui seoul,
+card.line_1,Thẳng 1,직선 1,Line 1,jikseon,
+card.line_2,Thẳng 2,직선 2,Line 2,jikseon,
+card.line_3,Thẳng 3,직선 3,Line 3,jikseon,
+card.diag_1,Chéo 1,대각선 1,Diagonal 1,daegakseon,
+card.diag_2,Chéo 2,대각선 2,Diagonal 2,daegakseon,
+card.l,Chữ L,L자,L-cut,el-ja,
+card.t,Chữ T,T자,T-cut,ti-ja,
+card.mold_1,Khuôn 1,틀 1,Mold 1,teul,
+card.mold_2x2,Khuôn 2×2,틀 2×2,Mold 2×2,teul,
+card.rotate,Xoay,회전,Rotate,hoejeon,
+card.flip,Lật,뒤집기,Flip,dwijipgi,
+card.glue,Dán,붙이기,Glue,buchigi,
+card.copy,Nhân bản,복사,Copy,boksa,
+sign.hanoi.title,Bento Journey,Bento Journey,Bento Journey,,giữ tên game Latin
+sign.hanoi.sub,Cơm hộp Hà Nội,하노이 도시락 여행,Hanoi lunchbox trip,hanoi dosirak yeohaeng,★
+sign.seoul.title,Bento Journey,Bento Journey,Bento Journey,,
+sign.seoul.sub,Hành trình cơm hộp · Seoul,서울 도시락 여행,Seoul lunchbox trip,seoul dosirak yeohaeng,
+dish.bun_cha.name,Bún chả,분짜,Bun cha (grilled pork with noodles),bunjja,
+dish.pho.name,Phở,쌀국수,Pho,ssalguksu,
+dish.nem_ran.name,Nem rán,짜조,Fried spring rolls,jjajo,★
+dish.banh_mi.name,Bánh mì,반미,Banh mi,banmi,
+dish.com_nam_samgak.name,Cơm nắm tam giác,삼각김밥,Triangle rice ball,samgak gimbap,
+dish.kimbap.name,Kimbap,김밥,Gimbap,gimbap,
+dish.bibimbap.name,Bibimbap,비빔밥,Bibimbap,bibimbap,
+dish.tteokbokki.name,Tteokbokki,떡볶이,Spicy rice cakes,tteokbokki,
+side.egg.name,Trứng ốp la,계란프라이,Fried egg,gyeran peurai,
+side.sausage.name,Xúc xích,소시지,Sausage,sosiji,
+side.meat.name,Thịt ba chỉ,삼겹살,Pork belly,samgyeopsal,
+side.dua_gop.name,Dưa góp,채소 절임,Pickled vegetables,chaeso jeorim,★
+side.rau_muong.name,Rau muống xào,공심채 볶음,Stir-fried water spinach,gongsimchae bokkeum,
+side.dau_sot_ca.name,Đậu sốt cà chua,토마토 두부조림,Tofu in tomato sauce,tomato dubu jorim,★
+side.gio_lua.name,Giò lụa,베트남식 햄,Vietnamese pork roll,beteunamsik haem,★
+side.cha.name,Chả nướng,숯불 고기완자,Grilled pork patty,sutbul gogi wanja,★
+side.nem.name,Nem rán,짜조,Fried spring roll,jjajo,★
+side.kimchi.name,Kimchi,김치,Kimchi,gimchi,
+side.gia_tron.name,Giá trộn,숙주나물,Seasoned bean sprouts,sukju namul,
+side.trung_cuon.name,Trứng cuộn,계란말이,Rolled omelette,gyeran mari,
+side.rong_bien.name,Rong biển,조미김,Seasoned seaweed,jomigim,
+side.com_nam.name,Cơm nắm,주먹밥,Rice ball,jumeokbap,
+side.lat_kimbap.name,Lát kimbap,김밥 한 조각,Gimbap slice,gimbap han jogak,
+order.hanoi.01,"Chào bạn, cho mình một hộp nhé!","안녕하세요, 도시락 하나 주세요!","Hi! One lunchbox, please!",,★
+order.hanoi.02,Làm giúp mình hộp cơm trưa nha!,점심 도시락 부탁해요!,"A lunchbox for me, please!",,★
+order.hanoi.03,Hôm nay ăn gì ngon nhỉ?,오늘은 뭐가 맛있어요?,What's good today?,,★
+order.hanoi.04,Xếp đầy hộp giúp mình nhé!,도시락 가득 채워 주세요!,Fill it up for me!,,★
+thanks.hanoi.01,"Cảm ơn nhé, ngon quá!","고마워요, 정말 맛있어요!","Thanks, so tasty!",,★
+thanks.hanoi.02,"Tuyệt quá, tạm biệt nha!","최고예요, 안녕히 계세요!","Great, bye now!",,★
+thanks.hanoi.03,Mai mình lại ghé nhé!,내일 또 올게요!,I'll come back tomorrow!,,★
+order.seoul.01,Xin chào! Cho tôi một hộp cơm.,안녕하세요! 도시락 하나 주세요.,"Hello! One lunchbox, please.",annyeonghaseyo! dosirak hana juseyo,★
+order.seoul.02,Làm giúp tôi hộp cơm trưa nhé.,점심 도시락 부탁드려요.,"A lunchbox for lunch, please.",jeomsim dosirak butakdeuryeoyo,★
+order.seoul.03,"Tôi đói quá, làm nhanh giúp nhé!","배고파요, 빨리 부탁해요!","I'm hungry, quick please!","baegopayo, ppalli butakaeyo",★
+order.seoul.04,Xếp đẹp giúp tôi nhé!,예쁘게 담아 주세요!,"Pack it nicely, please!",yeppeuge dama juseyo,★
+thanks.seoul.01,Cảm ơn! Ngon thật đấy.,감사합니다! 정말 맛있어요.,Thank you! Really tasty.,gamsahamnida! jeongmal masisseoyo,★
+thanks.seoul.02,Tuyệt vời! Tôi sẽ quay lại.,최고예요! 또 올게요.,The best! I'll be back.,choegoyeyo! tto olgeyo,★
+thanks.seoul.03,Tạm biệt! Tôi sẽ ăn thật ngon.,안녕히 계세요! 맛있게 먹을게요.,Bye! I'll enjoy it.,annyeonghi gyeseyo! masitge meogeulgeyo,★
+order.side.hanoi,Thêm {0} giúp mình nha!,{0} 추가해 주세요!,"Add some {0}, please!",{0} chugahae juseyo,★
+order.side.seoul,Cho tôi nhiều {0} nhé!,{0} 많이 주세요!,"Lots of {0}, please!",{0} mani juseyo,★
+order.level05.line,Cho mình một suất bún chả nhé!,분짜 하나 주세요!,"One bun cha, please!",bunjja hana juseyo,★
+thanks.level05.line,"Bún chả thơm quá, cảm ơn nhé!","분짜 냄새 좋아요, 고마워요!","Smells great, thanks!","bunjja naemsae joayo, gomawoyo",★
+order.level10.line,Sáng nay ăn phở thôi!,오늘 아침은 쌀국수예요!,Pho for breakfast today!,oneul achimeun ssalguksuyeyo,★
+thanks.level10.line,"Phở nóng hổi, ngon quá!","따끈한 쌀국수, 너무 맛있어요!","Hot pho, so good!","ttakkeunhan ssalguksu, neomu masisseoyo",★
+order.level15.line,Cho mình nem rán giòn nhé!,바삭한 짜조 주세요!,"Crispy spring rolls, please!",basakan jjajo juseyo,★
+thanks.level15.line,"Nem giòn tan, tuyệt vời!","짜조가 바삭바삭, 최고예요!","So crispy, amazing!","jjajoga basakbasak, choegoyeyo",★
+order.level20.line,Một ổ bánh mì đầy đủ nhé!,"반미 하나, 다 넣어 주세요!",One banh mi with everything!,"banmi hana, da neoeo juseyo",★
+thanks.level20.line,Bánh mì ngon nhất phố!,이 거리 최고의 반미예요!,Best banh mi on the street!,i geori choegoui banmiyeyo,★
+order.level25.line,Cho tôi một cơm nắm tam giác!,삼각김밥 하나 주세요!,"One triangle rice ball, please!",samgak gimbap hana juseyo,★
+thanks.level25.line,"Cảm ơn, ăn vặt vừa xinh!","감사합니다, 간식으로 딱이에요!","Thanks, a perfect snack!","gamsahamnida, gansigeuro ttagieyo",★
+order.level30.line,Cho tôi một cuộn kimbap nhé!,김밥 한 줄 부탁해요!,"One roll of gimbap, please!",gimbap han jul butakaeyo,★
+thanks.level30.line,"Kimbap đẹp quá, cảm ơn!","김밥 정말 예뻐요, 감사합니다!","Such pretty gimbap, thanks!","gimbap jeongmal yeppeoyo, gamsahamnida",★
+order.level35.line,Cho tôi một bát bibimbap nhé!,비빔밥 하나 주세요!,"One bibimbap, please!",bibimbap hana juseyo,★
+thanks.level35.line,"Trộn đều rồi ăn thôi, cảm ơn!","잘 비벼 먹을게요, 감사해요!","I'll mix it well, thanks!","jal bibyeo meogeulgeyo, gamsahaeyo",★
+order.level40.line,Cho tôi tteokbokki cay nhé!,매콤한 떡볶이 주세요!,"Spicy tteokbokki, please!",maekomhan tteokbokki juseyo,★
+thanks.level40.line,Cay mà ngon! Tôi sẽ quay lại.,맵지만 맛있어요! 또 올게요.,Spicy but tasty! I'll be back.,maepjiman masisseoyo! tto olgeyo,★
